@@ -1,0 +1,495 @@
+package com.example.myapp1.pcim;
+
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Camera;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.myapp1.DataManager.DatabaseManager;
+import com.example.myapp1.DepistagePassifList;
+import com.example.myapp1.MainActivity;
+import com.example.myapp1.R;
+import com.example.myapp1.model.Commune;
+import com.example.myapp1.model.DepistagePassif;
+import com.example.myapp1.model.Moughata;
+import com.example.myapp1.model.Structure;
+import com.example.myapp1.model.Test;
+import com.j256.ormlite.dao.ForeignCollection;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.makeText;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link Donnee_DP#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class Donnee_DP extends Fragment {
+    private Button btn;
+    View v;
+
+    ImageView rapport;
+    byte[] Rapport;
+    Intent camera_intent = null;
+    Spinner spinnermois ;
+    Spinner spinneranne ;
+    Spinner spinnermoughata  ;
+    Spinner spinnercommune ;
+    Spinner spinnerstructer ;
+    Spinner spinnerage ;
+    String  type="passif";
+    private EditText rouge,jaune,vert,odeme,zscore,zscore2;
+    String moi;
+    String anne;
+    String age;
+    Structure structure;
+    int Rouge,Jaune,Vert,Odeme,Zscor,Zscore2;
+    Button Ajouter;
+
+
+    DatabaseManager databaseManager;
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    private ListView list;
+    private Button Modfier;
+    private int id;
+
+
+    public Donnee_DP() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment Donnee_DP.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static Donnee_DP newInstance(String param1, String param2) {
+        Donnee_DP fragment = new Donnee_DP();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        this.VerficationPermession();
+       databaseManager = new DatabaseManager(this.getActivity());
+
+
+        this.v = inflater.inflate(R.layout.fragment_donnee__d_p, container, false);
+        this.onViewCreated();
+
+        return v;
+    }
+
+
+    void onViewCreated() {
+        //btn = this.v.findViewById(R.id.button);
+
+
+        this.spinnermois = this.v.findViewById(R.id.mois);
+        this.spinneranne = this.v.findViewById(R.id.annee);
+        this.spinnermoughata = this.v.findViewById(R.id.moghata);
+        this.spinnercommune = this.v.findViewById(R.id.commune);
+        this.spinnerstructer = this.v.findViewById(R.id.structure);
+        this.spinnerage= this.v.findViewById(R.id.age);
+        rapport = (ImageView) this.v.findViewById(R.id.imageRaport);
+        this.rouge= (EditText) this.v.findViewById(R.id.Rouge);
+        this.jaune= (EditText) this.v.findViewById(R.id.Jaune);
+        this.vert= (EditText) this.v.findViewById(R.id.Vert);
+        this.odeme=(EditText) this.v.findViewById(R.id.Odeme);
+        this.zscore=(EditText) this.v.findViewById(R.id.zscore1);
+        this.zscore2=(EditText) this.v.findViewById(R.id.zscore2);
+        this.Ajouter =(Button) this.v.findViewById(R.id.Ajouter);
+      // this.Modfier =(Button) this.v.findViewById(R.id.Modfier);
+      // this.Modfier.setVisibility(View.GONE);
+
+
+
+
+        setImageViewWithByteArray();
+
+
+        rapport.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            public void onClick(View v) {
+
+
+                Toast.makeText(getActivity(), "Cammera", Toast.LENGTH_SHORT).show();
+
+                VerficationPermession();
+
+                camera_intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                try {
+                    startActivityForResult(camera_intent, 100);
+                } catch (ActivityNotFoundException e) {
+                    makeText(getActivity(), "error ", Toast.LENGTH_SHORT);
+                }
+            }
+        });
+
+
+
+
+
+        final String[] annee = {"2019-2021", "2021-2022"};
+        String[] mois = {" Janvier", "Mars", "Avril", "MAI", "Juin", "Juillet", "Août",
+                "septembre", "Octobre", "Novembre", " Décembre"};
+        final List<String> moughata  = new ArrayList<String>();
+
+        List<Moughata> ListMoughata=databaseManager.ListMoughata();
+        if(ListMoughata!=null){
+            for( Moughata moug : ListMoughata ) {
+                moughata.add(moug.getMoughataname());
+                Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
+            }
+            }
+
+        String[] ages={"6 mois","Autre"};
+
+
+        this.Ajouter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AjouterDepistage();
+            }
+
+
+        });
+
+
+        ArrayAdapter moughatadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, moughata);
+        moughatadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnermoughata.setAdapter(moughatadapter);
+
+        ArrayAdapter ageadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, ages);
+        ageadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerage.setAdapter(ageadapter);
+
+
+
+
+
+        ArrayAdapter moisadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, mois);
+        moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnermois.setAdapter(moisadapter);
+
+        spinnermois.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+               moi=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+
+        spinneranne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                anne=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+        spinnerage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                age=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+        ArrayAdapter anneeadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, annee);
+        anneeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinneranne.setAdapter(anneeadapter);
+
+        spinnermoughata.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                MoughataComune(item);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+
+
+        spinnercommune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+               CommuneStructure(item);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+        spinnerstructer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                   structure=databaseManager.structurename(item);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 100) {
+            if (grantResults[0] == 100) {
+
+
+            } else {
+
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void VerficationPermession() {
+        String[] permmesions = {
+                Manifest.permission.CAMERA
+        };
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+
+            requestPermissions(permmesions, 100);
+
+
+        }
+
+        onRequestPermissionsResult(100, permmesions, new int[]{0, -1});
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            Bitmap image = (Bitmap) data.getExtras().get("data");
+            rapport.setImageBitmap(image);
+
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            this.Rapport=byteArray;
+            //image.recycle();
+            rapport.setImageBitmap(image);
+            Test test = new Test();
+            test.setImageBytes(byteArray);
+
+            this.databaseManager.inserTest(test);
+
+            setImageViewWithByteArray();
+
+
+        } else {
+            getActivity().getFragmentManager().beginTransaction();
+            //rapport.setImageURI(Uri.parse("/drawable/add_a_photo"));
+
+        }
+    }
+
+
+    public  void setImageViewWithByteArray() {
+/*
+        List<Test> users=databaseManager.ListTest();
+        if(users!=null) {
+            for (Test user : users) {
+
+                Toast.makeText(this.getActivity(), "OK", Toast.LENGTH_LONG).show();
+                if(user.getImageBytes() !=null){
+                    Toast.makeText(this.getActivity(), "image not null "+user.getImageBytes().length, Toast.LENGTH_LONG).show();
+                 Bitmap bitmap = BitmapFactory.decodeByteArray(user.getImageBytes(), 0, user.getImageBytes().length);
+              if(bitmap!=null){
+               this.rapport.setImageBitmap(bitmap);
+              }
+
+               // rapport.setImageBitmap(Bitmap.createScaledBitmap(bitmap, rapport.getWidth(),
+                    //    rapport.getHeight(), false));
+
+
+                }
+            }
+        }
+        else{
+            Toast.makeText(this.getActivity(),"Non",Toast.LENGTH_SHORT).show();
+        }
+        */
+
+        }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+
+    void MoughataComune(String moughata) {
+        Moughata moughataname = databaseManager.Moughataname(moughata);
+        List<String> communesM = new ArrayList<String>();
+
+        if (moughataname != null) {
+            for (Commune commune : moughataname.getCommunes()) {
+
+                communesM.add(commune.getCommunename().toString());
+            }
+
+            ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
+            this.spinnercommune.setAdapter(communadapter);
+            communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        }
+
+    }
+        void CommuneStructure(String commune) {
+            Commune communesel=databaseManager.communename(commune);
+            List<String> StructureCommune= new ArrayList<String>();
+
+            if(communesel !=null){
+                for( Structure structurs:communesel.getStructures() ) {
+
+                    StructureCommune.add(structurs.getStructurename().toString());
+                }
+
+                ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(),android.R.layout.simple_spinner_item,StructureCommune);
+                this.spinnerstructer.setAdapter(structureadapter);
+                structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            }
+
+
+
+
+
+
+            //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+    }
+
+
+    private void AjouterDepistage() {
+        DepistagePassif depistagePassif = new DepistagePassif();
+        depistagePassif.setAnnee(anne);
+        depistagePassif.setMois(moi);
+        depistagePassif.setAge(age);
+        depistagePassif.setStructure(structure);
+        depistagePassif.setJaune(Integer.parseInt(jaune.getText().toString()));
+        depistagePassif.setRouge(Integer.parseInt(rouge.getText().toString()));
+        depistagePassif.setVert(Integer.parseInt(vert.getText().toString()));
+        depistagePassif.setZscore(Integer.parseInt(zscore.getText().toString()));
+        depistagePassif.setOdeme(Integer.parseInt(odeme.getText().toString()));
+        depistagePassif.setZscore2(Integer.parseInt(zscore2.getText().toString()));
+        depistagePassif.setRapport(this.Rapport);
+        
+        try {
+            databaseManager.inserdepistage(depistagePassif);
+
+            Toast.makeText(getActivity(),"ajouter Avec succe",Toast.LENGTH_SHORT).show();
+            Intent intent= new Intent( getActivity(), DepistagePassifList.class);
+               startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+}

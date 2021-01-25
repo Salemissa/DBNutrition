@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.myapp1.pcim.home"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/dp"
+        android:name="com.example.myapp1.pcim.Donnee_DP"
+        android:label="Donne Depistage Passif"
+        tools:layout="@layout/fragment_suvi__sous_surveillance" />
+
+
+    <fragment
+        android:id="@+id/sss"
+        android:name="com.example.myapp1.pcim.Suvi_Sous_surveillance"
+        android:label="Suivi Sous Survillance"
+        tools:layout="@layout/fragment_suvi__sous_surveillance" />
+
+    <fragment
+        android:id="@+id/apc"
+        android:name="com.example.myapp1.pcim.Approche_communataire"
+        android:label="Approche Communataire"
+        tools:layout="@layout/fragment_approche_communataire" />
+    <fragment
+        android:id="@+id/cdd"
+        android:name="com.example.myapp1.pcim.Compagne_DP"
+        android:label="Campagne de depiatage "
+        tools:layout="@layout/fragment_compagne__d_p" />
+    <fragment
+        android:id="@+id/acm"
+        android:name="com.example.myapp1.pcim.Activite_Mobile"
+        android:label="Activite Mobile"
+        tools:layout="@layout/fragment_activite__mobile" />
+    <fragment
+        android:id="@+id/pen"
+        android:name="com.example.myapp1.pcim.Prise_en_Charge"
+        android:label="Activite Mobile"
+        tools:layout="@layout/fragment_prise_en__charge" />
+
+    <fragment
+        android:id="@+id/da"
+        android:name="com.example.myapp1.pcim.Depistage_Avance"
+        android:label="Depistage_Avancé"
+        tools:layout="@layout/fragment_depistage__avance" />
+</navigation>

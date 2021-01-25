@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item android:title=""
+        >
+
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_home"
+                android:icon="@drawable/home"
+
+                android:title="@string/menu_home" />
+        </group>
+
+    </item>
+    <item android:title="Depistage Passif">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/dp"
+                    android:icon="@drawable/ic_menu_camera"
+                    android:title="Donnee Depistage Passif" />
+                <item
+                    android:id="@+id/sss"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Suivi sous surveillance" />
+                <item
+                    android:id="@+id/apc"
+                    android:icon="@drawable/ic_menu_slideshow"
+                    android:title="Approche Communataire" />
+
+            </group>
+        </menu>
+    </item>
+    <item android:title="Depistage Active">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/da"
+                    android:icon="@drawable/ic_menu_camera"
+                    android:title="Depistage Avancé" />
+
+                <item
+                    android:id="@+id/cdd"
+                    android:icon="@drawable/ic_menu_camera"
+                    android:title="Compagne De Depistage" />
+                <item
+                    android:id="@+id/acm"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Activite Mobile" />
+                <item
+                    android:id="@+id/pen"
+                    android:icon="@drawable/ic_menu_slideshow"
+                    android:title="Prise en Charge" />
+
+            </group>
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/syn"
+            android:icon="@drawable/ic_baseline_login_24"
+            android:title="syn" />
+    </group>
+
+</menu>

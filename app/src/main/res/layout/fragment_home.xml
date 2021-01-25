@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    tools:context=".pcim.home">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+      <LinearLayout
+          android:id="@+id/l1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:weightSum="2">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/db"
+            android:layout_width="match_parent"
+            android:layout_height="109dp"
+            android:backgroundTintMode="src_atop"
+            android:background="@drawable/home"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Depistage Passif"
+
+            android:gravity="center"
+            android:textSize="24sp" />
+
+
+    </LinearLayout>
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+              <Button
+                  android:layout_width="match_parent"
+                  android:layout_height="109dp"
+                  android:backgroundTintMode="src_atop"
+                  android:background="@drawable/home" />
+
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="52dp"
+                  android:text="Suivi sous servellance"
+                  android:gravity="center"
+                  android:textSize="24sp" />
+
+
+          </LinearLayout>
+      </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/l2"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/l1"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="109dp"
+                android:backgroundTintMode="src_atop"
+                android:background="@drawable/home" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Approche Communataire"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="109dp"
+                android:backgroundTintMode="src_atop"
+                android:background="@drawable/home"  />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Compagne De Depistage"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/l3"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/l2"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="109dp"
+                android:backgroundTintMode="src_atop"
+                android:background="@drawable/home"  />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Activite Mobile"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="109dp"
+                android:backgroundTintMode="src_atop"
+                android:background="@drawable/home" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Prise en Charge"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
