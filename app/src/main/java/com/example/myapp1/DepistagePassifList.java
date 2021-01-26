@@ -34,13 +34,17 @@ import static android.widget.Toast.LENGTH_LONG;
 public class DepistagePassifList extends AppCompatActivity {
     private DatabaseManager databaseManager;
     private ListView list;
+    private  DepistagePassifAdapter adapter;
+    List<DepistagePassif> arrayList;
+    private boolean supp=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_depistage_passif_list);
         list = findViewById(R.id.list);
         databaseManager = new DatabaseManager(this);
-        List<DepistagePassif> arrayList=new ArrayList<>();
+        this.arrayList=new ArrayList<>();
 
         List<DepistagePassif> depistagePassif =databaseManager.ListDepistagePassifs();
 
@@ -79,7 +83,7 @@ public class DepistagePassifList extends AppCompatActivity {
 
                     }
                 });
-                alertDialog.show();
+               // alertDialog.show();
 
                 //Toast.makeText(this,"list non vide ",Toast.LENGTH_LONG).show();
 
@@ -103,7 +107,7 @@ public class DepistagePassifList extends AppCompatActivity {
             });
 
 
-
+            final List<DepistagePassif> finalArrayList = arrayList;
             list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
@@ -111,21 +115,66 @@ public class DepistagePassifList extends AppCompatActivity {
                     // TODO Auto-generated method stub
                     DepistagePassif clickedItem= (DepistagePassif) list.getItemAtPosition(pos);
                    Toast.makeText(getApplicationContext(),pos+"++"+id, LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(),clickedItem.getOdeme(), LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),clickedItem.getOdeme()+"", LENGTH_LONG).show();
 
+
+
+                  boolean res= showalert(clickedItem);
+                  if(res) {
+                      arrayList.remove(pos);
+                      adapter.notifyDataSetChanged();
+                      //Toast.makeText(this,"list non vide ",Toast.LENGTH_LONG).show();
+                  }
                     return true;
                 }
             });
 
         }
 
-        DepistagePassifAdapter adapter = new DepistagePassifAdapter(this, arrayList);
+       this.adapter = new DepistagePassifAdapter(this, arrayList);
         ListView list = (ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
 
 
     }
 
+    private boolean showalert(final DepistagePassif depistagePassif) {
+         this.supp = false;
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Confirm ");
+        alertDialog.setMessage("Etes Vous sur de supprimer");
+        // alertDialog.setIcon(R.drawable.delete);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+                Supprimer(depistagePassif);
+
+               supp =true;
+
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        alertDialog.setNeutralButton( "Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication(),"NOl",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        alertDialog.show();
+
+        return  supp;
+    }
 
 
     class DepistagePassifAdapter extends BaseAdapter {
@@ -219,5 +268,16 @@ public class DepistagePassifList extends AppCompatActivity {
         }
     }
 
+
+    private  void  Supprimer(DepistagePassif depistage){
+        try {
+            databaseManager.supprimerpistage(depistage);
+            Toast.makeText(this,"Supprimer Avec succe",Toast.LENGTH_SHORT).show();
+            Intent intent= new Intent(this, DepistagePassifList.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }
