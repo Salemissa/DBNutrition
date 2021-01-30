@@ -37,8 +37,8 @@ public class DepistagePassifList extends AppCompatActivity {
     private  DepistagePassifAdapter adapter;
     List<Depistage> arrayList;
     private boolean supp=false;
-    //String type="DepistagePassif";ActivitéMobile
-    String type="ActivitéMobile";
+    String type="DepistagePassif";//ActivitéMobile
+   // String type="ActivitéMobile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class DepistagePassifList extends AppCompatActivity {
         list = findViewById(R.id.list);
         databaseManager = new DatabaseManager(this);
         this.arrayList=new ArrayList<>();
-         this.type="ActivitéMobile";
+         this.type="DepistagePassif";
         List<Depistage> depistagePassif =databaseManager.DepistageByType(this.type);
 
         if (depistagePassif ==null){

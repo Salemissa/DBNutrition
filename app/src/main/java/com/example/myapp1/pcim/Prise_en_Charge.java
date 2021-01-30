@@ -1,5 +1,6 @@
 package com.example.myapp1.pcim;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,12 +17,15 @@ import android.widget.Toast;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
+import com.example.myapp1.DepistagePassifList;
 import com.example.myapp1.R;
 import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
+import com.example.myapp1.model.PriseenCharge;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,21 +40,22 @@ public class Prise_en_Charge extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     Spinner spinnersexe ;
-    Spinner spinnerStatu;
+    Spinner spinnerStatu,spinerpec,spinnerRef;
     Spinner spinnerOdeme;
     Spinner spinnermoughata  ;
     Spinner spinnercommune ;
     Spinner spinnerlocalite ;
     Localite localite;
-    EditText PB,Age;
+    EditText PB,Age,contact,enfant,accompagnant,MAS;
     private View v;
     Button Ajouter;
     DatabaseManager databaseManager;
-    String sexe,statu,odeme;
+    String sexe,statu,odeme,pec,ref;
     public Prise_en_Charge() {
         // Required empty public constructor
     }
@@ -101,6 +106,12 @@ public class Prise_en_Charge extends Fragment {
         this.spinnermoughata = this.v.findViewById(R.id.moghata);
         this.spinnercommune = this.v.findViewById(R.id.commune);
         this.spinnerlocalite = this.v.findViewById(R.id.localite);
+        this.spinnerRef=this.v.findViewById(R.id.Ref);
+        this.spinerpec=this.v.findViewById(R.id.PEC);
+        this.contact=this.v.findViewById(R.id.contact);
+        this.enfant=this.v.findViewById(R.id.enfant);
+       this.accompagnant=this.v.findViewById(R.id.accompagnat);
+       this.MAS=this.v.findViewById(R.id.MAS);
         View moi=this.v.findViewById(R.id.mois);
         View anne =this.v.findViewById(R.id.mois);
         moi.setVisibility(View.GONE);
@@ -108,10 +119,24 @@ public class Prise_en_Charge extends Fragment {
         this.v.findViewById(R.id.textView3).setVisibility(View.GONE);
         this.v.findViewById(R.id.textView4).setVisibility(View.GONE);
 
+        this.Ajouter =(Button) this.v.findViewById(R.id.Ajouter);
+
+
+        this.Ajouter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AjouterPrisEnCharge();
+            }
+
+
+        });
+
         Donnes donnes=new Donnes();
         final String[] Sexe= donnes.Sexe;
         String[] Status = donnes.Statu;
         String[] Odemes=donnes.Odeme;
+        String[] Referes=donnes.Référe;
+        String[] PEC=donnes.PEC;
 
         final List<String> moughata  = new ArrayList<String>();
         List<Moughata> ListMoughata=databaseManager.ListMoughata();
@@ -176,11 +201,47 @@ public class Prise_en_Charge extends Fragment {
         Odemeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerOdeme.setAdapter(Odemeadapter);
 
-        spinnerStatu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerOdeme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                statu = parent.getItemAtPosition(position).toString();
+                odeme = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+        ArrayAdapter Refadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item,Referes);
+        Refadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRef.setAdapter(Refadapter);
+
+        spinnerRef.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                ref = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+        ArrayAdapter PECadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item,PEC);
+        PECadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinerpec.setAdapter(PECadapter);
+
+        spinerpec.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                pec = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -237,6 +298,8 @@ public class Prise_en_Charge extends Fragment {
 
     }
 
+
+
     void MoughataComune(String moughata) {
         Moughata moughataname = databaseManager.Moughataname(moughata);
         List<String> communesM = new ArrayList<String>();
@@ -271,5 +334,30 @@ public class Prise_en_Charge extends Fragment {
         ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, localiesCommune);
         this.spinnerlocalite.setAdapter(structureadapter);
         structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    }
+
+    private void AjouterPrisEnCharge() {
+
+        PriseenCharge priseenCharge=new PriseenCharge();
+        priseenCharge.setAge(Age.getText().toString());
+        priseenCharge.setContact(contact.getText().toString());
+        priseenCharge.setNomaccompagnant(accompagnant.getText().toString());
+        priseenCharge.setSexe(sexe);
+        priseenCharge.setLocalite(localite);
+        priseenCharge.setPec(pec);
+        priseenCharge.setRefere(ref);
+        //priseenCharge
+
+        priseenCharge.setDate(new Date());
+        try {
+            databaseManager.inserPrisEnCharge(priseenCharge);
+
+            Toast.makeText(getActivity(),"ajouter Avec succe"+priseenCharge.getLocalite().getLocalitename(),Toast.LENGTH_SHORT).show();
+            Intent intent= new Intent( getActivity(), DepistagePassifList.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

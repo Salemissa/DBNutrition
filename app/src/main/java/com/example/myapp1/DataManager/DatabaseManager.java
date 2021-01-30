@@ -443,4 +443,14 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             return null;
         }
     }
+
+    public void inserPrisEnCharge(PriseenCharge priseenCharge) {
+        try {
+        Dao<PriseenCharge, Integer> dao = getDao(PriseenCharge.class);
+        dao.createOrUpdate(priseenCharge);
+        } catch (Exception exception) {
+            Log.e("PrisEnCharge", "Erroe PrisEnCharge creation", exception);
+
+        }
+    }
 }

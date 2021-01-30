@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.myapp1.DepistagePassifList;
@@ -66,7 +67,7 @@ public class home extends Fragment {
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_home, container, false);
         // Inflate the layout for this fragment
-        depistagpasif=(Button) view.findViewById(R.id.db);
+        ImageView depistagpasif= view.findViewById(R.id.pasif);
         depistagpasif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
