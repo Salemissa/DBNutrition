@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
 import com.example.myapp1.model.Commune;
-import com.example.myapp1.model.DepistagePassif;
+import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.Test;
@@ -41,7 +41,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
     private int  id;
     private Button Ajouter;
     private DatabaseManager databaseManager;
-    private DepistagePassif depistage;
+    private Depistage depistage;
     private String[] Anne;
     private String[] mois;
     ImageView rapport;
@@ -84,7 +84,6 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         this.odeme=(EditText) this.findViewById(R.id.Odeme);
         this.zscore=(EditText) this.findViewById(R.id.zscore1);
         this.zscore2=(EditText) this.findViewById(R.id.zscore2);
-        this.Supprimer =(Button) this.findViewById(R.id.Supprimer);
         this.Modfier =(Button) this.findViewById(R.id.Modfier);
         this.Ajouter =(Button) this.findViewById(R.id.Ajouter);
         this.Ajouter.setVisibility(View.GONE);
@@ -109,14 +108,6 @@ public class UpdateDepistagePassif extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ModfierDepistage();
-            }
-
-
-        });
-        this.Supprimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Supprimer();
             }
 
 
@@ -364,10 +355,10 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         List<String> communesM = new ArrayList<String>();
 
         if (moughataname != null) {
-            for (Commune commune : moughataname.getCommunes()) {
+            /*for (Commune commune : moughataname.getCommunes()) {
 
                 communesM.add(commune.getCommunename().toString());
-            }
+            }*/
             this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, communesM);
             this.spinnercommune.setAdapter(this.communadapter);
             this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -451,10 +442,10 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         //this.CommuneStructure(structure.getCommune().getCommunename());
 
            Toast.makeText(this,"3",Toast.LENGTH_LONG).show();
-        this.rouge.setText(this.depistage.getRouge()+"");
-        this.vert.setText(this.depistage.getJaune()+"");
-        this.jaune.setText(this.depistage.getVert()+"");
-        this.odeme.setText(this.depistage.getOdeme()+"");
+        this.rouge.setText(this.depistage.getRougeF()+"");
+        this.vert.setText(this.depistage.getJauneF()+"");
+        this.jaune.setText(this.depistage.getVertF()+"");
+        this.odeme.setText(this.depistage.getOdemeF()+"");
         this.zscore.setText(this.depistage.getZscore()+"");
         this.zscore2.setText(this.depistage.getZscore2()+"");
 
@@ -512,11 +503,11 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         this.depistage.setMois(moi);
         this.depistage.setAge(age);
         //depistage.setStructure(structure);
-        this.depistage.setJaune(Integer.parseInt(jaune.getText().toString()));
-        this.depistage.setRouge(Integer.parseInt(rouge.getText().toString()));
-        this.depistage.setVert(Integer.parseInt(vert.getText().toString()));
+        this.depistage.setJauneF(Integer.parseInt(jaune.getText().toString()));
+        this.depistage.setRougeF(Integer.parseInt(rouge.getText().toString()));
+        this.depistage.setVertF(Integer.parseInt(vert.getText().toString()));
         this.depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
-        this.depistage.setOdeme(Integer.parseInt(odeme.getText().toString()));
+        this.depistage.setOdemeF(Integer.parseInt(odeme.getText().toString()));
         this.depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
         if(this.Rapport!=null){
 
@@ -532,7 +523,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
             Toast.makeText(this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }
     }
-
+/*
     private  void  Supprimer(){
         try {
             databaseManager.supprimerpistage(this.depistage);
@@ -543,4 +534,6 @@ public class UpdateDepistagePassif extends AppCompatActivity {
             Toast.makeText(this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }
     }
+
+ */
 }

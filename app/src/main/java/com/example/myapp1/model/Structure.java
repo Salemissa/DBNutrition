@@ -15,7 +15,13 @@ public class Structure {
     private Commune commune;
 
     @ForeignCollectionField(eager=false)
-    private ForeignCollection<DepistagePassif> depistagePassifs;
+    private ForeignCollection<Depistage> depistage;
+
+
+    @ForeignCollectionField(eager=false)
+    private ForeignCollection<SuviSousSurvillance> suviSousSurvillances;
+
+
 
 
 
@@ -44,11 +50,19 @@ public class Structure {
         this.commune = commune;
     }
 
-    public ForeignCollection<DepistagePassif> getDepistagePassifs() {
-        return depistagePassifs;
+    public ForeignCollection<Depistage> getDepistage() {
+        return depistage;
     }
 
-    public void setDepistagePassifs(ForeignCollection<DepistagePassif> depistagePassifs) {
-        this.depistagePassifs = depistagePassifs;
+    public ForeignCollection<SuviSousSurvillance> getSuviSousSurvillances() {
+        return suviSousSurvillances;
+    }
+
+    public void setSuviSousSurvillances(ForeignCollection<SuviSousSurvillance> suviSousSurvillances) {
+        this.suviSousSurvillances = suviSousSurvillances;
+    }
+
+    public void setDepistage(ForeignCollection<Depistage> depistage) {
+        this.depistage = depistage;
     }
 }

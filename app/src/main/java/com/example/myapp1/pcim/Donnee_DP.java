@@ -32,10 +32,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapp1.DataManager.DatabaseManager;
+import com.example.myapp1.DataManager.Donnes;
 import com.example.myapp1.DepistagePassifList;
 import com.example.myapp1.MainActivity;
 import com.example.myapp1.R;
 import com.example.myapp1.model.Commune;
+import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.DepistagePassif;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
@@ -186,12 +188,11 @@ public class Donnee_DP extends Fragment {
         });
 
 
+        Donnes donnes=new Donnes();
+        final String[] annee = donnes.annee;
+        String[] mois = donnes.mois;
+        String[] ages=donnes.ages;
 
-
-
-        final String[] annee = {"2019-2021", "2021-2022"};
-        String[] mois = {" Janvier", "Mars", "Avril", "MAI", "Juin", "Juillet", "Août",
-                "septembre", "Octobre", "Novembre", " Décembre"};
         final List<String> moughata  = new ArrayList<String>();
 
         List<Moughata> ListMoughata=databaseManager.ListMoughata();
@@ -202,7 +203,7 @@ public class Donnee_DP extends Fragment {
             }
             }
 
-        String[] ages={"6 mois","Autre"};
+
 
 
         this.Ajouter.setOnClickListener(new View.OnClickListener() {
@@ -466,25 +467,26 @@ public class Donnee_DP extends Fragment {
 
 
     private void AjouterDepistage() {
-        DepistagePassif depistagePassif = new DepistagePassif();
-        depistagePassif.setAnnee(anne);
-        depistagePassif.setMois(moi);
-        depistagePassif.setAge(age);
-        depistagePassif.setStructure(structure);
-        depistagePassif.setJaune(Integer.parseInt(jaune.getText().toString()));
-        depistagePassif.setRouge(Integer.parseInt(rouge.getText().toString()));
-        depistagePassif.setVert(Integer.parseInt(vert.getText().toString()));
-        depistagePassif.setZscore(Integer.parseInt(zscore.getText().toString()));
-        depistagePassif.setOdeme(Integer.parseInt(odeme.getText().toString()));
-        depistagePassif.setZscore2(Integer.parseInt(zscore2.getText().toString()));
-        depistagePassif.setRapport(this.Rapport);
+        Depistage depistage = new Depistage();
+        depistage.setAnnee(anne);
+        depistage.setMois(moi);
+        depistage.setAge(age);
+        depistage.setStructure(structure);
+        depistage.setJauneF(Integer.parseInt(jaune.getText().toString()));
+        depistage.setRougeF(Integer.parseInt(rouge.getText().toString()));
+        depistage.setVertF(Integer.parseInt(vert.getText().toString()));
+        depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
+        depistage.setOdemeF(Integer.parseInt(odeme.getText().toString()));
+        depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
+        depistage.setRapport(this.Rapport);
+        depistage.setType("DepistagePassif");
         
         try {
-            databaseManager.inserdepistage(depistagePassif);
+            databaseManager.inserDepistage(depistage);
 
             Toast.makeText(getActivity(),"ajouter Avec succe",Toast.LENGTH_SHORT).show();
             Intent intent= new Intent( getActivity(), DepistagePassifList.class);
-               startActivity(intent);
+              startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }

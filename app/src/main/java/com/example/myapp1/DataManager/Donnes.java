@@ -5,4 +5,9 @@ public class Donnes{
     public String[] mois = {" Janvier", "Mars", "Avril", "MAI", "Juin", "Juillet", "Août",
             "septembre", "Octobre", "Novembre", " Décembre"};
     public  String[] ages={"6 mois","Autre"};
+    public  String[] Sexe={"F","M"};
+    public  String[] Statu={"S1","S2"};
+    public  String[] Odeme={"Odeme1","Odeme2"};
+
+    public Donnes(){};
 }

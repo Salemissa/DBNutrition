@@ -4,14 +4,22 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.myapp1.model.Animateur;
 import com.example.myapp1.model.AppRole;
 import com.example.myapp1.model.AppUser;
+import com.example.myapp1.model.ApprocheCommunataire;
 import com.example.myapp1.model.Commune;
+import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.DepistagePassif;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
+import com.example.myapp1.model.PriseenCharge;
+import com.example.myapp1.model.Relais;
 import com.example.myapp1.model.Structure;
+import com.example.myapp1.model.SuperViseur;
+import com.example.myapp1.model.SuviSousSurvillance;
 import com.example.myapp1.model.Test;
+import com.example.myapp1.model.USB;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -38,7 +46,17 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Localite.class);
             TableUtils.createTable(connectionSource, Structure.class);
             TableUtils.createTable(connectionSource, DepistagePassif.class);
+            TableUtils.createTable(connectionSource, SuperViseur.class);
+            TableUtils.createTable(connectionSource, Animateur.class);
+            TableUtils.createTable(connectionSource, Relais.class);
             TableUtils.createTable(connectionSource, Test.class);
+            TableUtils.createTable(connectionSource, USB.class);
+            TableUtils.createTable(connectionSource, Depistage.class);
+            TableUtils.createTable(connectionSource, SuviSousSurvillance.class);
+            TableUtils.createTable(connectionSource, PriseenCharge.class);
+            TableUtils.createTable(connectionSource, ApprocheCommunataire.class);
+
+
 
 
 
@@ -59,6 +77,8 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, Localite.class, true);
             TableUtils.dropTable(connectionSource, Structure.class, true);
             TableUtils.dropTable(connectionSource, DepistagePassif.class, true);
+            TableUtils.dropTable(connectionSource, SuperViseur.class, true);
+            TableUtils.dropTable(connectionSource, ApprocheCommunataire.class, true);
             TableUtils.dropTable(connectionSource, Test.class, true);
 
             onCreate(database, connectionSource);
@@ -121,8 +141,8 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             Dao<Moughata, Integer> dao = getDao(Moughata.class);
             List<Moughata> moughata = dao.queryForEq("moughataname", moughataname);
 
-            return  moughata.get(0);
-        }catch (Exception exception) {
+            return moughata.get(0);
+        } catch (Exception exception) {
             Log.e("DATABASE", "Can't insert  into Database", exception);
             return null;
         }
@@ -157,13 +177,12 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         try {
             Dao<Commune, Integer> dao = getDao(Commune.class);
             List<Commune> communes = dao.queryForEq("communename", communename);
-            return  communes.get(0);
-        }catch (Exception exception) {
+            return communes.get(0);
+        } catch (Exception exception) {
             Log.e("DATABASE", "Can't insert  into Database", exception);
             return null;
         }
     }
-
 
 
     public void inserstructure(Structure structure) {
@@ -194,22 +213,19 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         try {
             Dao<Structure, Integer> dao = getDao(Structure.class);
             List<Structure> structures = dao.queryForEq("structurename", structurename);
-            return  structures.get(0);
-        }catch (Exception exception) {
+            return structures.get(0);
+        } catch (Exception exception) {
             Log.e("DATABASE", "Can't insert  into Database", exception);
             return null;
         }
     }
 
-  //
 
 
-
-    public void inserdepistage(DepistagePassif depistage) {
+    public void inserslocalite(Localite localite) {
         try {
-            Dao<DepistagePassif, Integer> dao = getDao(DepistagePassif.class);
-            dao.create(depistage);
-
+            Dao<Localite, Integer> dao = getDao(Localite.class);
+            dao.createOrUpdate(localite);
             Log.i("DATABASE", "insertUser invoked");
         } catch (Exception exception) {
             Log.e("DATABASE", "Can't insert user into Database", exception);
@@ -217,25 +233,32 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
 
-    public void updatedepistage(DepistagePassif depistage) {
+    public List<Localite> ListLocalites() {
         try {
-            Dao<DepistagePassif, Integer> dao = getDao(DepistagePassif.class);
-            dao.update(depistage);
-
-            Log.i("DATABASE", "insertUser invoked");
+            Dao<Localite, Integer> dao = getDao(Localite.class);
+            List<Localite> localites= dao.queryForAll();
+            Log.i("DATABASE", "ListUsers invoked");
+            return localites;
         } catch (Exception exception) {
-            Log.e("DATABASE", "Can't insert user into Database", exception);
-        }
-    }public void supprimerpistage(DepistagePassif depistage) {
-        try {
-            Dao<DepistagePassif, Integer> dao = getDao(DepistagePassif.class);
-            dao.delete(depistage);
-
-            Log.i("DATABASE", "insertUser invoked");
-        } catch (Exception exception) {
-            Log.e("DATABASE", "Can't insert user into Database", exception);
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return null;
         }
     }
+
+
+    public Localite localitename(String localite) {
+        try {
+            Dao<Localite, Integer> dao = getDao(Localite.class);
+            List<Localite> localites = dao.queryForEq("localitename", localite);
+            return localites.get(0);
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return null;
+        }
+    }
+
+    //
+
 
 
 
@@ -249,24 +272,15 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         try {
             Dao<DepistagePassif, Integer> dao = getDao(DepistagePassif.class);
             List<DepistagePassif> depistageList = dao.queryForEq("type", type);
-            return  depistageList;
-        }catch (Exception exception) {
+            return depistageList;
+        } catch (Exception exception) {
             Log.e("DATABASE", "Can't insert  into Database", exception);
             return null;
         }
     }
 
 
-    public DepistagePassif depistageById(int id) {
-        try {
-            Dao<DepistagePassif, Integer> dao = getDao(DepistagePassif.class);
-           DepistagePassif depistage= dao.queryForId(id);
-            return  depistage;
-        }catch (Exception exception) {
-            Log.e("DATABASE", "Can't insert  into Database", exception);
-            return null;
-        }
-    }
+
 
     public void inserTest(Test test) {
         try {
@@ -304,4 +318,129 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         }
     }
 
+
+    public void inserTest(SuperViseur test) {
+        try {
+            Dao<SuperViseur, Integer> dao = getDao(SuperViseur.class);
+            dao.create(test);
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+        }
+    }
+
+
+
+    public List<SuperViseur> allSuperviseur() {
+        try {
+            Dao<SuperViseur, Integer> dao = getDao(SuperViseur.class);
+            List<SuperViseur> superViseurs = dao.queryForAll();
+            Log.i("DATABASE", "insertUser invoked");
+            return superViseurs;
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+            return  null;
+        }
+
+    }
+
+
+    public void inserDepistage(Depistage depistage) {
+            try {
+                Dao<Depistage, Integer> dao = getDao(Depistage.class);
+                dao.createOrUpdate(depistage);
+
+                Log.i("DATABASE", "insertUser invoked");
+            } catch (Exception exception) {
+                Log.e("DATABASE", "Can't insert user into Database", exception);
+            }
+        }
+
+
+    public void updatedepistage(Depistage depistage) {
+        try {
+            Dao<Depistage, Integer> dao = getDao(Depistage.class);
+            dao.update(depistage);
+
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+        }
+    }
+
+    public List<Depistage> DepistageByType(String type) {
+        List<Depistage> depistages = null;
+        try {
+            Dao<Depistage, Integer> dao = getDao(Depistage.class);
+            depistages = dao.queryForEq("type", type);
+
+            Log.i("DATABASE", "Depistage Type invoked");
+
+        } catch (Exception exception) {
+
+            Log.e("DATABASE", "Can't Probleme Type", exception);
+
+        }
+        return depistages;
+    }
+
+    public List<Depistage> ListDepistage() {
+        try {
+            Dao<Depistage, Integer> dao = getDao(Depistage.class);
+
+            List<Depistage> depistagePassifs = dao.queryForAll();
+            Log.i("DATABASE", "ListUsers invoked");
+            return depistagePassifs;
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return null;
+        }
+    }
+
+
+    public void supprimerpistage(Depistage depistage) {
+        try {
+            Dao<Depistage, Integer> dao = getDao(Depistage.class);
+            dao.delete(depistage);
+
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+        }
+    }
+
+
+    public Depistage depistageById(int id) {
+        try {
+            Dao<Depistage, Integer> dao = getDao(Depistage.class);
+            Depistage depistage = dao.queryForId(id);
+            return depistage;
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return null;
+        }
+    }
+
+    public void insersuviSousSurvillance(SuviSousSurvillance suviSousSurvillance) {
+        try {
+            Dao<SuviSousSurvillance, Integer> dao = getDao(SuviSousSurvillance.class);
+            dao.createOrUpdate(suviSousSurvillance);
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+
+        }
+    }
+
+    public List<SuviSousSurvillance> ListSuviSousSurvillance() {
+        try {
+            Dao<SuviSousSurvillance, Integer> dao = getDao(SuviSousSurvillance.class);
+
+            List<SuviSousSurvillance> suviSousSurvillances = dao.queryForAll();
+            Log.i("DATABASE", "ListUsers invoked");
+            return suviSousSurvillances;
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return null;
+        }
+    }
 }

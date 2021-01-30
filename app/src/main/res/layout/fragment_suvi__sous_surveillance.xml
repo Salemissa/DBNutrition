@@ -48,7 +48,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/ss"
+            android:id="@+id/ssd"
             android:layout_width="93dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
@@ -279,6 +279,18 @@
             android:inputType="number"
             android:maxLength="4" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/Ajouter"
+        android:layout_width="183dp"
+        android:layout_height="67dp"
+        android:layout_below="@+id/sort2"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="63dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:text="Ajouter" />
 
 
 </RelativeLayout>

@@ -13,9 +13,6 @@ public class Moughata {
     private Long id;
     @DatabaseField
     private String moughataname;
-
-
-
     @ForeignCollectionField(eager=false)
     private ForeignCollection<Commune> communes;
     public Moughata() {
@@ -58,4 +55,5 @@ public class Moughata {
                 "moughataname='" + moughataname + '\'' +
                 '}';
     }
+
 }

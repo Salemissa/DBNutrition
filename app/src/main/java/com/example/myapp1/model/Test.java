@@ -7,6 +7,8 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.Date;
+
 @DatabaseTable
 public class Test {
 
@@ -19,6 +21,17 @@ public class Test {
     @JsonIgnore
     byte[] imageBytes;
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @DatabaseField(dataType = DataType.DATE_STRING,
+            format = "yyyy-MM-dd")
+   private  Date date;
     public Test() {
     }
 
@@ -33,6 +46,8 @@ public class Test {
     public byte[] getImageBytes() {
         return imageBytes;
     }
+
+
 
     public void setImageBytes(byte[] imageBytes) {
         this.imageBytes = imageBytes;

@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/pen"
         android:name="com.example.myapp1.pcim.Prise_en_Charge"
-        android:label="Activite Mobile"
+        android:label="Prise en Charge"
         tools:layout="@layout/fragment_prise_en__charge" />
 
     <fragment

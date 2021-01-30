@@ -41,6 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/libelles"
         android:layout_width="match_parent"
         android:layout_height="81dp"
         android:layout_below="@id/header_VIEW"
@@ -95,12 +96,93 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center"
             android:text="Odeme"
             android:textStyle="bold">
 
         </TextView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/libelles"
+
+        android:weightSum="6">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:textStyle="bold">
+
+        </EditText>
+
+        <Spinner
+            android:id="@+id/sexe"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="sexe"
+            android:textStyle="bold">
+
+        </Spinner>
+
+        <EditText
+            android:id="@+id/age"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="4"
+            android:textStyle="bold">
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/PB"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="4"
+            android:textStyle="bold">
+
+        </EditText>
+
+        <Spinner
+            android:id="@+id/OdemeChoix"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textStyle="bold">
+
+        </Spinner>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line1"
+         android:layout_marginTop="20dp"
+        android:weightSum="6">
 
         <TextView
             android:layout_width="0dp"
@@ -112,5 +194,67 @@
             android:textStyle="bold">
 
         </TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="Nom de l'accompagnant"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="Contact"
+            android:textStyle="bold">
+        </TextView>
     </LinearLayout>
+        <LinearLayout
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line2"
+
+            android:weightSum="6">
+        <Spinner
+            android:id="@+id/Staut"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="sexe"
+            android:textStyle="bold">
+
+        </Spinner>
+        <EditText
+            android:id="@+id/accompagnat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="3"
+            android:inputType="textPersonName"
+            android:gravity="center"
+            android:textStyle="bold">
+
+        </EditText>
+        <EditText
+            android:id="@+id/contact"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:inputType="phone"
+            android:textStyle="bold">
+
+        </EditText>
+    </LinearLayout>
+
 </RelativeLayout>

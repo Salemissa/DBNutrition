@@ -1,10 +1,15 @@
 package com.example.myapp1;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,9 +23,12 @@ import android.widget.Toast;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.AppUser;
 import com.example.myapp1.model.Commune;
+import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.DepistagePassif;
+import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
+import com.example.myapp1.model.SuperViseur;
 import com.j256.ormlite.dao.ForeignCollection;
 
 import java.util.ArrayList;
@@ -42,11 +50,32 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseManager databaseManager;
     private Spinner spinner;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
          databaseManager = new DatabaseManager(this);
+        Moughata moughata =new Moughata("Koubeni");
+        //databaseManager.inserMoughata(moughata);
+        SuperViseur s=new SuperViseur();
+        s.setNom("Ismail");
+        s.setUsernane("salem");
+        s.setPassword("4555");
+       //databaseManager.inserTest(s);
+        //AjouterMoughata();
+       //AjouterLocalite();
+        this.VerficationPermession();
+       // AjouterStrucures();
+
+        List<SuperViseur> su=databaseManager.allSuperviseur();
+        if(su !=null) {
+            for (SuperViseur superViseur : su) {
+               // Toast.makeText(this, superViseur.getUsernane(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        //databaseManager.inserTest(s);
          /*
          AppUser user1=new AppUser("Salem","1234",true);
 
@@ -136,22 +165,23 @@ public class MainActivity extends AppCompatActivity {
                 if(!error){
                     Intent intent4 = new Intent(MainActivity.this, MainActivity2.class);
                     //
-                        List<DepistagePassif> users=databaseManager.ListDepistagePassifs();
+                        List<Localite> users=databaseManager.ListLocalites();
                     if(users!=null){
-                        for( DepistagePassif user : users ){
+                        for( Localite user : users ){
 
-                            Toast.makeText(MainActivity.this,"OK",Toast.LENGTH_LONG);
+                           // Toast.makeText(MainActivity.this,user.getLocalitename()+"=="+user.getId(),Toast.LENGTH_LONG).show();
                          //   Toast.makeText(MainActivity.this,user.getId()+"",Toast.LENGTH_LONG).show();
-
+                            startActivity(intent4);
 
                        //alertView(etudient.toString());
                         }
-                        startActivity(intent4);
+                        //
                     }
 
                     else {
-                        Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_LONG).show();
 
+                        Toast.makeText(MainActivity.this,"List vide",Toast.LENGTH_LONG).show();
+                        startActivity(intent4);
                     }
                 }
             }
@@ -164,6 +194,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+
 
     void setContent(){
         setContentView(R.layout.activity_main);
@@ -212,4 +245,129 @@ public class MainActivity extends AppCompatActivity {
         Long id;
         String login;
     }
+
+    void AjouterMoughata(){
+
+        Moughata moughata =new Moughata("Koubeni");
+       databaseManager.inserMoughata(moughata);
+
+        Moughata moughata2 =new Moughata("Tamchekett");
+       databaseManager.inserMoughata(moughata2);
+        Moughata moughata3 =new Moughata("Tintane");
+        databaseManager.inserMoughata(moughata3);
+       AjouterCommune();
+
+
+
+    }
+
+
+
+    void AjouterCommune() {
+
+        String[] commune1 = new String[]{"Koubeni", "Medboughou", "Hassi ahmed bechna"};
+
+        Moughata moughata1 = databaseManager.Moughataname("Koubeni");
+        for (String communename : commune1) {
+            Commune commune = new Commune();
+            commune.setCommunename(communename);
+            commune.setMoughata(moughata1);
+            databaseManager.insercommune(commune);
+
+        }
+        String[] commune2 = new String[]{"Tintane", "Devaa", "Ain varbe"};
+
+        Moughata moughata2 = databaseManager.Moughataname("Tintane");
+
+        for (String communename : commune2) {
+            Commune commune = new Commune();
+            commune.setCommunename(communename);
+            commune.setMoughata(moughata2);
+            databaseManager.insercommune(commune);
+
+        }
+
+
+        String[] commune3 = new String[]{"Tamchekett", "Devaa", "Sava"};
+
+        Moughata moughata3 = databaseManager.Moughataname("Tamchekett");
+
+        for (String communename : commune3) {
+            Commune commune = new Commune();
+            commune.setCommunename(communename);
+            commune.setMoughata(moughata3);
+            databaseManager.insercommune(commune);
+
+
+        }
+        AjouterStrucures();
+        AjouterLocalite();
+    }
+
+        private void AjouterStrucures() {
+            String[] Str1 = new String[]{"Koubeni" , "Emnesira", "Medbougou"};
+
+            Commune commune = databaseManager.communename("Koubeni");
+            for (String str : Str1) {
+                Structure stru = new Structure();
+                stru.setStructurename(str);
+                stru.setCommune(commune);
+                databaseManager.inserstructure(stru);
+
+            }
+
+        }
+
+    private void AjouterLocalite() {
+
+        String[] Str1 = new String[]{"Terteigue" , "El Koutoub", "Emegssem"};
+
+        Commune commune = databaseManager.communename("Hassi ahmed bechna");
+        for (String loc : Str1) {
+            Localite localite = new Localite();
+            localite.setLocalitename(loc);
+            localite.setCommune(commune);
+            databaseManager.inserslocalite(localite);
+
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void VerficationPermession() {
+        String[] permmesions = {
+                Manifest.permission.CAMERA
+        };
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+
+            requestPermissions(permmesions, 100);
+
+
+        }
+
+        onRequestPermissionsResult(100, permmesions, new int[]{0, -1});
+
+
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 100) {
+            if (grantResults[0] == 100) {
+
+
+            } else {
+
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+
 }

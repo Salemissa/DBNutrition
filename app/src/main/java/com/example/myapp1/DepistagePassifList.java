@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapp1.DataManager.DatabaseManager;
-import com.example.myapp1.model.DepistagePassif;
+import com.example.myapp1.model.Depistage;
 import com.example.myapp1.pcim.Donnee_DP;
 
 import org.w3c.dom.Text;
@@ -35,8 +35,10 @@ public class DepistagePassifList extends AppCompatActivity {
     private DatabaseManager databaseManager;
     private ListView list;
     private  DepistagePassifAdapter adapter;
-    List<DepistagePassif> arrayList;
+    List<Depistage> arrayList;
     private boolean supp=false;
+    //String type="DepistagePassif";ActivitéMobile
+    String type="ActivitéMobile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +47,8 @@ public class DepistagePassifList extends AppCompatActivity {
         list = findViewById(R.id.list);
         databaseManager = new DatabaseManager(this);
         this.arrayList=new ArrayList<>();
-
-        List<DepistagePassif> depistagePassif =databaseManager.ListDepistagePassifs();
+         this.type="ActivitéMobile";
+        List<Depistage> depistagePassif =databaseManager.DepistageByType(this.type);
 
         if (depistagePassif ==null){
             //Toast.makeText(this,"medicament non trouve ",Toast.LENGTH_LONG).show();
@@ -65,7 +67,7 @@ public class DepistagePassifList extends AppCompatActivity {
         }
 
         else{
-            arrayList=databaseManager.ListDepistagePassifs();;
+            arrayList=databaseManager.DepistageByType(this.type);
 
             if (arrayList.isEmpty()){
 
@@ -93,7 +95,7 @@ public class DepistagePassifList extends AppCompatActivity {
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    DepistagePassif clickedItem= (DepistagePassif) list.getItemAtPosition(position);
+                    Depistage clickedItem= (Depistage) list.getItemAtPosition(position);
                     Intent intent= new Intent( DepistagePassifList.this, UpdateDepistagePassif.class);
 
                     //Intent intent = new Intent(DepistagePassifList.this, Donnee_DP.class);
@@ -107,15 +109,15 @@ public class DepistagePassifList extends AppCompatActivity {
             });
 
 
-            final List<DepistagePassif> finalArrayList = arrayList;
+            final List<Depistage> finalArrayList = arrayList;
             list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                                int pos, long id) {
                     // TODO Auto-generated method stub
-                    DepistagePassif clickedItem= (DepistagePassif) list.getItemAtPosition(pos);
+                    Depistage clickedItem= (Depistage) list.getItemAtPosition(pos);
                    Toast.makeText(getApplicationContext(),pos+"++"+id, LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(),clickedItem.getOdeme()+"", LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),clickedItem.getOdemeF()+"", LENGTH_LONG).show();
 
 
 
@@ -138,7 +140,7 @@ public class DepistagePassifList extends AppCompatActivity {
 
     }
 
-    private boolean showalert(final DepistagePassif depistagePassif) {
+    private boolean showalert(final Depistage depistagePassif) {
          this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirm ");
@@ -179,14 +181,14 @@ public class DepistagePassifList extends AppCompatActivity {
 
     class DepistagePassifAdapter extends BaseAdapter {
 
-        private List<DepistagePassif> depistagePassifs;
+        private List<Depistage> depistagePassifs;
         private Context mContext;
         private LayoutInflater mInflater;
 
 
-        public DepistagePassifAdapter(Context context, List<DepistagePassif> depistagePassifs) {
+        public DepistagePassifAdapter(Context context, List<Depistage> depistage) {
             mContext = context;
-            this.depistagePassifs = depistagePassifs;
+            this.depistagePassifs = depistage;
             mInflater = LayoutInflater.from(mContext);
         }
 
@@ -243,12 +245,16 @@ public class DepistagePassifList extends AppCompatActivity {
             }
             mois.setText("Mois  : "+depistagePassifs.get(position).getMois());
             annee.setText("Anneé : "+depistagePassifs.get(position).getAnnee());
+            if(depistagePassifs.get(position).getStructure() !=null){
             structure.setText("Structure : "+depistagePassifs.get(position).getStructure().getStructurename());
+            }else{
+                structure.setText("Structure : ");
+            }
             age.setText("Age : "+depistagePassifs.get(position).getAge());
-            Rouge.setText("Rouge : "+depistagePassifs.get(position).getRouge());
-            Jaune.setText("Jaune : "+depistagePassifs.get(position).getJaune());
-            Vert.setText("Vert : "+depistagePassifs.get(position).getVert());
-            Odeme.setText("Odeme : "+depistagePassifs.get(position).getOdeme());
+            Rouge.setText("Rouge : "+depistagePassifs.get(position).getRougeF());
+            Jaune.setText("Jaune : "+depistagePassifs.get(position).getJauneF());
+            Vert.setText("Vert : "+depistagePassifs.get(position).getVertF());
+            Odeme.setText("Odeme : "+depistagePassifs.get(position).getOdemeF());
             Z_score1.setText("Z score 1 : "+depistagePassifs.get(position).getZscore());
            Z_score2.setText("Z score 2 : "+depistagePassifs.get(position).getZscore2());
 
@@ -269,7 +275,7 @@ public class DepistagePassifList extends AppCompatActivity {
     }
 
 
-    private  void  Supprimer(DepistagePassif depistage){
+    private  void  Supprimer(Depistage depistage){
         try {
             databaseManager.supprimerpistage(depistage);
             Toast.makeText(this,"Supprimer Avec succe",Toast.LENGTH_SHORT).show();

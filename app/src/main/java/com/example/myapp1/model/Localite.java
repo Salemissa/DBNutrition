@@ -14,10 +14,16 @@ public class Localite {
         private String localitename;
         @DatabaseField(foreign = true, foreignAutoRefresh = true)
         private Commune commune;
-   // @ForeignCollectionField(eager=false)
-    //private ForeignCollection<PriseenCharge> priseEnCharges;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Relais relais;
+        @ForeignCollectionField(eager=false)
+        private ForeignCollection<Depistage> depistage;
+     @ForeignCollectionField(eager=false)
+      private ForeignCollection<USB> usb;
+        @ForeignCollectionField(eager=false)
+        private ForeignCollection<PriseenCharge> priseEnCharges;
 
-    Localite(){
+    public Localite(){
 
     }
     public Long getId() {
@@ -42,5 +48,37 @@ public class Localite {
 
     public void setCommune(Commune commune) {
         this.commune = commune;
+    }
+
+    public Relais getRelais() {
+        return relais;
+    }
+
+    public void setRelais(Relais relais) {
+        this.relais = relais;
+    }
+
+    public ForeignCollection<Depistage> getDepistage() {
+        return depistage;
+    }
+
+    public void setDepistage(ForeignCollection<Depistage> depistage) {
+        this.depistage = depistage;
+    }
+
+    public ForeignCollection<USB> getUsb() {
+        return usb;
+    }
+
+    public void setUsb(ForeignCollection<USB> usb) {
+        this.usb = usb;
+    }
+
+    public ForeignCollection<PriseenCharge> getPriseEnCharges() {
+        return priseEnCharges;
+    }
+
+    public void setPriseEnCharges(ForeignCollection<PriseenCharge> priseEnCharges) {
+        this.priseEnCharges = priseEnCharges;
     }
 }

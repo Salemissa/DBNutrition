@@ -44,12 +44,167 @@ public class Depistage {
     private  int zscore2;
     @DatabaseField
     private String type;
-    @DatabaseField
+
+    @DatabaseField(dataType = DataType.DATE_STRING,
+            format = "yyyy-MM-dd")
     private Date date;
 
-    //@DatabaseField(foreign = true, foreignAutoRefresh = true,canBeNull = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Structure structure;
-    //@DatabaseField(foreign = true, foreignAutoRefresh = true)
-    //private Localite localite;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private Localite localite;
+    public Depistage() {};
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMois() {
+        return mois;
+    }
+
+    public void setMois(String mois) {
+        this.mois = mois;
+    }
+
+    public String getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(String annee) {
+        this.annee = annee;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public byte[] getRapport() {
+        return rapport;
+    }
+
+    public void setRapport(byte[] rapport) {
+        this.rapport = rapport;
+    }
+
+    public int getRougeG() {
+        return rougeG;
+    }
+
+    public void setRougeG(int rougeG) {
+        this.rougeG = rougeG;
+    }
+
+    public int getRougeF() {
+        return rougeF;
+    }
+
+    public void setRougeF(int rougeF) {
+        this.rougeF = rougeF;
+    }
+
+    public int getJauneF() {
+        return JauneF;
+    }
+
+    public void setJauneF(int jauneF) {
+        JauneF = jauneF;
+    }
+
+    public int getJauneG() {
+        return JauneG;
+    }
+
+    public void setJauneG(int jauneG) {
+        JauneG = jauneG;
+    }
+
+    public int getVertF() {
+        return VertF;
+    }
+
+    public void setVertF(int vertF) {
+        VertF = vertF;
+    }
+
+    public int getVertG() {
+        return VertG;
+    }
+
+    public void setVertG(int vertG) {
+        VertG = vertG;
+    }
+
+    public int getOdemeG() {
+        return OdemeG;
+    }
+
+    public void setOdemeG(int odemeG) {
+        OdemeG = odemeG;
+    }
+
+    public int getOdemeF() {
+        return OdemeF;
+    }
+
+    public void setOdemeF(int odemeF) {
+        OdemeF = odemeF;
+    }
+
+    public int getZscore() {
+        return zscore;
+    }
+
+    public void setZscore(int zscore) {
+        this.zscore = zscore;
+    }
+
+    public int getZscore2() {
+        return zscore2;
+    }
+
+    public void setZscore2(int zscore2) {
+        this.zscore2 = zscore2;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Structure getStructure() {
+        return structure;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
+    }
+
+    public Localite getLocalite() {
+        return localite;
+    }
+
+    public void setLocalite(Localite localite) {
+        this.localite = localite;
+    }
+
 
 }
