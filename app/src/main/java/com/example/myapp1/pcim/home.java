@@ -77,6 +77,8 @@ public class home extends Fragment {
 
 
         });
+
+
         return view;
     }
 }

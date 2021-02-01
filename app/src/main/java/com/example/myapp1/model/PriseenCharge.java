@@ -24,6 +24,10 @@ public class PriseenCharge {
     private  String pec;
     @DatabaseField
     private  String nomaccompagnant;
+    @DatabaseField
+    private  String enafant;
+    @DatabaseField
+    private  int MAS;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Localite localite;
 
@@ -117,5 +121,21 @@ public class PriseenCharge {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setEnafant(String enafant) {
+        this.enafant = enafant;
+    }
+
+    public void setMAS(int MAS) {
+        this.MAS = MAS;
+    }
+
+    public String getEnafant() {
+        return enafant;
+    }
+
+    public int getMAS() {
+        return MAS;
     }
 }

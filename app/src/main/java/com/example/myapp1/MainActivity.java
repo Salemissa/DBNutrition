@@ -5,15 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -21,18 +18,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.myapp1.DataManager.DatabaseManager;
-import com.example.myapp1.model.AppUser;
 import com.example.myapp1.model.Commune;
-import com.example.myapp1.model.Depistage;
-import com.example.myapp1.model.DepistagePassif;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.SuperViseur;
-import com.j256.ormlite.dao.ForeignCollection;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import retrofit2.http.FormUrlEncoded;
@@ -45,33 +36,34 @@ import retrofit2.http.Field;
 
 public class MainActivity extends AppCompatActivity {
     private Button bt;
-    private EditText username,password;
+    private EditText username, password;
     private ProgressBar progressBar;
     private DatabaseManager databaseManager;
     private Spinner spinner;
+    private Button btncharge;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-         databaseManager = new DatabaseManager(this);
-        Moughata moughata =new Moughata("Koubeni");
+        databaseManager = new DatabaseManager(this);
+        Moughata moughata = new Moughata("Koubeni");
+
         //databaseManager.inserMoughata(moughata);
-        SuperViseur s=new SuperViseur();
+        SuperViseur s = new SuperViseur();
         s.setNom("Ismail");
         s.setUsernane("salem");
         s.setPassword("4555");
-       //databaseManager.inserTest(s);
-        //AjouterMoughata();
-       //AjouterLocalite();
-        this.VerficationPermession();
-       // AjouterStrucures();
+        //databaseManager.inserTest(s);
 
-        List<SuperViseur> su=databaseManager.allSuperviseur();
-        if(su !=null) {
+        this.VerficationPermession();
+        // AjouterStrucures();
+
+        List<SuperViseur> su = databaseManager.allSuperviseur();
+        if (su != null) {
             for (SuperViseur superViseur : su) {
-               // Toast.makeText(this, superViseur.getUsernane(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(this, superViseur.getUsernane(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -112,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
         s1.setStructurename("Taiba");
         databaseManager.inserstructure(s2);*/
         //databaseManager.inserstructure(s2);
-       // databaseManager.insercommune(c1);
+        // databaseManager.insercommune(c1);
         //databaseManager.insercommune(c2);
-       // databaseManager.inserMoughata(M2);
+        // databaseManager.inserMoughata(M2);
 /*
         Toast.makeText(MainActivity.this,M2.toString(),Toast.LENGTH_LONG).show();
         Toast.makeText(MainActivity.this,M1.toString(),Toast.LENGTH_LONG).show();
@@ -142,46 +134,52 @@ public class MainActivity extends AppCompatActivity {
 
 */
         setContent(); //recuperation du layout
-       // onViewCreated();
+        // onViewCreated();
 
         //
+        this.btncharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Charge();
+            }
+
+        });
 
         this.bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean error=false;
-                if(username.getText().toString().isEmpty()){
-                    error=true;
+                boolean error = false;
+                if (username.getText().toString().isEmpty() || (!username.getText().toString().equalsIgnoreCase("user1"))) {
+                    error = true;
                     username.setError("User name is invalid!");
-                  //  Toast.makeText(MainActivity.this,"usernmae is invalide",Toast.LENGTH_LONG).show();
+                    //  Toast.makeText(MainActivity.this,"usernmae is invalide",Toast.LENGTH_LONG).show();
                 }
 
-                if(password.getText().toString().isEmpty() ){
-                    error=true;
+                if (password.getText().toString().isEmpty() || (!password.getText().toString().equalsIgnoreCase("1234"))) {
+                    error = true;
                     password.setError("password is invalid!");
-                    Toast.makeText(MainActivity.this,"passowrd is invalide",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "passowrd is invalide", Toast.LENGTH_LONG).show();
                 }
 
-                if(!error){
+
+                if (!error) {
                     Intent intent4 = new Intent(MainActivity.this, MainActivity2.class);
                     //
-                        List<Localite> users=databaseManager.ListLocalites();
-                    if(users!=null){
-                        for( Localite user : users ){
+                    List<Moughata> users = databaseManager.ListMoughata();
+                    if (users != null) {
 
-                           // Toast.makeText(MainActivity.this,user.getLocalitename()+"=="+user.getId(),Toast.LENGTH_LONG).show();
-                         //   Toast.makeText(MainActivity.this,user.getId()+"",Toast.LENGTH_LONG).show();
+
+                            // Toast.makeText(MainActivity.this,user.getLocalitename()+"=="+user.getId(),Toast.LENGTH_LONG).show();
+                            //   Toast.makeText(MainActivity.this,user.getId()+"",Toast.LENGTH_LONG).show();
                             startActivity(intent4);
 
-                       //alertView(etudient.toString());
-                        }
+                            //alertView(etudient.toString());
+
                         //
-                    }
+                    } else {
 
-                    else {
-
-                        Toast.makeText(MainActivity.this,"List vide",Toast.LENGTH_LONG).show();
-                        startActivity(intent4);
+                        Toast.makeText(MainActivity.this, "Charge les données", Toast.LENGTH_LONG).show();
+                        //startActivity(intent4);
                     }
                 }
             }
@@ -190,33 +188,32 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
 
-
-
-    void setContent(){
+    void setContent() {
         setContentView(R.layout.activity_main);
-        this.username=(EditText)  findViewById(R.id.editTextTextPersonName2);
-        this.password=(EditText)  findViewById(R.id.editPassword);
+        this.username = (EditText) findViewById(R.id.editTextTextPersonName2);
+        this.password = (EditText) findViewById(R.id.editPassword);
         this.progressBar = findViewById(R.id.login_progress);
         this.bt = (Button) findViewById(R.id.button);
+        this.btncharge=(Button) findViewById(R.id.Charge);
+
+        List<Moughata> moughataList=databaseManager.ListMoughata();
+        if(moughataList!=null){
+            this.btncharge.setVisibility(View.GONE);
+        }
 
     }
 
 
-
-    private String getusername(){
+    private String getusername() {
         return this.username.getText().toString().trim();
     }
 
-    private String getpassword(){
-      return this.password.getText().toString().trim();
+    private String getpassword() {
+        return this.password.getText().toString().trim();
     }
-
 
 
     private void showLoading() {
@@ -234,33 +231,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public interface  LoginService{
+    public interface LoginService {
 
         @FormUrlEncoded
         @POST("user/edit")
-        Call<User> login (@Field("first_name") String first, @Field("last_name") String last);
+        Call<User> login(@Field("first_name") String first, @Field("last_name") String last);
     }
 
-    public class User{
+    public class User {
         Long id;
         String login;
     }
 
-    void AjouterMoughata(){
+    void AjouterMoughata() {
 
-        Moughata moughata =new Moughata("Koubeni");
-       databaseManager.inserMoughata(moughata);
+        Moughata moughata = new Moughata("Koubeni");
+        databaseManager.inserMoughata(moughata);
 
-        Moughata moughata2 =new Moughata("Tamchekett");
-       databaseManager.inserMoughata(moughata2);
-        Moughata moughata3 =new Moughata("Tintane");
+        Moughata moughata2 = new Moughata("Tamchekett");
+        databaseManager.inserMoughata(moughata2);
+        Moughata moughata3 = new Moughata("Tintane");
         databaseManager.inserMoughata(moughata3);
-       AjouterCommune();
-
+        AjouterCommune();
 
 
     }
-
 
 
     void AjouterCommune() {
@@ -304,23 +299,23 @@ public class MainActivity extends AppCompatActivity {
         AjouterLocalite();
     }
 
-        private void AjouterStrucures() {
-            String[] Str1 = new String[]{"Koubeni" , "Emnesira", "Medbougou"};
+    private void AjouterStrucures() {
+        String[] Str1 = new String[]{"Koubeni", "Emnesira", "Medbougou"};
 
-            Commune commune = databaseManager.communename("Koubeni");
-            for (String str : Str1) {
-                Structure stru = new Structure();
-                stru.setStructurename(str);
-                stru.setCommune(commune);
-                databaseManager.inserstructure(stru);
-
-            }
+        Commune commune = databaseManager.communename("Koubeni");
+        for (String str : Str1) {
+            Structure stru = new Structure();
+            stru.setStructurename(str);
+            stru.setCommune(commune);
+            databaseManager.inserstructure(stru);
 
         }
 
+    }
+
     private void AjouterLocalite() {
 
-        String[] Str1 = new String[]{"Terteigue" , "El Koutoub", "Emegssem"};
+        String[] Str1 = new String[]{"Terteigue", "El Koutoub", "Emegssem"};
 
         Commune commune = databaseManager.communename("Hassi ahmed bechna");
         for (String loc : Str1) {
@@ -353,7 +348,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 100) {
@@ -368,6 +362,11 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+
+    public void  Charge() {
+        this.AjouterMoughata();
+        this.btncharge.setVisibility(View.GONE);
+    }
 
 
 }

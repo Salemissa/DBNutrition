@@ -84,45 +84,47 @@
 
     <LinearLayout
         android:id="@+id/lyoutimage2"
-        android:layout_width="302dp"
+        android:layout_width="334dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="359dp"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:gravity="center"
-            android:textStyle="bold"
-            android:text="Vert" />
+            android:text="Vert"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/Vert"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
+            android:layout_width="103dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:background="#40FF00"
             android:ems="10"
-            android:layout_marginLeft="10dp"
             android:inputType="number"
             android:maxLength="4" />
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_width="wrap_content"
+            android:layout_width="64dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:gravity="center"
-            android:textStyle="bold"
-            android:text="Odeme" />
+            android:text="Odeme"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/Odeme"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
+            android:layout_width="106dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:background="#886A08"
             android:ems="10"
-            android:layout_marginLeft="10dp"
             android:inputType="number"
             android:maxLength="4" />
 

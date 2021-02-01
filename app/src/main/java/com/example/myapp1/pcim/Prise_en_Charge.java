@@ -346,15 +346,15 @@ public class Prise_en_Charge extends Fragment {
         priseenCharge.setLocalite(localite);
         priseenCharge.setPec(pec);
         priseenCharge.setRefere(ref);
-        //priseenCharge
-
+        priseenCharge.setEnafant(enfant.getText().toString());
+        priseenCharge.setMAS(Integer.parseInt(MAS.getText().toString()));
         priseenCharge.setDate(new Date());
         try {
             databaseManager.inserPrisEnCharge(priseenCharge);
 
             Toast.makeText(getActivity(),"ajouter Avec succe"+priseenCharge.getLocalite().getLocalitename(),Toast.LENGTH_SHORT).show();
-            Intent intent= new Intent( getActivity(), DepistagePassifList.class);
-            startActivity(intent);
+           // Intent intent= new Intent( getActivity(), DepistagePassifList.class);
+            //startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }
