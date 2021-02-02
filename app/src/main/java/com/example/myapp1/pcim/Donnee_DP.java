@@ -46,6 +46,7 @@ import com.j256.ormlite.dao.ForeignCollection;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -71,7 +72,7 @@ public class Donnee_DP extends Fragment {
     Spinner spinnerstructer ;
     Spinner spinnerage ;
     String  type="passif";
-    private EditText rouge,jaune,vert,odeme,zscore,zscore2;
+    private EditText rougeF,jauneF,vertF,odemeF, rougeG,jauneG,vertG,odemeG,zscore,zscore2;
     String moi;
     String anne;
     String age;
@@ -153,11 +154,17 @@ public class Donnee_DP extends Fragment {
         this.spinnerstructer = this.v.findViewById(R.id.structure);
         this.spinnerage= this.v.findViewById(R.id.age);
         rapport = (ImageView) this.v.findViewById(R.id.imageRaport);
-        this.rouge= (EditText) this.v.findViewById(R.id.Rouge);
-        this.jaune= (EditText) this.v.findViewById(R.id.Jaune);
-        this.vert= (EditText) this.v.findViewById(R.id.Vert);
-        this.odeme=(EditText) this.v.findViewById(R.id.Odeme);
-        this.zscore=(EditText) this.v.findViewById(R.id.zscore1);
+        this.rougeF= (EditText) this.v.findViewById(R.id.RougeF);
+        this.rougeG= (EditText) this.v.findViewById(R.id.RougeG);
+        this.jauneF= (EditText) this.v.findViewById(R.id.JauneF);
+        this.jauneG= (EditText) this.v.findViewById(R.id.JauneG);
+        this.jauneF= (EditText) this.v.findViewById(R.id.JauneF);
+        this.jauneG= (EditText) this.v.findViewById(R.id.JauneG);
+        this.vertF= (EditText) this.v.findViewById(R.id.VertF);
+        this.vertG= (EditText) this.v.findViewById(R.id.VertG);
+        this.odemeF=(EditText) this.v.findViewById(R.id.odemeF);
+        this.odemeG=(EditText) this.v.findViewById(R.id.odemeG);
+        this.zscore=(EditText) this.v.findViewById(R.id.zscore);
         this.zscore2=(EditText) this.v.findViewById(R.id.zscore2);
         this.Ajouter =(Button) this.v.findViewById(R.id.Ajouter);
       // this.Modfier =(Button) this.v.findViewById(R.id.Modfier);
@@ -472,12 +479,17 @@ public class Donnee_DP extends Fragment {
         depistage.setMois(moi);
         depistage.setAge(age);
         depistage.setStructure(structure);
-        depistage.setJauneF(Integer.parseInt(jaune.getText().toString()));
-        depistage.setRougeF(Integer.parseInt(rouge.getText().toString()));
-        depistage.setVertF(Integer.parseInt(vert.getText().toString()));
-        depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
-        depistage.setOdemeF(Integer.parseInt(odeme.getText().toString()));
+        depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
+        depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
+        depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
+        depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+        depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
+        depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
+        depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
+        depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
         depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
+        depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
+        depistage.setDate(new Date());
         depistage.setRapport(this.Rapport);
         depistage.setType("DepistagePassif");
         

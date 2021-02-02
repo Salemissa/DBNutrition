@@ -32,6 +32,7 @@ import com.example.myapp1.model.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.widget.Toast.makeText;
@@ -54,7 +55,8 @@ public class UpdateDepistagePassif extends AppCompatActivity {
     Spinner spinnerstructer ;
     Spinner spinnerage ;
     String  type="passif";
-    private EditText rouge,jaune,vert,odeme,zscore,zscore2;
+    //private EditText rouge,jaune,vert,odeme,zscore,zscore2;
+    private EditText rougeF,jauneF,vertF,odemeF, rougeG,jauneG,vertG,odemeG,zscore,zscore2;
     String moi;
     String anne;
     String age;
@@ -71,6 +73,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         setContentView(R.layout.activity_update_depistage_passif);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+
         this.spinnermois = this.findViewById(R.id.mois);
         this.spinneranne = this.findViewById(R.id.annee);
         this.spinnermoughata = this.findViewById(R.id.moghata);
@@ -78,11 +81,15 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         this.spinnerstructer = this.findViewById(R.id.structure);
         this.spinnerage= this.findViewById(R.id.age);
         rapport = (ImageView) this.findViewById(R.id.imageRaport);
-        this.rouge= (EditText) this.findViewById(R.id.Rouge);
-        this.jaune= (EditText) this.findViewById(R.id.Jaune);
-        this.vert= (EditText) this.findViewById(R.id.Vert);
-        this.odeme=(EditText) this.findViewById(R.id.Odeme);
-        this.zscore=(EditText) this.findViewById(R.id.zscore1);
+        this.rougeF= (EditText) this.findViewById(R.id.RougeF);
+        this.rougeG= (EditText) this.findViewById(R.id.RougeG);
+        this.jauneF= (EditText) this.findViewById(R.id.JauneF);
+        this.jauneG= (EditText) this.findViewById(R.id.JauneG);
+        this.vertF= (EditText) this.findViewById(R.id.VertF);
+        this.vertG= (EditText) this.findViewById(R.id.VertG);
+        this.odemeF=(EditText) this.findViewById(R.id.odemeF);
+        this.odemeG=(EditText) this.findViewById(R.id.odemeG);
+        this.zscore=(EditText) this.findViewById(R.id.zscore);
         this.zscore2=(EditText) this.findViewById(R.id.zscore2);
         this.Modfier =(Button) this.findViewById(R.id.Modfier);
         this.Ajouter =(Button) this.findViewById(R.id.Ajouter);
@@ -355,10 +362,10 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         List<String> communesM = new ArrayList<String>();
 
         if (moughataname != null) {
-            /*for (Commune commune : moughataname.getCommunes()) {
+            for (Commune commune : moughataname.getCommunes()) {
 
                 communesM.add(commune.getCommunename().toString());
-            }*/
+            }
             this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, communesM);
             this.spinnercommune.setAdapter(this.communadapter);
             this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -442,10 +449,14 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         //this.CommuneStructure(structure.getCommune().getCommunename());
 
            Toast.makeText(this,"3",Toast.LENGTH_LONG).show();
-        this.rouge.setText(this.depistage.getRougeF()+"");
-        this.vert.setText(this.depistage.getJauneF()+"");
-        this.jaune.setText(this.depistage.getVertF()+"");
-        this.odeme.setText(this.depistage.getOdemeF()+"");
+        this.rougeF.setText(this.depistage.getRougeF()+"");
+        this.jauneF.setText(this.depistage.getJauneF()+"");
+         this.odemeF.setText(this.depistage.getOdemeF()+"");
+        this.rougeG.setText(this.depistage.getRougeG()+"");
+        this.vertG.setText(this.depistage.getVertG()+"");
+        this.vertF.setText(this.depistage.getVertF()+"");
+        this.jauneG.setText(this.depistage.getVertG()+"");
+        this.odemeG.setText(this.depistage.getOdemeG()+"");
         this.zscore.setText(this.depistage.getZscore()+"");
         this.zscore2.setText(this.depistage.getZscore2()+"");
 
@@ -503,12 +514,18 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         this.depistage.setMois(moi);
         this.depistage.setAge(age);
         //depistage.setStructure(structure);
-        this.depistage.setJauneF(Integer.parseInt(jaune.getText().toString()));
-        this.depistage.setRougeF(Integer.parseInt(rouge.getText().toString()));
-        this.depistage.setVertF(Integer.parseInt(vert.getText().toString()));
-        this.depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
-        this.depistage.setOdemeF(Integer.parseInt(odeme.getText().toString()));
-        this.depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
+
+        depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
+        depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
+        depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
+        depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+        depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
+        depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
+        depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
+        depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
+        depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
+        depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
+        depistage.setDate(new Date());
         if(this.Rapport!=null){
 
         this.depistage.setRapport(this.Rapport);}

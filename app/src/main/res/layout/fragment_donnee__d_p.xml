@@ -10,199 +10,345 @@
     <include
         android:id="@+id/header_VIEW"
         layout="@layout/structurelayout"
-        android:layout_width="match_parent"
-        android:layout_height="231dp"
-        android:textStyle="bold"
-        android:layout_marginTop="12dp" />
+        android:layout_width="680dp"
+        android:layout_height="193dp"
+        android:layout_marginTop="12dp"
+        android:textStyle="bold" />
 
 
     <LinearLayout
         android:id="@+id/lyoutage"
-        android:layout_width="391dp"
+        android:layout_width="373dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/header_VIEW"
-        android:layout_marginTop="49dp"
-
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textView7"
-            android:layout_width="wrap_content"
+            android:layout_width="143dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="Age"
-            android:textStyle="bold"
-            android:textSize="18sp" />
+            android:textSize="12pt"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/age"
-            android:layout_width="77dp"
+            android:layout_width="255dp"
             android:layout_height="match_parent" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="Rouge" />
-
-        <EditText
-            android:id="@+id/Rouge"
-            android:layout_width="58dp"
-            android:layout_height="wrap_content"
-            android:background="#FF0000"
-            android:ems="10"
-            android:layout_marginLeft="10dp"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="4" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="Jaune" />
-
-        <EditText
-            android:id="@+id/Jaune"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:background="#FFFF00"
-            android:ems="10"
-            android:layout_marginLeft="10dp"
-            android:inputType="number"
-            android:maxLength="4" />
-
-
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/lyoutimage2"
-        android:layout_width="334dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="359dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:text="Vert"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/Vert"
-            android:layout_width="103dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:background="#40FF00"
-            android:ems="10"
-            android:inputType="number"
-            android:maxLength="4" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="64dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:text="Odeme"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/Odeme"
-            android:layout_width="106dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:background="#886A08"
-            android:ems="10"
-            android:inputType="number"
-            android:maxLength="4" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lyoutimage"
-        android:layout_width="302dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/colore"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
         android:layout_below="@id/lyoutage"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:weightSum="5">
 
-        android:layout_marginTop="105dp"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/lyoutrouge"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="26dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="4">
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:text="-3 Zscore " />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Fille MAS "
+                android:textSize="10pt"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/zscore1"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFFFF"
-            android:ems="10"
-            android:layout_marginLeft="10dp"
-            android:inputType="number"
-            android:maxLength="4" />
+            <EditText
+                android:id="@+id/RougeF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:background="#FF0000"
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:text="Zscore 2">
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4" />
 
-        </TextView>
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Garcon MAS "
+                android:textSize="10pt"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/zscore2"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:background="#BBBB"
-            android:ems="10"
-            android:layout_marginLeft="10dp"
-            android:inputType="number"
-            android:maxLength="4" />
+            <EditText
+                android:id="@+id/RougeG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FF0000"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="10pt" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyoutjaune"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="26dp"
+            android:layout_weight="1"
+
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewJ"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Fille MAM"
+                android:textSize="10pt"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/JauneF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:background="#FFFF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="10pt" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Garcon MAM"
+                android:textSize="10pt"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/JauneG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FFFF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="10pt" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyoutvert"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="26dp"
+            android:layout_weight="1"
+
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="SAINT Fille"
+                android:textSize="10pt"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/VertF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:background="#40FF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="10pt" />
+
+            <TextView
+                android:id="@+id/textView56"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="SAINT Garcon"
+                android:textSize="10pt"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/VertG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#40FF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="10pt" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lyoutimage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="26dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewOdeme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Oedeme Fille  "
+                android:textSize="9pt"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/odemeF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#BBBB"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Oedeme Garcon"
+                android:textSize="9pt"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/odemeG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#BBBB"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyoutzscore"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="26dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewzscore"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Zscore  "
+                android:textSize="10pt"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/zscore"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#BBBB"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Zscore "
+                android:textSize="10pt"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/zscore2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#BBBB"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="9pt"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </LinearLayout>
+
 
     <Button
         android:id="@+id/Ajouter"
-        android:layout_width="127dp"
-        android:layout_height="62dp"
-        android:layout_below="@+id/lyoutimage"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="47dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginRight="26dp"
+        android:layout_width="178dp"
+        android:layout_marginTop="15dp"
+        android:layout_height="71dp"
+        android:layout_below="@+id/colore"
+       android:layout_centerHorizontal="true"
         android:text="Ajouter" />
-
 
     <ImageView
         android:id="@+id/imageRaport"
-        android:layout_width="182dp"
-        android:layout_height="198dp"
-
-        android:layout_below="@+id/header_VIEW"
-        android:layout_alignParentEnd="true"
+        android:layout_width="140dp"
+        android:layout_height="113dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/colore"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
         android:src="@drawable/add_a_photo" />
 
 

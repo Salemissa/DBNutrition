@@ -55,17 +55,17 @@ public class MainActivity extends AppCompatActivity {
         s.setNom("Ismail");
         s.setUsernane("salem");
         s.setPassword("4555");
+        List<Moughata> Moughata = databaseManager.ListMoughata();
+        if (Moughata.size()==0) {
+            Toast.makeText(this,"OK",Toast.LENGTH_LONG).show();
+            AjouterMoughata();
+        }
         //databaseManager.inserTest(s);
 
         this.VerficationPermession();
         // AjouterStrucures();
 
-        List<SuperViseur> su = databaseManager.allSuperviseur();
-        if (su != null) {
-            for (SuperViseur superViseur : su) {
-                // Toast.makeText(this, superViseur.getUsernane(), Toast.LENGTH_SHORT).show();
-            }
-        }
+
 
         //databaseManager.inserTest(s);
          /*
@@ -134,16 +134,11 @@ public class MainActivity extends AppCompatActivity {
 
 */
         setContent(); //recuperation du layout
+
         // onViewCreated();
 
         //
-        this.btncharge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Charge();
-            }
 
-        });
 
         this.bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,12 +192,9 @@ public class MainActivity extends AppCompatActivity {
         this.password = (EditText) findViewById(R.id.editPassword);
         this.progressBar = findViewById(R.id.login_progress);
         this.bt = (Button) findViewById(R.id.button);
-        this.btncharge=(Button) findViewById(R.id.Charge);
+       // this.btncharge=(Button) findViewById(R.id.Charge);
 
-        List<Moughata> moughataList=databaseManager.ListMoughata();
-        if(moughataList!=null){
-            this.btncharge.setVisibility(View.GONE);
-        }
+
 
     }
 
@@ -365,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void  Charge() {
         this.AjouterMoughata();
-        this.btncharge.setVisibility(View.GONE);
+       // this.btncharge.setVisibility(View.GONE);
     }
 
 
