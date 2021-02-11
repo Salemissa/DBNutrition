@@ -416,7 +416,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageRaport"
         android:layout_width="165dp"
         android:layout_height="109dp"
         android:layout_below="@+id/info"

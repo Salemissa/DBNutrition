@@ -257,6 +257,47 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         }
     }
 
+
+
+
+
+
+    public void insersusb(USB usb) {
+        try {
+            Dao<USB, Integer> dao = getDao(USB.class);
+            dao.createOrUpdate(usb);
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+        }
+    }
+
+
+    public List<USB> Listusb() {
+        try {
+            Dao<USB, Integer> dao = getDao(USB.class);
+            List<USB> usbList= dao.queryForAll();
+            Log.i("DATABASE", "ListUsers invoked");
+            return usbList;
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return null;
+        }
+    }
+
+
+    public USB usbname(String usbname) {
+        try {
+            Dao<USB, Integer> dao = getDao(USB.class);
+            List<USB> usbList = dao.queryForEq("usbname", usbname);
+            return usbList.get(0);
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return null;
+        }
+    }
+
+
     //
 
 
@@ -451,6 +492,32 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         } catch (Exception exception) {
             Log.e("PrisEnCharge", "Erroe PrisEnCharge creation", exception);
 
+        }
+    }
+
+
+    public void inserApprocheCommunataire(ApprocheCommunataire approcheCommunataire) {
+        try {
+            Dao<ApprocheCommunataire, Integer> dao = getDao(ApprocheCommunataire.class);
+            dao.createOrUpdate(approcheCommunataire);
+        } catch (Exception exception) {
+            Log.e("PrisEnCharge", "Erroe PrisEnCharge creation", exception);
+
+        }
+    }
+
+
+
+    public List<ApprocheCommunataire> approcheCommunataireList() {
+        try {
+            Dao<ApprocheCommunataire, Integer> dao = getDao(ApprocheCommunataire.class);
+
+            List<ApprocheCommunataire> approcheCommunataireList = dao.queryForAll();
+            Log.i("DATABASE", "ListUsers invoked");
+            return approcheCommunataireList;
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return null;
         }
     }
 }

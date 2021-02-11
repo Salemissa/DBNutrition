@@ -35,6 +35,9 @@ public class ApprocheCommunataire {
     @DatabaseField(dataType = DataType.DATE_STRING,format = "yyyy-MM-dd")
     private Date date;
 
+    @DatabaseField(dataType = DataType.DATE_STRING,format = "yyyy-MM-dd")
+    private Date Date;
+
     @DatabaseField
     private  int NCG;
     @DatabaseField
