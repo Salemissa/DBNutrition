@@ -31,7 +31,8 @@
             android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="Localité"
-            android:textSize="18sp" />
+            android:textSize="10pt"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/localite"
@@ -42,8 +43,9 @@
 
     <LinearLayout
         android:id="@+id/colore"
-        android:layout_width="589dp"
-        android:layout_height="282dp"
+        android:layout_width="match_parent"
+        android:layout_marginRight="20dp"
+        android:layout_height="380dp"
         android:layout_below="@id/loc"
         android:layout_marginTop="27dp"
         android:orientation="vertical"
@@ -179,7 +181,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="SAINT Fille"
+                android:text="Fille SAINT"
                 android:textSize="10pt"
                 android:textStyle="bold" />
 
@@ -202,7 +204,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="SAINT Garcon"
+                android:text="Garcon SAINT"
                 android:textSize="10pt"
                 android:textStyle="bold" />
 
@@ -233,11 +235,11 @@
                 android:id="@+id/textViewOdeme"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Oedeme Fille  "
-                android:textSize="9pt"
+                android:text=" Fille Oedeme  "
+                android:textSize="10pt"
                 android:textStyle="bold" />
 
             <EditText
@@ -255,10 +257,10 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="1"
-                android:text="Oedeme Garcon"
                 android:gravity="center"
+                android:text="Garcon Oedeme"
                 android:textSize="9pt"
                 android:textStyle="bold" />
 
@@ -266,9 +268,9 @@
                 android:id="@+id/odemeG"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:background="#BBBB"
-                android:layout_marginLeft="20dp"
                 android:inputType="number"
                 android:maxLength="4"
                 android:textStyle="bold" />

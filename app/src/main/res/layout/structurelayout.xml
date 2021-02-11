@@ -5,43 +5,51 @@
     android:background="@drawable/my_custom_background">
 
 
+
     <LinearLayout
         android:id="@+id/l1"
-        android:layout_width="589dp"
-        android:layout_height="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
 
         android:layout_marginTop="9dp"
         android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="4">
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="52dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:text="Mois"
-            android:textSize="18sp" />
+            android:textSize="10pt"
+            android:textStyle="bold" />
 
         <Spinner
+
             android:id="@+id/mois"
-            android:layout_width="173dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent" />
 
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="135dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="30dp"
             android:gravity="center"
             android:text="Année"
-            android:textSize="18sp" />
+            android:textSize="10pt"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/annee"
-            android:layout_width="192dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:spinnerMode="dropdown" />
 
@@ -50,7 +58,7 @@
     <LinearLayout
         android:id="@+id/l2"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/l1"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
@@ -58,20 +66,24 @@
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="68dp"
+        android:weightSum="4"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="104dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:gravity="center"
             android:text="Moughata"
-            android:textSize="18sp" />
+            android:textSize="10pt"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/moghata"
-            android:layout_width="126dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:background="@drawable/blue_outline"
@@ -80,24 +92,27 @@
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="157dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="Commune"
-            android:textSize="18sp" />
+            android:textSize="10pt"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/commune"
-            android:layout_width="161dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:spinnerMode="dropdown" />
     </LinearLayout>
 
     <LinearLayout
 
-        android:layout_width="585dp"
-        android:layout_height="49dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/l2"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
@@ -106,21 +121,24 @@
         android:layout_marginStart="7dp"
         android:layout_marginLeft="7dp"
         android:layout_marginTop="128dp"
+        android:weightSum="4"
 
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textView7"
-            android:layout_width="89dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="Structure"
-            android:textSize="18sp" />
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:textSize="10pt"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/structure"
-            android:layout_width="189dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="match_parent" />
     </LinearLayout>
 

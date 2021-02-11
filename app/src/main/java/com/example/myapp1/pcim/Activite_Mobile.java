@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.myapp1.ActivtiteMobileList;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
 import com.example.myapp1.DepistagePassifList;
@@ -117,7 +118,7 @@ public class Activite_Mobile extends Fragment {
         this.spinnerage= this.v.findViewById(R.id.age);
         this.rougeF= (EditText) this.v.findViewById(R.id.RougeF);
         this.jauneF= (EditText) this.v.findViewById(R.id.JauneF);
-        this.vertF= (EditText) this.v.findViewById(R.id.vertF);
+        this.vertF= (EditText) this.v.findViewById(R.id.VertF);
         this.odemeF=(EditText) this.v.findViewById(R.id.odemeF);
         this.rougeG= (EditText) this.v.findViewById(R.id.RougeG);
         this.jauneG= (EditText) this.v.findViewById(R.id.JauneG);
@@ -319,10 +320,11 @@ public class Activite_Mobile extends Fragment {
             databaseManager.inserDepistage(depistage);
 
             Toast.makeText(getActivity(),"ajouter Avec succe"+depistage.getLocalite().getLocalitename(),Toast.LENGTH_SHORT).show();
-            Intent intent= new Intent( getActivity(), DepistagePassifList.class);
+            Intent intent= new Intent( getActivity(), ActivtiteMobileList.class);
+            intent.putExtra("type","ActivitéMobile");
             startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }
 
     }

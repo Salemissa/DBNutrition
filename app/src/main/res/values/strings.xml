@@ -28,4 +28,5 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_update_depistag_pasif">UpdateDepistagPasif</string>
     <string name="title_activity_update_depistage">UpdateDepistage</string>
+    <string name="title_activity_test">List Activite Mobile</string>
 </resources>

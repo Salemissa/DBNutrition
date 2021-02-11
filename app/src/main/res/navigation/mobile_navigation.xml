@@ -13,30 +13,30 @@
     <fragment
         android:id="@+id/dp"
         android:name="com.example.myapp1.pcim.Donnee_DP"
-        android:label="Donne Depistage Passif"
+        android:label="Donnée Dépistage Passif"
         tools:layout="@layout/fragment_suvi__sous_surveillance" />
 
 
     <fragment
         android:id="@+id/sss"
         android:name="com.example.myapp1.pcim.Suvi_Sous_surveillance"
-        android:label="Suivi Sous Survillance"
+        android:label="Suivi Sous Surveillance"
         tools:layout="@layout/fragment_suvi__sous_surveillance" />
 
     <fragment
         android:id="@+id/apc"
         android:name="com.example.myapp1.pcim.Approche_communataire"
-        android:label="Approche Communataire"
+        android:label="Approche Communautaire"
         tools:layout="@layout/fragment_approche_communataire" />
     <fragment
         android:id="@+id/cdd"
         android:name="com.example.myapp1.pcim.Compagne_DP"
-        android:label="Campagne de depiatage "
+        android:label="Campagne de dépiatage "
         tools:layout="@layout/fragment_compagne__d_p" />
     <fragment
         android:id="@+id/acm"
         android:name="com.example.myapp1.pcim.Activite_Mobile"
-        android:label="Activite Mobile"
+        android:label="Activité Mobile"
         tools:layout="@layout/fragment_activite__mobile" />
     <fragment
         android:id="@+id/pen"
@@ -44,9 +44,5 @@
         android:label="Prise en Charge"
         tools:layout="@layout/fragment_prise_en__charge" />
 
-    <fragment
-        android:id="@+id/da"
-        android:name="com.example.myapp1.pcim.Depistage_Avance"
-        android:label="Depistage_Avancé"
-        tools:layout="@layout/fragment_depistage__avance" />
+
 </navigation>

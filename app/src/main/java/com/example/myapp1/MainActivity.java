@@ -317,6 +317,12 @@ public class MainActivity extends AppCompatActivity {
             databaseManager.inserslocalite(localite);
 
         }
+        Commune Koubeni = databaseManager.communename("Koubeni");
+        Localite localite = new Localite();
+        localite.setLocalitename("Koubeni");
+        localite.setCommune(Koubeni);
+        databaseManager.inserslocalite(localite);
+
     }
 
 

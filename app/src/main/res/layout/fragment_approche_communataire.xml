@@ -420,13 +420,18 @@
         android:layout_width="165dp"
         android:layout_height="109dp"
         android:layout_below="@+id/info"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="202dp"
-        android:layout_marginLeft="202dp"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="160dp"
         android:src="@drawable/add_a_photo" />
 
+    <Button
+        android:id="@+id/add"
+        android:layout_width="120dp"
+        android:layout_height="66dp"
+        android:layout_below="@+id/info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp"
+        android:text="Ajouter" />
 
 
 </RelativeLayout>

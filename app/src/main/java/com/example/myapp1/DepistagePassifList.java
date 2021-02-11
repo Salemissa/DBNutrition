@@ -1,7 +1,10 @@
 package com.example.myapp1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -37,6 +41,8 @@ public class DepistagePassifList extends AppCompatActivity {
     private  DepistagePassifAdapter adapter;
     List<Depistage> arrayList;
     private boolean supp=false;
+    private Button add;
+    View  view;
     String type="DepistagePassif";//ActivitéMobile
    // String type="ActivitéMobile";
 
@@ -45,10 +51,20 @@ public class DepistagePassifList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_depistage_passif_list);
         list = findViewById(R.id.list);
+        this.view =findViewById(R.id.button);
         databaseManager = new DatabaseManager(this);
         this.arrayList=new ArrayList<>();
          this.type="DepistagePassif";
         List<Depistage> depistagePassif =databaseManager.DepistageByType(this.type);
+        this.add= findViewById(R.id.add);
+        this.add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GotoDepistage();
+            }
+
+
+        });
 
         if (depistagePassif ==null){
             //Toast.makeText(this,"medicament non trouve ",Toast.LENGTH_LONG).show();
@@ -272,6 +288,25 @@ public class DepistagePassifList extends AppCompatActivity {
             //On retourne l'item créé.
             return layoutItem;
         }
+    }
+
+
+    void GotoDepistage(){
+       // FragmentManager manager = getSupportFragmentManager();
+       // FragmentTransaction transaction = manager.beginTransaction();
+        list.setVisibility(View.GONE);
+        view.setVisibility(View.GONE);
+       FragmentManager myfragmentManager =getSupportFragmentManager();
+        FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
+
+        Donnee_DP myfragment = new Donnee_DP();
+        myfragmentTransaction.replace(R.id.depistgepassifList, myfragment).commit();
+
+
+        /*You've to create a frame layout or any other layout with id inside your activity layout and then use that id in java
+        myfragmentTransaction.commit();*/
+        //transaction.replace(R.id.dp, new Donnee_DP()).commit();
+
     }
 
 

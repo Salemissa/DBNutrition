@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
+import com.example.myapp1.ActivtiteMobileList;
 import com.example.myapp1.DepistagePassifList;
 import com.example.myapp1.R;
+import com.example.myapp1.UpdateDepistagePassif;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +24,7 @@ import com.example.myapp1.R;
  */
 public class home extends Fragment {
  Button depistagpasif;
+ Button ActiviteMobile;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -68,11 +71,39 @@ public class home extends Fragment {
         View view=inflater.inflate(R.layout.fragment_home, container, false);
         // Inflate the layout for this fragment
         ImageView depistagpasif= view.findViewById(R.id.pasif);
+        ImageView listActivtes=view.findViewById(R.id.listActivtes);
+        ImageView listcompagne=view.findViewById(R.id.comp);
         depistagpasif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent= new Intent( getActivity(), DepistagePassifList.class);
                 startActivity(intent);
+            }
+
+
+        });
+
+
+        listActivtes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent( getActivity(), ActivtiteMobileList.class);
+                intent.putExtra("type","ActivitéMobile");
+                startActivity(intent);
+                //CampagneDepistage
+            }
+
+
+        });
+
+
+        listcompagne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent( getActivity(), ActivtiteMobileList.class);
+                intent.putExtra("type","CampagneDepistage");
+                startActivity(intent);
+
             }
 
 
