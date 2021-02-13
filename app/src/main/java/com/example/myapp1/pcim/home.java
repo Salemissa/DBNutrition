@@ -1,6 +1,7 @@
 package com.example.myapp1.pcim;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,9 @@ import android.widget.ImageView;
 
 import com.example.myapp1.ActivtiteMobileList;
 import com.example.myapp1.DepistagePassifList;
+import com.example.myapp1.ListApproche;
+import com.example.myapp1.ListPrisenCharge;
+import com.example.myapp1.ListSuivisous;
 import com.example.myapp1.R;
 import com.example.myapp1.UpdateDepistagePassif;
 
@@ -73,6 +77,9 @@ public class home extends Fragment {
         ImageView depistagpasif= view.findViewById(R.id.pasif);
         ImageView listActivtes=view.findViewById(R.id.listActivtes);
         ImageView listcompagne=view.findViewById(R.id.comp);
+        ImageView listSuivi=view.findViewById(R.id.listsss);
+        ImageView lisPris=view.findViewById(R.id.prisList);
+        ImageView listapproches=view.findViewById(R.id.listapproches);
         depistagpasif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +115,45 @@ public class home extends Fragment {
 
 
         });
+
+        listSuivi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent( getActivity(), ListSuivisous.class);
+                //intent.putExtra("type","CampagneDepistage");
+                startActivity(intent);
+
+            }
+
+
+        });
+
+
+
+        lisPris.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent( getActivity(), ListPrisenCharge.class);
+                //intent.putExtra("type","CampagneDepistage");
+                startActivity(intent);
+
+            }
+
+
+        });
+
+        listapproches.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent( getActivity(), ListApproche.class);
+                //intent.putExtra("type","CampagneDepistage");
+                startActivity(intent);
+
+            }
+
+
+        });
+
 
 
         return view;

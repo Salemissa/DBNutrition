@@ -226,7 +226,7 @@ public class ActivtiteMobileList extends AppCompatActivity {
             VertG.setText("Vert : " + depistageActives.get(position).getVertG());
             OdemeF.setText("Odeme : " + depistageActives.get(position).getOdemeF());
             OdemeG.setText("Odeme : " + depistageActives.get(position).getOdemeG());
-            date.setText("Date :" + sdf.format(new Date()));
+            date.setText("Date :" + (depistageActives.get(position).getDate()));
 
 
             // Rapport.setImageBitmap();

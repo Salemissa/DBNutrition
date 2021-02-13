@@ -32,11 +32,11 @@ public class ApprocheCommunataire {
     private  int fammeEnc;
     @DatabaseField
     private  int fammeEncSuvi;
-    @DatabaseField(dataType = DataType.DATE_STRING,format = "yyyy-MM-dd")
-    private Date date;
 
     @DatabaseField(dataType = DataType.DATE_STRING,format = "yyyy-MM-dd")
-    private Date Date;
+    private Date date;
+    @DatabaseField
+    private String DateCreation;
 
     @DatabaseField
     private  int NCG;
@@ -196,5 +196,13 @@ public class ApprocheCommunataire {
 
     public void setUsb(USB usb) {
         this.usb = usb;
+    }
+
+    public String getDateCreation() {
+        return DateCreation;
+    }
+
+    public void setDateCreation(String dateCreation) {
+        DateCreation = dateCreation;
     }
 }

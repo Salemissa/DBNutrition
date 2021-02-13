@@ -16,12 +16,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".UpdateActiviteMobile"
+            android:label="@string/title_activity_update_activite_mobile"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ListApproche"
+            android:label="@string/title_activity_list_approche"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ListPrisenCharge"
+            android:label="@string/title_activity_list_prisen_charge"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ListSuivisous"
+            android:label="@string/title_activity_list_suivisous"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UpdateDepistage"
             android:label="@string/title_activity_update_depistage"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".UpdateDepistagePassif" />
         <activity
             android:name=".DepistagePassifList"

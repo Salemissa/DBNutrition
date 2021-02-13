@@ -6,10 +6,10 @@ public class Donnes{
             "septembre", "Octobre", "Novembre", " Décembre"};
     public  String[] ages={"6 mois","Autre"};
     public  String[] Sexe={"F","M"};
-    public  String[] Statu={"S1","S2"};
-    public  String[] Odeme={"Odeme1","Odeme2"};
- public  String[] PEC={"PEC1","PEC2"};
- public  String[] Référe={"Référe","Référe"};
+    public  String[] Statu={"Oui","Non"};
+    public  String[] Odeme={"Oui","Non"};
+ public  String[] PEC={"Oui","Non"};
+ public  String[] Référe={"Oui","Non"};
 
 
     public Donnes(){};

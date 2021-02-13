@@ -27,6 +27,7 @@ import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -317,6 +318,7 @@ public class Compagne_DP extends Fragment {
         depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
         depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
         depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
+        depistage.setDate(new Date());
         depistage.setType("CampagneDepistage");
 
         try {

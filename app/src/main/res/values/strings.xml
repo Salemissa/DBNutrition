@@ -29,4 +29,8 @@
     <string name="title_activity_update_depistag_pasif">UpdateDepistagPasif</string>
     <string name="title_activity_update_depistage">UpdateDepistage</string>
     <string name="title_activity_test">List Activite Mobile</string>
+    <string name="title_activity_list_suivisous">ListSuivisous</string>
+    <string name="title_activity_list_prisen_charge">ListPrisenCharge</string>
+    <string name="title_activity_list_approche">ListApproche</string>
+    <string name="title_activity_update_activite_mobile">UpdateActiviteMobile</string>
 </resources>

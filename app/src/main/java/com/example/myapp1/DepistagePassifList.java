@@ -140,7 +140,7 @@ public class DepistagePassifList extends AppCompatActivity {
                   boolean res= showalert(clickedItem);
                   if(res) {
                       arrayList.remove(pos);
-                      adapter.notifyDataSetChanged();
+                     adapter.notifyDataSetChanged();
                       //Toast.makeText(this,"list non vide ",Toast.LENGTH_LONG).show();
                   }
                     return true;
@@ -150,6 +150,7 @@ public class DepistagePassifList extends AppCompatActivity {
         }
 
        this.adapter = new DepistagePassifAdapter(this, arrayList);
+
         ListView list = (ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
 

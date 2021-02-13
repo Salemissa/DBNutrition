@@ -71,7 +71,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:gravity="center"
-            android:text="Pb Rouge"
+            android:text="Pb MAS"
             android:textStyle="bold" />
 
         <EditText
@@ -92,7 +92,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:gravity="center"
-            android:text="PB Jaune"
+            android:text="PB MAM"
 
             android:textStyle="bold" />
 

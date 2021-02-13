@@ -28,11 +28,12 @@ public class PriseenCharge {
     private  String enafant;
     @DatabaseField
     private  int MAS;
+    @DatabaseField
+    private  int PB;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Localite localite;
 
-    @DatabaseField(dataType = DataType.DATE_STRING,
-            format = "yyyy-MM-dd")
+    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd")
     private Date date;
     public PriseenCharge (){};
     public Long getId() {
@@ -113,6 +114,14 @@ public class PriseenCharge {
 
     public void setLocalite(Localite localite) {
         this.localite = localite;
+    }
+
+    public int getPB() {
+        return PB;
+    }
+
+    public void setPB(int PB) {
+        this.PB = PB;
     }
 
     public Date getDate() {

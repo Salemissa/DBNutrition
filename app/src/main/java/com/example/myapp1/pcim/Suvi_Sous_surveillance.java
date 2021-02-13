@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
 import com.example.myapp1.DepistagePassifList;
+import com.example.myapp1.ListSuivisous;
 import com.example.myapp1.R;
 import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Depistage;
@@ -27,6 +28,7 @@ import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.SuviSousSurvillance;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -313,13 +315,11 @@ public class Suvi_Sous_surveillance extends Fragment {
         suviSousSurvillance.setNonRep(Integer.parseInt(NonRep.getText().toString()));
         suviSousSurvillance.setRefCRENI(Integer.parseInt(Ref.getText().toString()));
         suviSousSurvillance.setTransCRENAS(Integer.parseInt(trans.getText().toString()));
+        suviSousSurvillance.setDate(new Date());
         try {
            databaseManager.insersuviSousSurvillance(suviSousSurvillance);
-
-            Toast.makeText(getActivity(),"++"+databaseManager.ListSuviSousSurvillance().size(),Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(),"ajouter Avec succe",Toast.LENGTH_SHORT).show();
-            //Intent intent= new Intent( getActivity(), DepistagePassifList.class);
-            //startActivity(intent);
+            Intent intent= new Intent( getActivity(), ListSuivisous.class);
+            startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }

@@ -23,8 +23,10 @@ import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.SuperViseur;
+import com.example.myapp1.model.Test;
 import com.example.myapp1.model.USB;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.http.FormUrlEncoded;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         databaseManager = new DatabaseManager(this);
         Moughata moughata = new Moughata("Koubeni");
-        //this.Ajouterusb();
+        //
         //databaseManager.inserMoughata(moughata);
         SuperViseur s = new SuperViseur();
         s.setNom("Ismail");
@@ -323,6 +325,8 @@ public class MainActivity extends AppCompatActivity {
         localite.setLocalitename("Koubeni");
         localite.setCommune(Koubeni);
         databaseManager.inserslocalite(localite);
+
+        this.Ajouterusb();
 
     }
 

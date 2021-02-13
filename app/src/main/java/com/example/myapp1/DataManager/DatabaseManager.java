@@ -495,6 +495,26 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         }
     }
 
+    public List<PriseenCharge> ListPrisEnCharge() {
+        try {
+            Dao<PriseenCharge, Integer> dao = getDao(PriseenCharge.class);
+            List<PriseenCharge>priseenCharges =dao.queryForAll();
+            return priseenCharges;
+        } catch (Exception exception) {
+            Log.e("PrisEnCharge", "Erroe PrisEnCharge creation", exception);
+         return null;
+        }
+    }
+
+    public  void supprimmerprise(PriseenCharge priseenCharge){
+        try{
+            Dao<PriseenCharge, Integer> dao = getDao(PriseenCharge.class);
+            dao.delete(priseenCharge);
+        }
+        catch (Exception exception){
+
+        }
+    }
 
     public void inserApprocheCommunataire(ApprocheCommunataire approcheCommunataire) {
         try {

@@ -10,6 +10,7 @@ import java.util.Date;
 public class SuviSousSurvillance {
     @DatabaseField(generatedId = true)
     private Long id;
+    @DatabaseField
     private  String mois;
     @DatabaseField
     private String annee;
@@ -39,8 +40,7 @@ public class SuviSousSurvillance {
     private int RefCRENI;
     @DatabaseField
     private int TransCRENAS;
-    @DatabaseField(dataType = DataType.DATE_STRING,
-            format = "yyyy-MM-dd")
+    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd")
     private Date date;
 
     public SuviSousSurvillance (){};

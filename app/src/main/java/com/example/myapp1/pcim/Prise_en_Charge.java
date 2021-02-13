@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
 import com.example.myapp1.DepistagePassifList;
+import com.example.myapp1.ListPrisenCharge;
 import com.example.myapp1.R;
 import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Localite;
@@ -113,7 +114,7 @@ public class Prise_en_Charge extends Fragment {
        this.accompagnant=this.v.findViewById(R.id.accompagnat);
        this.MAS=this.v.findViewById(R.id.MAS);
         View moi=this.v.findViewById(R.id.mois);
-        View anne =this.v.findViewById(R.id.mois);
+        View anne =this.v.findViewById(R.id.annee);
         moi.setVisibility(View.GONE);
         anne.setVisibility(View.GONE);
         this.v.findViewById(R.id.textView3).setVisibility(View.GONE);
@@ -348,13 +349,14 @@ public class Prise_en_Charge extends Fragment {
         priseenCharge.setRefere(ref);
         priseenCharge.setEnafant(enfant.getText().toString());
         priseenCharge.setMAS(Integer.parseInt(MAS.getText().toString()));
+        priseenCharge.setPB(Integer.parseInt(PB.getText().toString()));
         priseenCharge.setDate(new Date());
         try {
             databaseManager.inserPrisEnCharge(priseenCharge);
 
             Toast.makeText(getActivity(),"ajouter Avec succe"+priseenCharge.getLocalite().getLocalitename(),Toast.LENGTH_SHORT).show();
-           // Intent intent= new Intent( getActivity(), DepistagePassifList.class);
-            //startActivity(intent);
+            Intent intent= new Intent( getActivity(), ListPrisenCharge.class);
+            startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }

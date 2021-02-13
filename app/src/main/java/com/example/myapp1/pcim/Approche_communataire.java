@@ -9,12 +9,15 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 import com.example.myapp1.ActivtiteMobileList;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
+import com.example.myapp1.ListApproche;
 import com.example.myapp1.R;
 import com.example.myapp1.model.ApprocheCommunataire;
 import com.example.myapp1.model.Commune;
@@ -34,6 +38,7 @@ import com.example.myapp1.model.USB;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -64,7 +69,8 @@ public class Approche_communataire extends Fragment {
     Localite localite;
     Button Ajouter;
 
-    TextView PBR,PBG,viste,menage,FE,FES,date,NCG,TestP,TR,PaluC,diarrhe,vaccin;
+    EditText PBR,PBG,viste,menage,FE,FES,NCG,TestP,TR,PaluC,diarrhe,vaccin;
+    EditText date;
     byte[] Rapport;
     Intent camera_intent = null;
 
@@ -152,6 +158,65 @@ public class Approche_communataire extends Fragment {
         rapport = (ImageView) this.v.findViewById(R.id.imageRaport);
         this.Ajouter=this.v.findViewById(R.id.add);
 
+
+        TextWatcher tw = new TextWatcher() {
+            private String current = "";
+            private String ddmmyyyy = "DDMMYYYY";
+            private Calendar cal = Calendar.getInstance();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().equals(current)) {
+                    String clean = s.toString().replaceAll("[^\\d.]|\\.", "");
+                    String cleanC = current.replaceAll("[^\\d.]|\\.", "");
+
+                    int cl = clean.length();
+                    int sel = cl;
+                    for (int i = 2; i <= cl && i < 6; i += 2) {
+                        sel++;
+                    }
+                    //Fix for pressing delete next to a forward slash
+                    if (clean.equals(cleanC)) sel--;
+
+                    if (clean.length() < 8){
+                        clean = clean + ddmmyyyy.substring(clean.length());
+                    }else{
+                        //This part makes sure that when we finish entering numbers
+                        //the date is correct, fixing it otherwise
+                        int day  = Integer.parseInt(clean.substring(0,2));
+                        int mon  = Integer.parseInt(clean.substring(2,4));
+                        int year = Integer.parseInt(clean.substring(4,8));
+
+                        mon = mon < 1 ? 1 : mon > 12 ? 12 : mon;
+                        cal.set(Calendar.MONTH, mon-1);
+                        year = (year<1900)?1900:(year>2100)?2100:year;
+                        cal.set(Calendar.YEAR, year);
+                        // ^ first set year for the line below to work correctly
+                        //with leap years - otherwise, date e.g. 29/02/2012
+                        //would be automatically corrected to 28/02/2012
+
+                        day = (day > cal.getActualMaximum(Calendar.DATE))? cal.getActualMaximum(Calendar.DATE):day;
+                        clean = String.format("%02d%02d%02d",day, mon, year);
+                    }
+
+                    clean = String.format("%s/%s/%s", clean.substring(0, 2),
+                            clean.substring(2, 4),
+                            clean.substring(4, 8));
+
+                    sel = sel < 0 ? 0 : sel;
+                    current = clean;
+                    date.setText(current);
+                    date.setSelection(sel < current.length() ? sel : current.length());
+                }
+            }
+
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+
         rapport.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             public void onClick(View v) {
@@ -165,7 +230,7 @@ public class Approche_communataire extends Fragment {
             }
         });
 
-
+        date.addTextChangedListener(tw);
         this.Ajouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -378,14 +443,15 @@ public class Approche_communataire extends Fragment {
         approcheCommunataire.setVaccin(Integer.parseInt(vaccin.getText().toString()));
         approcheCommunataire.setVisite(Integer.parseInt(viste.getText().toString()));
         approcheCommunataire.setTR(Integer.parseInt(TR.getText().toString()));
+        approcheCommunataire.setDateCreation(date.getText().toString());
         approcheCommunataire.setRapport(this.Rapport);
+        approcheCommunataire.setDate(new Date());
         try {
             databaseManager.inserApprocheCommunataire(approcheCommunataire);
 
-            Toast.makeText(getActivity(),"ajouter Avec succe"+approcheCommunataire.getUsb().getUsbname(),Toast.LENGTH_SHORT).show();
-           // Intent intent= new Intent( getActivity(), ActivtiteMobileList.class);
-           // intent.putExtra("type","CampagneDepistage");
-            //startActivity(intent);
+            Toast.makeText(getActivity(),"ajouter Avec succe"+approcheCommunataire.getRapport()+""+approcheCommunataire.getDateCreation(),Toast.LENGTH_SHORT).show();
+             Intent intent= new Intent( getActivity(), ListApproche.class);
+            startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }
