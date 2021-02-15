@@ -1,5 +1,6 @@
 package com.example.myapp1;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -8,6 +9,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Commune;
+import com.example.myapp1.model.GithubUser;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
@@ -37,7 +40,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.http.Field;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GithubCalls.Callbacks {
     private Button bt;
     private EditText username, password;
     private ProgressBar progressBar;
@@ -52,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         databaseManager = new DatabaseManager(this);
         Moughata moughata = new Moughata("Koubeni");
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.github.com")
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+
+
         //
         //databaseManager.inserMoughata(moughata);
         SuperViseur s = new SuperViseur();
@@ -169,14 +180,16 @@ public class MainActivity extends AppCompatActivity {
 
                             // Toast.makeText(MainActivity.this,user.getLocalitename()+"=="+user.getId(),Toast.LENGTH_LONG).show();
                             //   Toast.makeText(MainActivity.this,user.getId()+"",Toast.LENGTH_LONG).show();
-                            startActivity(intent4);
-
+                            //startActivity(intent4);
+                        executeHttpRequestWithRetrofit();
                             //alertView(etudient.toString());
 
                         //
                     } else {
 
                         Toast.makeText(MainActivity.this, "Charge les données", Toast.LENGTH_LONG).show();
+                        executeHttpRequestWithRetrofit();
+
                         //startActivity(intent4);
                     }
                 }
@@ -186,6 +199,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void executeHttpRequestWithRetrofit(){
+        GithubCalls.fetchUserFollowing(this, "JakeWharton");
     }
 
 
@@ -219,24 +236,26 @@ public class MainActivity extends AppCompatActivity {
     private void hideLoading() {
         progressBar.setVisibility(View.GONE);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("127.1.1.0")
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
+
 
     }
 
-    public interface LoginService {
+    @Override
+    public void onResponse(@Nullable List<GithubUser> users) {
+        if (users != null){
+            for (GithubUser user:users){
+                Toast.makeText(this,user.getLogin(),Toast.LENGTH_SHORT).show();
+            }
+        };
 
-        @FormUrlEncoded
-        @POST("user/edit")
-        Call<User> login(@Field("first_name") String first, @Field("last_name") String last);
     }
 
-    public class User {
-        Long id;
-        String login;
+    @Override
+    public void onFailure() {
+
     }
+
+
 
     void AjouterMoughata() {
 
@@ -381,6 +400,10 @@ public class MainActivity extends AppCompatActivity {
         this.AjouterMoughata();
        // this.btncharge.setVisibility(View.GONE);
     }
+
+
+
+
 
 
 }

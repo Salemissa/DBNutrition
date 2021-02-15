@@ -123,6 +123,24 @@ public class ActivtiteMobileList extends AppCompatActivity {
             }
         }
 
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Depistage clickedItem= (Depistage) list.getItemAtPosition(position);
+                Intent intent= new Intent( ActivtiteMobileList.this, UpdateDepistage.class);
+
+                //Intent intent = new Intent(DepistagePassifList.this, Donnee_DP.class);
+
+                intent.putExtra("id",clickedItem.getId().intValue());
+                intent.putExtra("type",clickedItem.getType());
+                startActivity(intent);
+                //Toast.makeText(DepistagePassifList.this,""+clickedItem.getId(), LENGTH_LONG).show();
+                //startActivityForResult(intent,"");
+                //recherce(clickedItem.getCode());
+            }
+        });
+
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
@@ -226,7 +244,7 @@ public class ActivtiteMobileList extends AppCompatActivity {
             VertG.setText("Vert : " + depistageActives.get(position).getVertG());
             OdemeF.setText("Odeme : " + depistageActives.get(position).getOdemeF());
             OdemeG.setText("Odeme : " + depistageActives.get(position).getOdemeG());
-            date.setText("Date :" + (depistageActives.get(position).getDate()));
+            date.setText("Date :" + sdf.format(depistageActives.get(position).getDate()));
 
 
             // Rapport.setImageBitmap();

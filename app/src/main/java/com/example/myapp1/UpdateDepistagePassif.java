@@ -525,16 +525,16 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
         depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
         depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
-        depistage.setDate(new Date());
+       // depistage.setDate(new Date());
         if(this.Rapport!=null){
 
-        this.depistage.setRapport(this.Rapport);}
+            this.depistage.setRapport(this.Rapport);}
 
         try {
             databaseManager.updatedepistage(this.depistage);
 
             Toast.makeText(this,"ajouter Avec succe",Toast.LENGTH_SHORT).show();
-            Intent intent= new Intent(this, DepistagePassifList.class);
+            Intent intent = new Intent(this, DepistagePassifList.class);
             startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
