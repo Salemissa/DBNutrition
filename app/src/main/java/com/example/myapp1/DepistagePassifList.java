@@ -41,10 +41,10 @@ public class DepistagePassifList extends AppCompatActivity {
     private  DepistagePassifAdapter adapter;
     List<Depistage> arrayList;
     private boolean supp=false;
-    private Button add;
     View  view;
     String type="DepistagePassif";//ActivitéMobile
-   // String type="ActivitéMobile";
+    private View fab;
+    // String type="ActivitéMobile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +56,14 @@ public class DepistagePassifList extends AppCompatActivity {
         this.arrayList=new ArrayList<>();
          this.type="DepistagePassif";
         List<Depistage> depistagePassif =databaseManager.DepistageByType(this.type);
-        this.add= findViewById(R.id.add);
-        this.add.setOnClickListener(new View.OnClickListener() {
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //  .setAction("Action", null).show();
                 GotoDepistage();
             }
-
-
         });
 
         if (depistagePassif ==null){
@@ -297,6 +297,7 @@ public class DepistagePassifList extends AppCompatActivity {
        // FragmentTransaction transaction = manager.beginTransaction();
         list.setVisibility(View.GONE);
         view.setVisibility(View.GONE);
+        this.fab.setVisibility(View.GONE);
        FragmentManager myfragmentManager =getSupportFragmentManager();
         FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
 

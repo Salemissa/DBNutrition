@@ -26,20 +26,13 @@
             android:text="Sync"
             />
 
-        <Button
-            android:id="@+id/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="0dp"
-            android:background="@drawable/add" />
 
 
         <include
             layout="@layout/content_list_approche"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/add"
+            android:layout_below="@+id/button2"
             android:layout_marginTop="12dp" />
     </RelativeLayout>
 
@@ -49,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="#49BD34"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/to_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -41,12 +41,12 @@ public class ActivtiteMobileList extends AppCompatActivity {
     DepistageActiveList adapter;
     List<Depistage> arrayList;
     private boolean supp = false;
-    private Button add;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     //String type="DepistagePassif";//ActivitéMobile
     String type = "ActivitéMobile";
     private View view;
+    private View fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,26 +56,18 @@ public class ActivtiteMobileList extends AppCompatActivity {
         databaseManager = new DatabaseManager(this);
         this.arrayList = new ArrayList<>();
         // this.type = "ActivitéMobile";
-        this.add = findViewById(R.id.add);
         //this.add= findViewById(R.id.add);
-        this.add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  GotoDepistage();
-            }
-
-
-        });
+       
         String formattedDate = sdf.format(new Date());
         this.view =findViewById(R.id.button);
-        this.add= findViewById(R.id.add);
-        this.add.setOnClickListener(new View.OnClickListener() {
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //  .setAction("Action", null).show();
                 GotoDepistage();
             }
-
-
         });
         Intent intent = getIntent();
         if (intent != null) {
@@ -305,6 +297,7 @@ public class ActivtiteMobileList extends AppCompatActivity {
         // FragmentTransaction transaction = manager.beginTransaction();
         list.setVisibility(View.GONE);
         view.setVisibility(View.GONE);
+        this.fab.setVisibility(View.GONE);
         FragmentManager myfragmentManager =getSupportFragmentManager();
         FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
         if(type.equalsIgnoreCase("ActivitéMobile")){

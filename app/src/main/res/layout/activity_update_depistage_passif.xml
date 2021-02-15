@@ -10,7 +10,7 @@
         android:id="@+id/dp"
         layout="@layout/fragment_donnee__d_p"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="636dp"
         android:layout_marginTop="12dp"
         android:textStyle="bold"></include>
     <Button

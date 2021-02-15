@@ -340,7 +340,7 @@ public class Prise_en_Charge extends Fragment {
     private void AjouterPrisEnCharge() {
 
         PriseenCharge priseenCharge=new PriseenCharge();
-        priseenCharge.setAge(Age.getText().toString());
+        priseenCharge.setAge(Integer.parseInt(Age.getText()+""));
         priseenCharge.setContact(contact.getText().toString());
         priseenCharge.setNomaccompagnant(accompagnant.getText().toString());
         priseenCharge.setSexe(sexe);

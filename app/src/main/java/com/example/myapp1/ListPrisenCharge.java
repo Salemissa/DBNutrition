@@ -86,6 +86,20 @@ public class ListPrisenCharge extends AppCompatActivity {
             arrayList = databaseManager.ListPrisEnCharge();
 
         }
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                PriseenCharge clickedItem= (PriseenCharge) list.getItemAtPosition(position);
+                Intent intent= new Intent( ListPrisenCharge.this, UpdatePrise.class);
+
+                //Intent intent = new Intent(DepistagePassifList.this, Donnee_DP.class);
+                intent.putExtra("id",clickedItem.getId().intValue());
+                startActivity(intent);
+                //Toast.makeText(DepistagePassifList.this,""+clickedItem.getId(), LENGTH_LONG).show();
+                //startActivityForResult(intent,"");
+                //recherce(clickedItem.getCode());
+            }
+        });
 
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -171,7 +185,7 @@ public class ListPrisenCharge extends AppCompatActivity {
             localite.setText("Localité  : "+priseenCharges.get(position).getLocalite().getLocalitename().toString());
             nom.setText("Nom : "+priseenCharges.get(position).getEnafant());
             Sexe.setText("SEXE : "+priseenCharges.get(position).getSexe());
-            Age.setText("Nom : "+priseenCharges.get(position).getAge());
+            Age.setText("Age : "+priseenCharges.get(position).getAge());
             pb.setText("PB  : "+priseenCharges.get(position).getPB());
             odeme.setText("Odeme : "+priseenCharges.get(position).getOdeme());
             nomAccompaganant.setText("Nom de l'accompagnant : "+priseenCharges.get(position).getNomaccompagnant());

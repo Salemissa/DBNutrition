@@ -9,7 +9,7 @@ public class PriseenCharge {
     @DatabaseField(generatedId = true)
     private Long id;
     @DatabaseField
-    private  String  age;
+    private  int  age;
     @DatabaseField
     private  String  sexe;
     @DatabaseField
@@ -44,11 +44,11 @@ public class PriseenCharge {
         this.id = id;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
