@@ -33,4 +33,6 @@
     <string name="title_activity_list_prisen_charge">ListPrisenCharge</string>
     <string name="title_activity_list_approche">ListApproche</string>
     <string name="title_activity_update_activite_mobile">UpdateActiviteMobile</string>
+    <string name="title_activity_update_suivi">updateSuivi</string>
+    <string name="title_activity_update_prise">UpdatePrise</string>
 </resources>

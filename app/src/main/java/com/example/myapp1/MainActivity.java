@@ -173,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
 
                 if (!error) {
                     Intent intent4 = new Intent(MainActivity.this, MainActivity2.class);
+                    startActivity(intent4);
                     //
                     List<Moughata> users = databaseManager.ListMoughata();
                     if (users != null) {
@@ -180,15 +181,15 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
 
                             // Toast.makeText(MainActivity.this,user.getLocalitename()+"=="+user.getId(),Toast.LENGTH_LONG).show();
                             //   Toast.makeText(MainActivity.this,user.getId()+"",Toast.LENGTH_LONG).show();
-                            //startActivity(intent4);
-                        executeHttpRequestWithRetrofit();
+
+                       // executeHttpRequestWithRetrofit();
                             //alertView(etudient.toString());
 
                         //
                     } else {
 
                         Toast.makeText(MainActivity.this, "Charge les données", Toast.LENGTH_LONG).show();
-                        executeHttpRequestWithRetrofit();
+                        //executeHttpRequestWithRetrofit();
 
                         //startActivity(intent4);
                     }

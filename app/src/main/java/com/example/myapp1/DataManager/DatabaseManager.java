@@ -472,6 +472,16 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         }
     }
 
+    public void updatesuviSousSurvillance(SuviSousSurvillance suviSousSurvillance) {
+        try {
+            Dao<SuviSousSurvillance, Integer> dao = getDao(SuviSousSurvillance.class);
+            dao.update(suviSousSurvillance);
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+
+        }
+    }
+
     public List<SuviSousSurvillance> ListSuviSousSurvillance() {
         try {
             Dao<SuviSousSurvillance, Integer> dao = getDao(SuviSousSurvillance.class);
@@ -483,6 +493,35 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             Log.e("DATABASE", "Can't insert  into Database", exception);
             return null;
         }
+    }
+
+    public SuviSousSurvillance SousSurvillanceByid(int id) {
+
+        try {
+            Dao<SuviSousSurvillance, Integer> dao = getDao(SuviSousSurvillance.class);
+
+            SuviSousSurvillance suviSousSurvillances = dao.queryForId(id);
+            Log.i("DATABASE", "ListUsers invoked");
+            return suviSousSurvillances;
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return null;
+        }
+
+    }
+
+        public void  DeleteSuviSousSurvillance(SuviSousSurvillance suviSousSurvillance){
+
+            try {
+                Dao<SuviSousSurvillance, Integer> dao = getDao(SuviSousSurvillance.class);
+               dao.delete(suviSousSurvillance);
+                Log.i("DATABASE", "ListUsers invoked");
+
+            } catch (Exception exception) {
+                Log.e("DATABASE", "Can't insert  into Database", exception);
+
+            }
+
     }
 
     public void inserPrisEnCharge(PriseenCharge priseenCharge) {
@@ -540,4 +579,6 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             return null;
         }
     }
+
+
 }

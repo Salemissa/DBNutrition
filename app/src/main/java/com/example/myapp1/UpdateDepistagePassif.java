@@ -395,13 +395,6 @@ public class UpdateDepistagePassif extends AppCompatActivity {
 
         }
 
-
-
-
-
-
-        //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
     }
 
 

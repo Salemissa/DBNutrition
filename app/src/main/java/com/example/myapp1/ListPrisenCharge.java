@@ -98,11 +98,6 @@ public class ListPrisenCharge extends AppCompatActivity {
 
 
                 showalert(clickedItem,pos);
-
-
-
-
-
                 return true;
             }
         });

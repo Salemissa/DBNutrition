@@ -347,6 +347,7 @@ public class Prise_en_Charge extends Fragment {
         priseenCharge.setLocalite(localite);
         priseenCharge.setPec(pec);
         priseenCharge.setRefere(ref);
+        priseenCharge.setStatut(statu);
         priseenCharge.setEnafant(enfant.getText().toString());
         priseenCharge.setMAS(Integer.parseInt(MAS.getText().toString()));
         priseenCharge.setPB(Integer.parseInt(PB.getText().toString()));

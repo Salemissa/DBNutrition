@@ -3,12 +3,14 @@ package com.example.myapp1;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Depistage;
+import com.example.myapp1.model.PriseenCharge;
 import com.example.myapp1.model.SuviSousSurvillance;
 import com.example.myapp1.pcim.Donnee_DP;
 import com.example.myapp1.pcim.Suvi_Sous_surveillance;
@@ -23,16 +25,20 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 public class ListSuivisous extends AppCompatActivity {
     private DatabaseManager databaseManager;
@@ -109,6 +115,37 @@ public class ListSuivisous extends AppCompatActivity {
              //Toast.makeText(this,"list non vide ",Toast.LENGTH_LONG).show();
 
          }
+
+         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+             @Override
+             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 SuviSousSurvillance clickedItem= (SuviSousSurvillance) list.getItemAtPosition(position);
+                 Intent intent= new Intent( ListSuivisous.this, updateSuivi.class);
+
+                 //Intent intent = new Intent(DepistagePassifList.this, Donnee_DP.class);
+
+                 intent.putExtra("id",clickedItem.getId().intValue());
+                 startActivity(intent);
+                 //Toast.makeText(DepistagePassifList.this,""+clickedItem.getId(), LENGTH_LONG).show();
+                 //startActivityForResult(intent,"");
+                 //recherce(clickedItem.getCode());
+             }
+         });
+
+         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+             @Override
+             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                            int pos, long id) {
+                 // TODO Auto-generated method stub
+                 SuviSousSurvillance clickedItem = (SuviSousSurvillance) list.getItemAtPosition(pos);
+                 Toast.makeText(getApplicationContext(), pos + "++" + id, LENGTH_LONG).show();
+                 // Toast.makeText(getApplicationContext(), clickedItem.getOdemeF() + "", LENGTH_LONG).show();
+
+
+                 showalert(clickedItem,pos);
+                 return true;
+             }
+         });
      }
 
         this.adapter = new SuviSousSurvillanceAdapter(this, arrayList);
@@ -225,6 +262,48 @@ public class ListSuivisous extends AppCompatActivity {
         FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
         Suvi_Sous_surveillance myfragment = new Suvi_Sous_surveillance();
         myfragmentTransaction.replace(R.id.souviList, myfragment).commit();
+
+    }
+
+
+    private boolean showalert(final SuviSousSurvillance suviSousSurvillance,final int pos) {
+        this.supp = false;
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Confirm ");
+        alertDialog.setMessage("Etes Vous sur de supprimer");
+        // alertDialog.setIcon(R.drawable.delete);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+                Supprimer(suviSousSurvillance,pos);
+
+                supp =true;
+
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        alertDialog.show();
+
+        return  supp;
+    }
+
+
+    void Supprimer (SuviSousSurvillance suviSousSurvillance,int pos){
+        databaseManager.DeleteSuviSousSurvillance(suviSousSurvillance);
+        //Intent intent= new Intent(this,PriseenCharge.class);
+        //startActivity(intent);
+        arrayList.remove(pos);
+        adapter.notifyDataSetChanged();
 
     }
 }
