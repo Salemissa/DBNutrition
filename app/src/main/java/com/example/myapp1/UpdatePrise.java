@@ -288,11 +288,11 @@ public class UpdatePrise extends AppCompatActivity {
 
     void Valeurpardefaut(){
         this.Age.setText(priseencharge.getAge()+"");
-        this.PB.setText(priseencharge.getPB()+"");
+        this.PB.setText(priseencharge.getPb()+"");
         this.contact.setText(priseencharge.getContact()+"");
-        this.enfant.setText(priseencharge.getEnafant());
+        this.enfant.setText(priseencharge.getEnfant());
         this.accompagnant.setText(priseencharge.getNomaccompagnant());
-        this.MAS.setText(priseencharge.getMAS()+"");
+        this.MAS.setText(priseencharge.getMas()+"");
 
         String sexe=this.priseencharge.getSexe(); //the value you want the position for
         ArrayAdapter ageSel = (ArrayAdapter) this.spinnersexe.getAdapter();
@@ -316,13 +316,12 @@ public class UpdatePrise extends AppCompatActivity {
         priseencharge.setPec(pec);
         priseencharge.setRefere(ref);
         priseencharge.setStatut(statu);
-        priseencharge.setEnafant(enfant.getText().toString());
-        priseencharge.setMAS(Integer.parseInt(MAS.getText().toString()));
-        priseencharge.setPB(Integer.parseInt(PB.getText().toString()));
+        priseencharge.setEnfant(enfant.getText().toString());
+        priseencharge.setMas(Integer.parseInt(MAS.getText().toString()));
+        priseencharge.setPb(Integer.parseInt(PB.getText().toString()));
         //priseencharge.setDate(new Date());
         try {
             databaseManager.updatePrise(priseencharge);
-
 
             Intent intent= new Intent( this, ListPrisenCharge.class);
             startActivity(intent);

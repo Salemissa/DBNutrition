@@ -28,6 +28,8 @@ import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.SuperViseur;
 import com.example.myapp1.model.Test;
 import com.example.myapp1.model.USB;
+import com.example.myapp1.model.User;
+import com.example.myapp1.model.UserForm;
 
 import java.util.Date;
 import java.util.List;
@@ -40,7 +42,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.http.Field;
 
 
-public class MainActivity extends AppCompatActivity implements GithubCalls.Callbacks {
+public class MainActivity extends AppCompatActivity implements UsersCalls.CallbacksUser {
     private Button bt;
     private EditText username, password;
     private ProgressBar progressBar;
@@ -173,7 +175,9 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
 
                 if (!error) {
                     Intent intent4 = new Intent(MainActivity.this, MainActivity2.class);
-                    startActivity(intent4);
+                   startActivity(intent4);
+                    //executeHttpRequestWithRetrofit();
+                    //add();
                     //
                     List<Moughata> users = databaseManager.ListMoughata();
                     if (users != null) {
@@ -182,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
                             // Toast.makeText(MainActivity.this,user.getLocalitename()+"=="+user.getId(),Toast.LENGTH_LONG).show();
                             //   Toast.makeText(MainActivity.this,user.getId()+"",Toast.LENGTH_LONG).show();
 
-                       // executeHttpRequestWithRetrofit();
+
                             //alertView(etudient.toString());
 
                         //
@@ -203,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
     }
 
     private void executeHttpRequestWithRetrofit(){
-        GithubCalls.fetchUserFollowing(this, "JakeWharton");
+       //UsersCalls.fetchUserFollowing(this);
     }
 
 
@@ -240,22 +244,28 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
 
 
     }
-
+/*
     @Override
-    public void onResponse(@Nullable List<GithubUser> users) {
+    public void onResponse(@Nullable List<User> users) {
         if (users != null){
-            for (GithubUser user:users){
-                Toast.makeText(this,user.getLogin(),Toast.LENGTH_SHORT).show();
+            for (User user:users){
+                Toast.makeText(this,user.getUsername(),Toast.LENGTH_SHORT).show();
             }
         };
 
+    }*/
+
+    @Override
+    public void onResponse(User user) {
+
+        Toast.makeText(this,"Yes",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onFailure() {
+        Toast.makeText(this,"Non",Toast.LENGTH_SHORT).show();
 
     }
-
 
 
     void AjouterMoughata() {
@@ -276,7 +286,6 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
     void AjouterCommune() {
 
         String[] commune1 = new String[]{"Koubeni", "Medboughou", "Hassi ahmed bechna"};
-
         Moughata moughata1 = databaseManager.Moughataname("Koubeni");
         for (String communename : commune1) {
             Commune commune = new Commune();
@@ -329,6 +338,11 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
     }
 
     private void AjouterLocalite() {
+        Commune Koubeni = databaseManager.communename("Koubeni");
+        Localite localite1 = new Localite();
+        localite1.setLocalitename("Koubeni");
+        localite1.setCommune(Koubeni);
+        databaseManager.inserslocalite(localite1);
 
         String[] Str1 = new String[]{"Terteigue", "El Koutoub", "Emegssem"};
 
@@ -340,11 +354,7 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
             databaseManager.inserslocalite(localite);
 
         }
-        Commune Koubeni = databaseManager.communename("Koubeni");
-        Localite localite = new Localite();
-        localite.setLocalitename("Koubeni");
-        localite.setCommune(Koubeni);
-        databaseManager.inserslocalite(localite);
+
 
         this.Ajouterusb();
 
@@ -404,7 +414,19 @@ public class MainActivity extends AppCompatActivity implements GithubCalls.Callb
 
 
 
+void add(){
+        UserForm user2=new UserForm();
+         user2.setUsername("Test");
+	    user2.setPassword("1234");
+		user2.setNom("issa");
+		user2.setPrenom("Ba");
+		user2.setEmail("jjj@gmail.com");
+		user2.setTelephone("36998877");
+		user2.setPassword("1234");
+        Toast.makeText(this,"Message",Toast.LENGTH_SHORT);
+        UsersCalls.addUser(this,user2);
 
+}
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.myapp1.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
@@ -7,35 +8,58 @@ import java.util.Date;
 
 public class PriseenCharge {
     @DatabaseField(generatedId = true)
+    @JsonProperty("id")
     private Long id;
     @DatabaseField
-    private  int  age;
-    @DatabaseField
-    private  String  sexe;
-    @DatabaseField
-    private  String  statut;
-    @DatabaseField
-    private  String  contact;
-    @DatabaseField
-    private  String refere;
-    @DatabaseField
-    private  int odeme;
-    @DatabaseField
-    private  String pec;
-    @DatabaseField
-    private  String nomaccompagnant;
-    @DatabaseField
-    private  String enafant;
-    @DatabaseField
-    private  int MAS;
-    @DatabaseField
-    private  int PB;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Localite localite;
+    @JsonProperty("age")
+    private Integer age;
 
+    @DatabaseField
+    @JsonProperty("sexe")
+
+    private String sexe;
+    @DatabaseField
+    @JsonProperty("statut")
+    private String statut;
+    @DatabaseField
+    @JsonProperty("contact")
+    private String contact;
+    @DatabaseField
+    @JsonProperty("refere")
+    private String refere;
+    @DatabaseField
+    @JsonProperty("odeme")
+    private String odeme;
+
+    @DatabaseField
+    @JsonProperty("pec")
+    private String pec;
+
+    @DatabaseField
+    @JsonProperty("nomaccompagnant")
+    private String nomaccompagnant;
+
+    @DatabaseField
+    @JsonProperty("enfant")
+    private String enfant;
+
+    @DatabaseField
+    @JsonProperty("mas")
+    private Integer mas;
+
+    @DatabaseField
+    @JsonProperty("pb")
+
+    private Integer pb;
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @JsonProperty("localite")
+    private Localite localite;
     @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd")
+    @JsonProperty
     private Date date;
     public PriseenCharge (){};
+
     public Long getId() {
         return id;
     }
@@ -84,11 +108,11 @@ public class PriseenCharge {
         this.refere = refere;
     }
 
-    public int getOdeme() {
+    public String getOdeme() {
         return odeme;
     }
 
-    public void setOdeme(int odeme) {
+    public void setOdeme(String odeme) {
         this.odeme = odeme;
     }
 
@@ -108,20 +132,36 @@ public class PriseenCharge {
         this.nomaccompagnant = nomaccompagnant;
     }
 
+    public String getEnfant() {
+        return enfant;
+    }
+
+    public void setEnfant(String enfant) {
+        this.enfant = enfant;
+    }
+
+    public int getMas() {
+        return mas;
+    }
+
+    public void setMas(int mas) {
+        this.mas = mas;
+    }
+
+    public int getPb() {
+        return pb;
+    }
+
+    public void setPb(int pb) {
+        this.pb = pb;
+    }
+
     public Localite getLocalite() {
         return localite;
     }
 
     public void setLocalite(Localite localite) {
         this.localite = localite;
-    }
-
-    public int getPB() {
-        return PB;
-    }
-
-    public void setPB(int PB) {
-        this.PB = PB;
     }
 
     public Date getDate() {
@@ -132,19 +172,22 @@ public class PriseenCharge {
         this.date = date;
     }
 
-    public void setEnafant(String enafant) {
-        this.enafant = enafant;
-    }
-
-    public void setMAS(int MAS) {
-        this.MAS = MAS;
-    }
-
-    public String getEnafant() {
-        return enafant;
-    }
-
-    public int getMAS() {
-        return MAS;
+    @Override
+    public String toString() {
+        return "PriseenCharge{" +
+                "age=" + age +
+                ", sexe='" + sexe + '\'' +
+                ", statut='" + statut + '\'' +
+                ", contact='" + contact + '\'' +
+                ", refere='" + refere + '\'' +
+                ", odeme=" + odeme +
+                ", pec='" + pec + '\'' +
+                ", nomaccompagnant='" + nomaccompagnant + '\'' +
+                ", enafant='" + enfant + '\'' +
+                ", MAS=" + mas +
+                ", PB=" + pb +
+                ", localite=" + localite.getLocalitename() +
+                ", date=" + date +
+                '}';
     }
 }

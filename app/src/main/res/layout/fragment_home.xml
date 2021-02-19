@@ -12,16 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="392dp"
+            android:layout_height="19dp"
+            android:background="@drawable/passif"
+            android:backgroundTint="#FFFFFF"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/passif" />
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/textView"
             android:layout_width="0dp"
@@ -73,6 +75,7 @@
                 android:layout_weight="1">
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:background="#8AE3DB"
                     android:layout_height="match_parent">
                     <TextView
                         android:id="@+id/textView3"
@@ -101,6 +104,7 @@
                 android:layout_weight="1">
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:background="#8AE3DB"
                     android:layout_height="match_parent">
                     <TextView
                         android:id="@+id/textView4"
@@ -139,6 +143,7 @@
                 android:layout_weight="1">
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:background="#93E6EA"
                     android:layout_height="match_parent">
                     <TextView
                         android:id="@+id/textView6"
@@ -166,6 +171,7 @@
                 android:layout_weight="1">
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:background="#8AE3DB"
                     android:layout_height="match_parent">
                     <TextView
                         android:id="@+id/textView7"
@@ -203,6 +209,7 @@
                 android:layout_weight="1">
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:background="#8AE3DB"
                     android:layout_height="match_parent">
                     <TextView
                         android:id="@+id/textView8"
@@ -230,6 +237,7 @@
                 android:layout_weight="1">
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:background="#8AE3DB"
                     android:layout_height="match_parent">
                     <TextView
                         android:id="@+id/textView9"

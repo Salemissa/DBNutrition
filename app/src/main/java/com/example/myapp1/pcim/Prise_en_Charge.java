@@ -348,9 +348,10 @@ public class Prise_en_Charge extends Fragment {
         priseenCharge.setPec(pec);
         priseenCharge.setRefere(ref);
         priseenCharge.setStatut(statu);
-        priseenCharge.setEnafant(enfant.getText().toString());
-        priseenCharge.setMAS(Integer.parseInt(MAS.getText().toString()));
-        priseenCharge.setPB(Integer.parseInt(PB.getText().toString()));
+        priseenCharge.setEnfant(enfant.getText().toString());
+        priseenCharge.setMas(Integer.parseInt(MAS.getText().toString()));
+        priseenCharge.setOdeme(odeme);
+        priseenCharge.setPb(Integer.parseInt(PB.getText().toString()));
         priseenCharge.setDate(new Date());
         try {
             databaseManager.inserPrisEnCharge(priseenCharge);

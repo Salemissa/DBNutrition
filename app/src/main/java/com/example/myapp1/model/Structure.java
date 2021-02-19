@@ -1,5 +1,6 @@
 package com.example.myapp1.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -8,6 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class Structure {
     @DatabaseField(generatedId = true)
+    @JsonProperty("id")
     private Long id;
     @DatabaseField
     private String structurename;

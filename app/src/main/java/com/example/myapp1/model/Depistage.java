@@ -25,17 +25,17 @@ public class Depistage {
     @DatabaseField
     private  int rougeF;
     @DatabaseField
-    private  int JauneF;
+    private  int jauneF;
     @DatabaseField
-    private  int JauneG;
+    private  int jauneG;
     @DatabaseField
-    private  int VertF;
+    private  int vertF;
     @DatabaseField
-    private  int VertG;
+    private  int vertG;
     @DatabaseField
-    private  int OdemeG;
+    private  int odemeG;
     @DatabaseField
-    private  int OdemeF;
+    private  int odemeF;
 
     @DatabaseField
     private  int zscore;
@@ -111,51 +111,51 @@ public class Depistage {
     }
 
     public int getJauneF() {
-        return JauneF;
+        return jauneF;
     }
 
     public void setJauneF(int jauneF) {
-        JauneF = jauneF;
+        jauneF = jauneF;
     }
 
     public int getJauneG() {
-        return JauneG;
+        return jauneG;
     }
 
     public void setJauneG(int jauneG) {
-        JauneG = jauneG;
+        jauneG = jauneG;
     }
 
     public int getVertF() {
-        return VertF;
+        return vertF;
     }
 
     public void setVertF(int vertF) {
-        VertF = vertF;
+        vertF = vertF;
     }
 
     public int getVertG() {
-        return VertG;
+        return vertG;
     }
 
     public void setVertG(int vertG) {
-        VertG = vertG;
+        vertG = vertG;
     }
 
     public int getOdemeG() {
-        return OdemeG;
+        return odemeG;
     }
 
     public void setOdemeG(int odemeG) {
-        OdemeG = odemeG;
+        odemeG = odemeG;
     }
 
     public int getOdemeF() {
-        return OdemeF;
+        return odemeF;
     }
 
     public void setOdemeF(int odemeF) {
-        OdemeF = odemeF;
+        odemeF = odemeF;
     }
 
     public int getZscore() {

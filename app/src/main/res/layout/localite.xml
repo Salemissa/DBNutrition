@@ -21,9 +21,9 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:text="Mois"
-            android:textSize="10pt"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Spinner
@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="10dp" />
 
 
         <TextView
@@ -40,9 +40,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:gravity="center"
             android:text="Année"
-            android:textSize="10pt"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Spinner
@@ -68,12 +67,12 @@
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_height="match_parent"
-            android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:text="Moughata"
-            android:textSize="10pt"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Spinner
@@ -81,8 +80,6 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/blue_outline"
             android:spinnerMode="dropdown" />
 
 
@@ -92,9 +89,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:gravity="center"
             android:text="Commune"
-            android:textSize="10pt"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Spinner

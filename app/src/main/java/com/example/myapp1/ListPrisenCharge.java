@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Depistage;
+import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.PriseenCharge;
 import com.example.myapp1.model.SuviSousSurvillance;
 import com.example.myapp1.pcim.Prise_en_Charge;
@@ -15,28 +16,34 @@ import com.example.myapp1.pcim.Suvi_Sous_surveillance;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class ListPrisenCharge extends AppCompatActivity {
+public class ListPrisenCharge extends AppCompatActivity implements UsersCalls.CallbacksPrise {
     private DatabaseManager databaseManager;
     private ListView list;
     private PrisenchargeAdapter adapter;
@@ -45,6 +52,9 @@ public class ListPrisenCharge extends AppCompatActivity {
     FloatingActionButton fab;
     View toolbar;
     private SimpleDateFormat sdf;
+    Button syn;
+    ProgressBar progressBar;
+    List<PriseenCharge> priseenCharges;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +62,13 @@ public class ListPrisenCharge extends AppCompatActivity {
         setContentView(R.layout.activity_list_prisen_charge);
         toolbar = findViewById(R.id.button);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd");
+        progressBar=findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
+         syn=findViewById(R.id.button2);
         list = findViewById(R.id.list);
         databaseManager = new DatabaseManager(this);
         this.arrayList = new ArrayList<>();
-        List<PriseenCharge> priseenCharges = databaseManager.ListPrisEnCharge();
+         this.priseenCharges = databaseManager.ListPrisEnCharge();
         //this.add= findViewById(R.id.add);
 
         fab = findViewById(R.id.fab);
@@ -66,6 +79,14 @@ public class ListPrisenCharge extends AppCompatActivity {
 
             }
         });
+       syn.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               allPrise();
+
+
+           }
+       });
 
 
         if (priseenCharges == null) {
@@ -124,7 +145,90 @@ public class ListPrisenCharge extends AppCompatActivity {
 
     }
 
+    private void allPrise() {
+        Toast.makeText(this,"this", Toast.LENGTH_SHORT).show();
+        //progressBar.setVisibility(View.VISIBLE);
 
+        //UsersCalls.allPrise(this);
+
+        if (!this.priseenCharges.isEmpty()) {
+
+             PriseenCharge p=new PriseenCharge();
+             for(PriseenCharge priseenCharge:priseenCharges) {
+                 p = priseenCharge;
+                 Localite localite = new Localite();
+                 localite.setId(p.getLocalite().getId());
+                 localite.setLocalitename(p.getLocalite().getLocalitename());
+                 p.setDate(null);
+                 p.setLocalite(localite);
+                 //Toast.makeText(this,p.getLocalite().getCommune().getId()+"++++", Toast.LENGTH_SHORT).show();;
+                 try {
+                     UsersCalls.addPrise(this, p);
+                 } catch (Exception e) {
+                     Log.e("ERROR", e.getMessage());
+
+                 }
+             }
+
+        }
+        else{
+            Toast.makeText(this,"List Vide", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onResponse(@Nullable PriseenCharge priseenCharges) {
+
+       // progressBar.setVisibility(View.INVISIBLE);
+        //progressBar.setVisibility(View.GONE);
+        if (priseenCharges != null){
+                Toast.makeText(this,priseenCharges.toString(), LENGTH_LONG).show();
+
+        }
+
+        else{
+            Toast.makeText(this,"ERROR ", LENGTH_LONG).show();
+        }
+
+
+    }
+
+    @Override
+    public void onFailure() {
+        //progressBar.setVisibility(View.INVISIBLE);
+        //progressBar.setVisibility(View.GONE);
+        Toast.makeText(this,"ERR Connexion", LENGTH_LONG).show();
+
+    }
+
+
+
+
+
+    /*
+        @Override
+        public void onResponse(List<PriseenCharge> priseenCharges) {
+            progressBar.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.GONE);
+            //Toast.makeText(this,"Oui",Toast.LENGTH_SHORT).show();
+            if (priseenCharges != null){
+
+                for (PriseenCharge priseenCharge:priseenCharges){
+                    Toast.makeText(this,priseenCharge.toString(), LENGTH_LONG).show();
+                }
+            };
+
+        }
+
+        @Override
+        public void onFailure() {
+            progressBar.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this,"Non",Toast.LENGTH_SHORT).show();
+
+        }
+
+    */
     class PrisenchargeAdapter extends BaseAdapter {
 
         private List<PriseenCharge>priseenCharges;
@@ -183,16 +287,16 @@ public class ListPrisenCharge extends AppCompatActivity {
 
 
             localite.setText("Localité  : "+priseenCharges.get(position).getLocalite().getLocalitename().toString());
-            nom.setText("Nom : "+priseenCharges.get(position).getEnafant());
+            nom.setText("Nom : "+priseenCharges.get(position).getEnfant());
             Sexe.setText("SEXE : "+priseenCharges.get(position).getSexe());
             Age.setText("Age : "+priseenCharges.get(position).getAge());
-            pb.setText("PB  : "+priseenCharges.get(position).getPB());
+            pb.setText("PB  : "+priseenCharges.get(position).getPb());
             odeme.setText("Odeme : "+priseenCharges.get(position).getOdeme());
             nomAccompaganant.setText("Nom de l'accompagnant : "+priseenCharges.get(position).getNomaccompagnant());
             contact.setText("Contact: "+priseenCharges.get(position).getContact());
             PEC.setText("PEC  : "+priseenCharges.get(position).getPec());
             status.setText("Status :"+priseenCharges.get(position).getStatut());
-            MAS.setText("Odeme : "+priseenCharges.get(position).getMAS());
+            MAS.setText("Odeme : "+priseenCharges.get(position).getMas());
             Ref.setText("Réferé : "+priseenCharges.get(position).getRefere());
             date.setText("Date : "+sdf.format(priseenCharges.get(position).getDate()));
 
@@ -265,6 +369,7 @@ public class ListPrisenCharge extends AppCompatActivity {
            //startActivity(intent);
 
            arrayList.remove(pos);
+          priseenCharges.remove(pos);
            adapter.notifyDataSetChanged();
 
           }

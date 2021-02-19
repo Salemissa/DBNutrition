@@ -1,26 +1,36 @@
 package com.example.myapp1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class Localite {
-
-
         @DatabaseField(generatedId = true)
+        @JsonProperty("id")
         private Long id;
         @DatabaseField
+        @JsonProperty("localitename")
         private String localitename;
         @DatabaseField(foreign = true, foreignAutoRefresh = true)
+        @JsonProperty("commune")
         private Commune commune;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Relais relais;
+        @DatabaseField(foreign = true, foreignAutoRefresh = true)
+        @JsonProperty("relais")
+        private Relais relais;
         @ForeignCollectionField(eager=false)
+        @JsonIgnore
         private ForeignCollection<Depistage> depistage;
-     @ForeignCollectionField(eager=false)
-      private ForeignCollection<USB> usb;
         @ForeignCollectionField(eager=false)
+        @JsonIgnore
+        private ForeignCollection<USB> usb;
+        @ForeignCollectionField(eager=false)
+        @JsonIgnore
         private ForeignCollection<PriseenCharge> priseEnCharges;
 
     public Localite(){

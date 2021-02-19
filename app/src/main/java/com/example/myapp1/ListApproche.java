@@ -164,7 +164,7 @@ public class ListApproche extends AppCompatActivity {
             manages.setText("Menages : "+approcheCommunataires.get(position).getMenages());
             FE.setText("FE  : "+approcheCommunataires.get(position).getFammeEnc());
             FES.setText("FE Suivi : "+approcheCommunataires.get(position).getFammeEncSuvi());
-            NCG.setText("NCG  : "+approcheCommunataires.get(position).getNCG());
+            NCG.setText("NCG  : "+approcheCommunataires.get(position).getncg());
             Testp.setText("Test Palu : "+approcheCommunataires.get(position).getTestpalu());
             PC.setText("Palu Confirme  : "+approcheCommunataires.get(position).getPaluconfirme());
             diarrhee.setText("Diarrhee : "+approcheCommunataires.get(position).getDiarrhee());

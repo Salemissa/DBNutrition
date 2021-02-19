@@ -23,23 +23,23 @@ public class SuviSousSurvillance {
     @DatabaseField
     private  int venant;
     @DatabaseField
-    private int NCG;
+    private int ncg;
     @DatabaseField
-    private int NGF;
+    private int ngf;
     @DatabaseField
-    private  int Read;
+    private  int read;
     @DatabaseField
-    private int  Gueris;
+    private int  gueris;
     @DatabaseField
-    private int Deces;
+    private int deces;
     @DatabaseField
-    private int Abonde;
+    private int abonde;
     @DatabaseField
-    private int NonRep;
+    private int nonRep;
     @DatabaseField
-    private int RefCRENI;
+    private int refCRENI;
     @DatabaseField
-    private int TransCRENAS;
+    private int transCRENAS;
     @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd")
     private Date date;
 
@@ -94,75 +94,75 @@ public class SuviSousSurvillance {
     }
 
     public int getNCG() {
-        return NCG;
+        return ncg;
     }
 
     public void setNCG(int NCG) {
-        this.NCG = NCG;
+        this.ncg = NCG;
     }
 
     public int getNGF() {
-        return NGF;
+        return ngf;
     }
 
     public void setNGF(int NGF) {
-        this.NGF = NGF;
+        this.ngf = NGF;
     }
 
     public int getRead() {
-        return Read;
+        return read;
     }
 
     public void setRead(int read) {
-        Read = read;
+        read = read;
     }
 
     public int getGueris() {
-        return Gueris;
+        return gueris;
     }
 
     public void setGueris(int gueris) {
-        Gueris = gueris;
+        gueris = gueris;
     }
 
     public int getDeces() {
-        return Deces;
+        return deces;
     }
 
     public void setDeces(int deces) {
-        Deces = deces;
+        deces = deces;
     }
 
     public int getAbonde() {
-        return Abonde;
+        return abonde;
     }
 
     public void setAbonde(int abonde) {
-        Abonde = abonde;
+        abonde = abonde;
     }
 
     public int getNonRep() {
-        return NonRep;
+        return nonRep;
     }
 
     public void setNonRep(int nonRep) {
-        NonRep = nonRep;
+        nonRep = nonRep;
     }
 
     public int getRefCRENI() {
-        return RefCRENI;
+        return refCRENI;
     }
 
     public void setRefCRENI(int refCRENI) {
-        RefCRENI = refCRENI;
+        refCRENI = refCRENI;
     }
 
     public int getTransCRENAS() {
-        return TransCRENAS;
+        return transCRENAS;
     }
 
     public void setTransCRENAS(int transCRENAS) {
-        TransCRENAS = transCRENAS;
+        transCRENAS = transCRENAS;
     }
 
     public int getSsdebuit() {

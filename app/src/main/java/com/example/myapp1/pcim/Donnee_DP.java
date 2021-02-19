@@ -65,19 +65,19 @@ public class Donnee_DP extends Fragment {
     ImageView rapport;
     byte[] Rapport;
     Intent camera_intent = null;
-    Spinner spinnermois ;
-    Spinner spinneranne ;
-    Spinner spinnermoughata  ;
-    Spinner spinnercommune ;
-    Spinner spinnerstructer ;
-    Spinner spinnerage ;
-    String  type="passif";
-    private EditText rougeF,jauneF,vertF,odemeF, rougeG,jauneG,vertG,odemeG,zscore,zscore2;
+    Spinner spinnermois;
+    Spinner spinneranne;
+    Spinner spinnermoughata;
+    Spinner spinnercommune;
+    Spinner spinnerstructer;
+    Spinner spinnerage;
+    String type = "passif";
+    private EditText rougeF, jauneF, vertF, odemeF, rougeG, jauneG, vertG, odemeG, zscore, zscore2;
     String moi;
     String anne;
     String age;
     Structure structure;
-    int Rouge,Jaune,Vert,Odeme,Zscor,Zscore2;
+    int Rouge, Jaune, Vert, Odeme, Zscor, Zscore2;
     Button Ajouter;
 
 
@@ -133,7 +133,7 @@ public class Donnee_DP extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         this.VerficationPermession();
-       databaseManager = new DatabaseManager(this.getActivity());
+        databaseManager = new DatabaseManager(this.getActivity());
 
 
         this.v = inflater.inflate(R.layout.fragment_donnee__d_p, container, false);
@@ -152,25 +152,23 @@ public class Donnee_DP extends Fragment {
         this.spinnermoughata = this.v.findViewById(R.id.moghata);
         this.spinnercommune = this.v.findViewById(R.id.commune);
         this.spinnerstructer = this.v.findViewById(R.id.structure);
-        this.spinnerage= this.v.findViewById(R.id.age);
+        this.spinnerage = this.v.findViewById(R.id.age);
         rapport = (ImageView) this.v.findViewById(R.id.imageRaport);
-        this.rougeF= (EditText) this.v.findViewById(R.id.RougeF);
-        this.rougeG= (EditText) this.v.findViewById(R.id.RougeG);
-        this.jauneF= (EditText) this.v.findViewById(R.id.JauneF);
-        this.jauneG= (EditText) this.v.findViewById(R.id.JauneG);
-        this.jauneF= (EditText) this.v.findViewById(R.id.JauneF);
-        this.jauneG= (EditText) this.v.findViewById(R.id.JauneG);
-        this.vertF= (EditText) this.v.findViewById(R.id.VertF);
-        this.vertG= (EditText) this.v.findViewById(R.id.VertG);
-        this.odemeF=(EditText) this.v.findViewById(R.id.odemeF);
-        this.odemeG=(EditText) this.v.findViewById(R.id.odemeG);
-        this.zscore=(EditText) this.v.findViewById(R.id.zscore);
-        this.zscore2=(EditText) this.v.findViewById(R.id.zscore2);
-        this.Ajouter =(Button) this.v.findViewById(R.id.Ajouter);
-      // this.Modfier =(Button) this.v.findViewById(R.id.Modfier);
-      // this.Modfier.setVisibility(View.GONE);
-
-
+        this.rougeF = (EditText) this.v.findViewById(R.id.RougeF);
+        this.rougeG = (EditText) this.v.findViewById(R.id.RougeG);
+        this.jauneF = (EditText) this.v.findViewById(R.id.JauneF);
+        this.jauneG = (EditText) this.v.findViewById(R.id.JauneG);
+        this.jauneF = (EditText) this.v.findViewById(R.id.JauneF);
+        this.jauneG = (EditText) this.v.findViewById(R.id.JauneG);
+        this.vertF = (EditText) this.v.findViewById(R.id.VertF);
+        this.vertG = (EditText) this.v.findViewById(R.id.VertG);
+        this.odemeF = (EditText) this.v.findViewById(R.id.odemeF);
+        this.odemeG = (EditText) this.v.findViewById(R.id.odemeG);
+        this.zscore = (EditText) this.v.findViewById(R.id.zscore);
+        this.zscore2 = (EditText) this.v.findViewById(R.id.zscore2);
+        this.Ajouter = (Button) this.v.findViewById(R.id.Ajouter);
+        // this.Modfier =(Button) this.v.findViewById(R.id.Modfier);
+        // this.Modfier.setVisibility(View.GONE);
 
 
         setImageViewWithByteArray();
@@ -195,22 +193,20 @@ public class Donnee_DP extends Fragment {
         });
 
 
-        Donnes donnes=new Donnes();
+        Donnes donnes = new Donnes();
         final String[] annee = donnes.annee;
         String[] mois = donnes.mois;
-        String[] ages=donnes.ages;
+        String[] ages = donnes.ages;
 
-        final List<String> moughata  = new ArrayList<String>();
+        final List<String> moughata = new ArrayList<String>();
 
-        List<Moughata> ListMoughata=databaseManager.ListMoughata();
-        if(ListMoughata!=null){
-            for( Moughata moug : ListMoughata ) {
+        List<Moughata> ListMoughata = databaseManager.ListMoughata();
+        if (ListMoughata != null) {
+            for (Moughata moug : ListMoughata) {
                 moughata.add(moug.getMoughataname());
-                Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), moug.getMoughataname(), Toast.LENGTH_SHORT).show();
             }
-            }
-
-
+        }
 
 
         this.Ajouter.setOnClickListener(new View.OnClickListener() {
@@ -232,9 +228,6 @@ public class Donnee_DP extends Fragment {
         spinnerage.setAdapter(ageadapter);
 
 
-
-
-
         ArrayAdapter moisadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, mois);
         moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnermois.setAdapter(moisadapter);
@@ -243,7 +236,7 @@ public class Donnee_DP extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-               moi=parent.getItemAtPosition(position).toString();
+                moi = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -253,12 +246,11 @@ public class Donnee_DP extends Fragment {
         });
 
 
-
         spinneranne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                anne=parent.getItemAtPosition(position).toString();
+                anne = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -272,7 +264,7 @@ public class Donnee_DP extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                age=parent.getItemAtPosition(position).toString();
+                age = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -300,13 +292,11 @@ public class Donnee_DP extends Fragment {
         });
 
 
-
-
         spinnercommune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-               CommuneStructure(item);
+                CommuneStructure(item);
             }
 
             @Override
@@ -320,7 +310,7 @@ public class Donnee_DP extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                   structure=databaseManager.structurename(item);
+                structure = databaseManager.structurename(item);
             }
 
             @Override
@@ -328,8 +318,6 @@ public class Donnee_DP extends Fragment {
                 // TODO Auto-generated method stub
             }
         });
-
-
 
 
     }
@@ -379,7 +367,7 @@ public class Donnee_DP extends Fragment {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] byteArray = stream.toByteArray();
-            this.Rapport=byteArray;
+            this.Rapport = byteArray;
             //image.recycle();
             rapport.setImageBitmap(image);
             Test test = new Test();
@@ -398,7 +386,7 @@ public class Donnee_DP extends Fragment {
     }
 
 
-    public  void setImageViewWithByteArray() {
+    public void setImageViewWithByteArray() {
 /*
         List<Test> users=databaseManager.ListTest();
         if(users!=null) {
@@ -424,7 +412,7 @@ public class Donnee_DP extends Fragment {
         }
         */
 
-        }
+    }
 
     @Override
     public void onResume() {
@@ -448,32 +436,30 @@ public class Donnee_DP extends Fragment {
         }
 
     }
-        void CommuneStructure(String commune) {
-            Commune communesel=databaseManager.communename(commune);
-            List<String> StructureCommune= new ArrayList<String>();
 
-            if(communesel !=null){
-                for( Structure structurs:communesel.getStructures() ) {
+    void CommuneStructure(String commune) {
+        Commune communesel = databaseManager.communename(commune);
+        List<String> StructureCommune = new ArrayList<String>();
 
-                    StructureCommune.add(structurs.getStructurename().toString());
-                }
+        if (communesel != null) {
+            for (Structure structurs : communesel.getStructures()) {
 
-                ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(),android.R.layout.simple_spinner_item,StructureCommune);
-                this.spinnerstructer.setAdapter(structureadapter);
-                structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                StructureCommune.add(structurs.getStructurename().toString());
             }
 
+            ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, StructureCommune);
+            this.spinnerstructer.setAdapter(structureadapter);
+            structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        }
 
 
-
-
-
-            //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
     }
 
 
     private void AjouterDepistage() {
+        VerficationChampe();
         Depistage depistage = new Depistage();
         depistage.setAnnee(anne);
         depistage.setMois(moi);
@@ -492,18 +478,38 @@ public class Donnee_DP extends Fragment {
         depistage.setDate(new Date());
         depistage.setRapport(this.Rapport);
         depistage.setType("DepistagePassif");
-        
+
         try {
             databaseManager.inserDepistage(depistage);
 
-            Toast.makeText(getActivity(),"ajouter Avec succe",Toast.LENGTH_SHORT).show();
-            Intent intent= new Intent( getActivity(), DepistagePassifList.class);
-              startActivity(intent);
+            Toast.makeText(getActivity(), "ajouter Avec succe", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), DepistagePassifList.class);
+            startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
 
+    boolean VerficationChampe() {
+
+        boolean error=false;
+        if (jauneF.getText().toString().isEmpty()) {
+            error = true;
+            jauneF.setError("invalid!");
+        }
+
+        if (jauneG.getText().toString().isEmpty()) {
+            error = true;
+            jauneF.setError("invalid!");
+        }
+
+        if (rougeG.getText().toString().isEmpty()) {
+            error = true;
+            jauneF.setError("invalid!");
+        }
+
+        return error;
+    }
 
 }

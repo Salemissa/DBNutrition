@@ -39,7 +39,7 @@ public class ApprocheCommunataire {
     private String DateCreation;
 
     @DatabaseField
-    private  int NCG;
+    private  int ncg;
     @DatabaseField
     private  int testpalu;
 
@@ -48,9 +48,9 @@ public class ApprocheCommunataire {
     @DatabaseField
     private  int TR;
     @DatabaseField
-    private int Diarrhee;
+    private int diarrhee;
     @DatabaseField
-    private  int Vaccin;
+    private  int vaccin;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private USB usb;
     public ApprocheCommunataire(){};
@@ -142,12 +142,12 @@ public class ApprocheCommunataire {
         this.date = date;
     }
 
-    public int getNCG() {
-        return NCG;
+    public int getncg() {
+        return ncg;
     }
 
     public void setNCG(int NCG) {
-        this.NCG = NCG;
+        this.ncg = NCG;
     }
 
     public int getTestpalu() {
@@ -175,19 +175,19 @@ public class ApprocheCommunataire {
     }
 
     public int getDiarrhee() {
-        return Diarrhee;
+        return diarrhee;
     }
 
     public void setDiarrhee(int diarrhee) {
-        Diarrhee = diarrhee;
+        diarrhee = diarrhee;
     }
 
     public int getVaccin() {
-        return Vaccin;
+        return vaccin;
     }
 
     public void setVaccin(int vaccin) {
-        Vaccin = vaccin;
+        vaccin = vaccin;
     }
 
     public USB getUsb() {

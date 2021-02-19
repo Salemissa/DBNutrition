@@ -19,15 +19,15 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/dp"
-                    android:icon="@drawable/ic_menu_camera"
+                    android:icon="@drawable/passif"
                     android:title="Donnée Dépistage Passif" />
                 <item
                     android:id="@+id/sss"
-                    android:icon="@drawable/ic_menu_gallery"
+                    android:icon="@drawable/mobile"
                     android:title="Suivi sous surveillance" />
                 <item
                     android:id="@+id/apc"
-                    android:icon="@drawable/ic_menu_slideshow"
+                    android:icon="@drawable/mobile"
                     android:title="Approche Communataire" />
 
             </group>
@@ -38,20 +38,20 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/da"
-                    android:icon="@drawable/ic_menu_camera"
+                    android:icon="@drawable/mobile2"
                     android:title="Dépistage Avancé" />
 
                 <item
                     android:id="@+id/cdd"
-                    android:icon="@drawable/ic_menu_camera"
+                    android:icon="@drawable/prise"
                     android:title="Compagne De Depistage" />
                 <item
                     android:id="@+id/acm"
-                    android:icon="@drawable/ic_menu_gallery"
+                    android:icon="@drawable/user"
                     android:title="Activité Mobile" />
                 <item
                     android:id="@+id/pen"
-                    android:icon="@drawable/ic_menu_slideshow"
+                    android:icon="@drawable/mobile2"
                     android:title="Prise en Charge" />
 
             </group>
