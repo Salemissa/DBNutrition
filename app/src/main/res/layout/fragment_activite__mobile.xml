@@ -37,7 +37,7 @@
             android:textSize="10pt"
             android:textStyle="bold" />
 
-        <Spinner
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/localite"
             android:layout_width="226dp"
             android:layout_height="match_parent"
@@ -313,6 +313,8 @@
         android:layout_below="@+id/colore"
         android:layout_marginTop="25dp"
         android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"
+        android:textColor="#FFF"
         android:text="Ajouter" />
 
 </RelativeLayout>

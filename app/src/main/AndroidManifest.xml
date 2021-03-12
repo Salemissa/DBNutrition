@@ -16,11 +16,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".UpdateApproche"
+            android:label="@string/approche"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".UpdatePrise"
             android:label="@string/title_activity_update_prise"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".updateSuivi"
             android:label="@string/title_activity_update_suivi"
@@ -41,7 +46,9 @@
             android:name=".UpdateDepistage"
             android:label="@string/title_activity_update_depistage"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UpdateDepistagePassif" />
+        <activity
+            android:name=".UpdateDepistagePassif"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".DepistagePassifList"
             android:label="@string/title_activity_depistage_passif_list"

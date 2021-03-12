@@ -4,22 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".UpdateDepistagePassif">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:background="?attr/colorPrimary"
+
+         />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="53dp"
+        android:textColor="#FFFF"
+        android:layout_marginLeft="14dp"
+        android:gravity="center"
+        android:text="@string/prise"
+        android:textSize="25sp" />
 
     <include
         android:id="@+id/dp"
+        android:layout_below="@id/toolbar"
         layout="@layout/fragment_prise_en__charge"
-        android:layout_width="576dp"
+        android:layout_width="wrap_content"
         android:layout_height="547dp"
         android:layout_marginTop="12dp"
         android:textStyle="bold"></include>
+
     <Button
         android:id="@+id/Modfier"
-        android:layout_width="103dp"
-        android:layout_height="61dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/dp"
-        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:background="?attr/colorPrimary"
         android:text="Modfier" />
 
 </RelativeLayout>

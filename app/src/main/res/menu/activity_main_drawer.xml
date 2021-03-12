@@ -20,49 +20,73 @@
                 <item
                     android:id="@+id/dp"
                     android:icon="@drawable/passif"
-                    android:title="Donnée Dépistage Passif" />
+                    android:title="@string/passif" />
                 <item
                     android:id="@+id/sss"
                     android:icon="@drawable/mobile"
-                    android:title="Suivi sous surveillance" />
+                    android:title="@string/suivi_sous_surveillance" />
                 <item
                     android:id="@+id/apc"
                     android:icon="@drawable/mobile"
-                    android:title="Approche Communataire" />
+                    android:title="@string/approche" />
 
             </group>
         </menu>
     </item>
-    <item android:title="Dépistage Actif">
+    <item android:title="@string/actif">
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/da"
-                    android:icon="@drawable/mobile2"
-                    android:title="Dépistage Avancé" />
-
-                <item
+             <item
                     android:id="@+id/cdd"
                     android:icon="@drawable/prise"
-                    android:title="Compagne De Depistage" />
-                <item
-                    android:id="@+id/acm"
-                    android:icon="@drawable/user"
-                    android:title="Activité Mobile" />
+                    android:title="@string/compagne" />
+
                 <item
                     android:id="@+id/pen"
                     android:icon="@drawable/mobile2"
-                    android:title="Prise en Charge" />
+                    android:title="@string/prise" />
+                <item
+                    android:id="@+id/acm"
+                    android:icon="@drawable/user"
+                    android:title="@string/mobil" />
 
             </group>
         </menu>
     </item>
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/syn"
-            android:icon="@drawable/ic_baseline_login_24"
-            android:title="logout" />
-    </group>
+    <item android:title="Gestion des intervenants ">
+        <menu>
+            <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/intervenants"
+                android:icon="@drawable/intevenants"
+                android:title="Gestion des intervenants" />
+            </group>
+        </menu>
+        </item>
+    <item android:title="Gestion des Intrants">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/stock"
+                    android:icon="@drawable/stocke"
+                    android:title="Gestion des Intrants " />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/ic_baseline_login_24"
+                    android:title="Déconnecter" />
+            </group>
+        </menu>
+    </item>
+
+
+
 
 </menu>

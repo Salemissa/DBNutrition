@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -74,12 +75,12 @@ public class home extends Fragment {
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_home, container, false);
         // Inflate the layout for this fragment
-        ImageView depistagpasif= view.findViewById(R.id.pasif);
-        ImageView listActivtes=view.findViewById(R.id.listActivtes);
-        ImageView listcompagne=view.findViewById(R.id.comp);
-        ImageView listSuivi=view.findViewById(R.id.listsss);
-        ImageView lisPris=view.findViewById(R.id.prisList);
-        ImageView listapproches=view.findViewById(R.id.listapproches);
+        CardView depistagpasif= view.findViewById(R.id.dplist);
+        CardView listActivtes=view.findViewById(R.id.acmlist);
+        CardView listcompagne=view.findViewById(R.id.cplist);
+        CardView listSuivi=view.findViewById(R.id.ssslist);
+        CardView lisPris=view.findViewById(R.id.prilist);
+        CardView listapproches=view.findViewById(R.id.aplist);
         depistagpasif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

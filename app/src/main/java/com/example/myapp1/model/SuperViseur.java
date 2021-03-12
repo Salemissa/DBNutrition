@@ -6,40 +6,26 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class SuperViseur {
-    @DatabaseField(generatedId = true)
-    private Long id;
+public class SuperViseur extends Intervenant {
+
+
     @DatabaseField
-    private  String nom;
-    @DatabaseField
-    private  String usernane;
+    private  String username;
     @DatabaseField
     private  String password;
+    @DatabaseField(unique = true)
+    private  String code;
     @ForeignCollectionField(eager=false)
     private ForeignCollection<Animateur> animateurs;
     public  SuperViseur(){};
-    public Long getId() {
-        return id;
+
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getUsernane() {
-        return usernane;
-    }
-
-    public void setUsernane(String usernane) {
-        this.usernane = usernane;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -56,5 +42,13 @@ public class SuperViseur {
 
     public void setAnimateurs(ForeignCollection<Animateur> animateurs) {
         this.animateurs = animateurs;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

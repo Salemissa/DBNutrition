@@ -3,6 +3,7 @@ package com.example.myapp1.pcim;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -37,6 +38,7 @@ import com.example.myapp1.model.Test;
 import com.example.myapp1.model.USB;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,6 +88,7 @@ public class Approche_communataire extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private SimpleDateFormat sdf;
 
     public Approche_communataire() {
         // Required empty public constructor
@@ -155,6 +158,7 @@ public class Approche_communataire extends Fragment {
         this.PaluC=this.v.findViewById(R.id.palucon);
         this.vaccin=this.v.findViewById(R.id.vaccin);
         this.diarrhe=this.v.findViewById(R.id.Dirrhee);
+        this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         rapport = (ImageView) this.v.findViewById(R.id.imageRaport);
         this.Ajouter=this.v.findViewById(R.id.add);
 
@@ -244,6 +248,7 @@ public class Approche_communataire extends Fragment {
 
 
         final List<String> moughata  = new ArrayList<String>();
+        moughata.add("");
 
     List<Moughata> ListMoughata=databaseManager.ListMoughata();
         if(ListMoughata!=null){
@@ -338,7 +343,8 @@ public class Approche_communataire extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             String item = parent.getItemAtPosition(position).toString();
             LocaliteUsb(item);
-            localite = databaseManager.localitename(item);
+
+            //localite = databaseManager.localitename(item);
 
         }
 
@@ -354,9 +360,11 @@ public class Approche_communataire extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
                 //LocaliteUsb(item);
-                usb= databaseManager.usbname(item);
+                if(item.equals("")){}
+                else {
+                    usb = databaseManager.usbname(item);
+                }
 
-                Toast.makeText(getActivity(),usb.getUsbname(),Toast.LENGTH_LONG);
 
             }
 
@@ -370,26 +378,36 @@ public class Approche_communataire extends Fragment {
 
 
     void MoughataComune(String moughata) {
-        Moughata moughataname = databaseManager.Moughataname(moughata);
+        Moughata moughataname =null;
+        if(!moughata.isEmpty()){
+            moughataname=databaseManager.Moughataname(moughata);
+        }
         List<String> communesM = new ArrayList<String>();
-
+        communesM.add("");
         if (moughataname != null) {
             for (Commune commune : moughataname.getCommunes()) {
-
                 communesM.add(commune.getCommunename().toString());
             }
-
-            ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
-            this.spinnercommune.setAdapter(communadapter);
-            communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         }
+
+        ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
+        this.spinnercommune.setAdapter(communadapter);
+        communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
     }
 
 
     void CommuneLocalite(String commune) {
-        Commune communesel = databaseManager.communename(commune);
+        Commune communesel = null;
+        if(commune.equals("")){
+
+        }
+        else{
+            communesel = databaseManager.communename(commune);
+        }
+
         List<String> localiesCommune = new ArrayList<String>();
+        localiesCommune.add("");
 
         if (communesel != null) {
             for (Localite localite : communesel.getLocalites()) {
@@ -407,16 +425,21 @@ public class Approche_communataire extends Fragment {
 
 
     void LocaliteUsb(String loc) {
-        Localite localite = databaseManager.localitename(loc);
+        Localite localite =null;
+        if(loc.equals("")) {
+        }
+        else{
+            localite = databaseManager.localitename(loc);
+        }
+
+
         List<String> localieusb = new ArrayList<String>();
+        localieusb.add("");
 
         if (localite != null) {
             for (USB usb :localite.getUsb()) {
-
                 localieusb.add(localite.getLocalitename().toString());
             }
-
-
         }
 
         ArrayAdapter usbadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, localieusb);
@@ -426,36 +449,39 @@ public class Approche_communataire extends Fragment {
 
 
     void Ajouter(){
-        ApprocheCommunataire approcheCommunataire =new ApprocheCommunataire();
-        approcheCommunataire.setAnnee(this.anne);
-        approcheCommunataire.setMois(moi);
-        approcheCommunataire.setUsb(usb);
-        approcheCommunataire.setBpJaune(Integer.parseInt(PBR.getText().toString()));
-        approcheCommunataire.setBpJaune(Integer.parseInt(PBG.getText().toString()+""));
-        approcheCommunataire.setDate(new Date());
-        approcheCommunataire.setNCG(Integer.parseInt(NCG.getText().toString()));
-        approcheCommunataire.setTestpalu(Integer.parseInt(TestP.getText().toString()));
-        approcheCommunataire.setPaluconfirme(Integer.parseInt(PaluC.getText().toString()));
-         approcheCommunataire.setFammeEnc(Integer.parseInt(FE.getText().toString()));
-         approcheCommunataire.setFammeEncSuvi(Integer.parseInt(FES.getText().toString()));
-        approcheCommunataire.setDiarrhee(Integer.parseInt(diarrhe.getText().toString()));
-        approcheCommunataire.setMenages(Integer.parseInt(menage.getText().toString()));
-        approcheCommunataire.setVaccin(Integer.parseInt(vaccin.getText().toString()));
-        approcheCommunataire.setVisite(Integer.parseInt(viste.getText().toString()));
-        approcheCommunataire.setTR(Integer.parseInt(TR.getText().toString()));
-        approcheCommunataire.setDateCreation(date.getText().toString());
-        approcheCommunataire.setRapport(this.Rapport);
-        approcheCommunataire.setDate(new Date());
-        try {
-            databaseManager.inserApprocheCommunataire(approcheCommunataire);
+        if(VerficationChampe()){}
+        else {
+            ApprocheCommunataire approcheCommunataire = new ApprocheCommunataire();
+            approcheCommunataire.setAnnee(this.anne);
+            approcheCommunataire.setMois(moi);
+            approcheCommunataire.setUsb(usb);
+            approcheCommunataire.setBprouge(Integer.parseInt(PBR.getText().toString()));
+            approcheCommunataire.setBpJaune(Integer.parseInt(PBG.getText().toString() + ""));
+            approcheCommunataire.setDate(sdf.format(new Date()));
+            approcheCommunataire.setNCG(Integer.parseInt(NCG.getText().toString()));
+            approcheCommunataire.setTestpalu(Integer.parseInt(TestP.getText().toString()));
+            approcheCommunataire.setPaluconfirme(Integer.parseInt(PaluC.getText().toString()));
+            approcheCommunataire.setFammeEnc(Integer.parseInt(FE.getText().toString()));
+            approcheCommunataire.setFammeEncSuvi(Integer.parseInt(FES.getText().toString()));
+            approcheCommunataire.setDiarrhee(Integer.parseInt(diarrhe.getText().toString()));
+            approcheCommunataire.setMenages(Integer.parseInt(menage.getText().toString()));
+            approcheCommunataire.setVaccin(Integer.parseInt(vaccin.getText().toString()));
+            approcheCommunataire.setVisite(Integer.parseInt(viste.getText().toString()));
+            approcheCommunataire.setTR(Integer.parseInt(TR.getText().toString()));
+            approcheCommunataire.setDateCreation(date.getText().toString());
+            approcheCommunataire.setRapport(this.Rapport);
+            approcheCommunataire.setStructurerapport("");
+            approcheCommunataire.setDate(sdf.format(new Date()));
+            try {
+                databaseManager.inserApprocheCommunataire(approcheCommunataire);
 
-            Toast.makeText(getActivity(),"ajouter Avec succe"+approcheCommunataire.getRapport()+""+approcheCommunataire.getDateCreation(),Toast.LENGTH_SHORT).show();
-             Intent intent= new Intent( getActivity(), ListApproche.class);
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "ajouter Avec succe" + approcheCommunataire.getRapport() + "" + approcheCommunataire.getDateCreation(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ListApproche.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
         }
-
     }
 
 
@@ -480,5 +506,112 @@ public class Approche_communataire extends Fragment {
             //rapport.setImageURI(Uri.parse("/drawable/add_a_photo"));
 
         }
+    }
+    boolean VerficationChampe() {
+        boolean error = false;
+        if (PBR.getText().toString().trim().isEmpty()) {
+            error = true;
+            PBR.setError("invalid!");
+        }
+
+        if (PBG.getText().toString().trim().isEmpty()) {
+            error = true;
+            PBG.setError("invalid!");
+        }
+
+        if (viste.getText().toString().isEmpty()) {
+            error = true;
+            viste.setError("invalid!");
+        }
+        if (menage.getText().toString().isEmpty()) {
+            error = true;
+            menage.setError("invalid!");
+        }
+        if (FE.getText().toString().isEmpty()) {
+            error = true;
+            FE.setError("invalid!");
+        }
+        if (FES.getText().toString().isEmpty()) {
+            error = true;
+            FES.setError("invalid!");
+        }
+
+        if (date.getText().toString().isEmpty()) {
+            error = true;
+            date.setError("invalid!");
+        }
+        if (TR.getText().toString().isEmpty()) {
+            error = true;
+            TR.setError("invalid!");
+        }
+
+        if (PaluC.getText().toString().isEmpty()) {
+            error = true;
+            PaluC.setError("invalid!");
+        }
+        if (TestP.getText().toString().isEmpty()) {
+            error = true;
+            TestP.setError("invalid!");
+        }
+        if (diarrhe.getText().toString().isEmpty()) {
+            error = true;
+            diarrhe.setError("invalid!");
+        }
+
+        if (vaccin.getText().toString().isEmpty()) {
+            error = true;
+            vaccin.setError("invalid!");
+        }
+        if(NCG.getText().toString().isEmpty()) {
+            error = true;
+            NCG.setError("invalid!");
+        }
+
+        if (usb==null) {
+            error = true;
+            TextView errorText= ((TextView)spinnerusb.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (anne.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinneranne.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (moi.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnermois.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (spinnerlocalite.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnerlocalite.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnercommune.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnercommune.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnermoughata.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnermoughata.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        return error;
     }
 }

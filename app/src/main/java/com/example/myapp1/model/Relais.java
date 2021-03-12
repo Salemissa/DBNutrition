@@ -8,38 +8,18 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class Relais {
-    @DatabaseField(generatedId = true)
-    @JsonProperty("id")
-    private Long id;
-    @DatabaseField
-    @JsonProperty("nom")
-    private  String nom;
+public class Relais extends  Intervenant {
+
     @DatabaseField
     @JsonProperty("code")
     private String code;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     @JsonIgnore
     private Animateur animateur;
-    @ForeignCollectionField(eager=false)
-    @JsonIgnore
-    private ForeignCollection<Localite> localites;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @JsonProperty("relais")
+    private Localite localite;
     public Relais(){};
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
 
     public String getCode() {
         return code;
@@ -57,11 +37,11 @@ public class Relais {
         this.animateur = animateur;
     }
 
-    public ForeignCollection<Localite> getLocalites() {
-        return localites;
+    public Localite getLocalite() {
+        return localite;
     }
 
-    public void setLocalites(ForeignCollection<Localite> localites) {
-        this.localites = localites;
+    public void setLocalite(Localite localite) {
+        this.localite = localite;
     }
 }

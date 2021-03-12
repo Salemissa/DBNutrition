@@ -23,6 +23,9 @@ public class Structure {
     @ForeignCollectionField(eager=false)
     private ForeignCollection<SuviSousSurvillance> suviSousSurvillances;
 
+    @ForeignCollectionField(eager=false)
+    private ForeignCollection<MedicamentIntrants> medicamentIntrants;
+
 
 
 
@@ -66,5 +69,13 @@ public class Structure {
 
     public void setDepistage(ForeignCollection<Depistage> depistage) {
         this.depistage = depistage;
+    }
+
+    public ForeignCollection<MedicamentIntrants> getMedicamentIntrants() {
+        return medicamentIntrants;
+    }
+
+    public void setMedicamentIntrants(ForeignCollection<MedicamentIntrants> medicamentIntrants) {
+        this.medicamentIntrants = medicamentIntrants;
     }
 }

@@ -24,18 +24,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="24dp"
-            android:text="PCIMA"
-            android:textSize="30sp"
+            android:layout_marginTop="8dp"
+            android:text="@string/app_name"
+            android:textSize="22sp"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="0dp"
@@ -49,11 +51,11 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="160dp"
+            android:layout_width="205dp"
+            android:layout_height="106dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:src="@mipmap/amami"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -69,6 +71,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView">
             <androidx.cardview.widget.CardView
+                android:id="@+id/dplist"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -84,7 +87,7 @@
                         android:layout_below="@id/pasif"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
-                        android:text="Depistage Passif"
+                        android:text="@string/passif"
                         android:textSize="24sp"
                          />
 
@@ -98,6 +101,7 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/ssslist"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -113,7 +117,7 @@
                         android:layout_below="@id/listsss"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
-                        android:text="Suivi sous servellance"
+                        android:text="@string/suivi_sous_surveillance"
                         android:textSize="24sp"
                         />
                     <ImageView
@@ -137,6 +141,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
             <androidx.cardview.widget.CardView
+                android:id="@+id/cplist"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -152,8 +157,8 @@
                         android:layout_below="@id/listapproches"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
-                        android:text="Approche Communataire"
-                        android:textSize="24sp"
+                        android:text="@string/compagne"
+                        android:textSize="22sp"
                        />
                     <ImageView
                         android:id="@+id/listapproches"
@@ -165,6 +170,7 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/prilist"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -180,7 +186,7 @@
                         android:layout_below="@id/comp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
-                        android:text="Compagne De Depistage"
+                        android:text="@string/prise"
                         android:textSize="24sp"
                         />
                     <ImageView
@@ -194,6 +200,7 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
         <LinearLayout
+            android:id="@id/linearLayout3"
             android:layout_width="0dp"
             android:layout_height="175dp"
             android:orientation="horizontal"
@@ -203,6 +210,75 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
             <androidx.cardview.widget.CardView
+                android:id="@+id/intervenantlist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="#8AE3DB"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/lisintevenant"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/mobil"
+                        android:textSize="24sp"
+                        />
+                    <ImageView
+                        android:id="@+id/lisintevenant"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"
+                        app:srcCompat="@drawable/user" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/stocklist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="#8AE3DB"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/stock"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/approche"
+                        android:textSize="22sp"
+                         />
+                    <ImageView
+                        android:id="@+id/stock"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"
+                        app:srcCompat="@drawable/mobile2" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="175dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/acmlist"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -218,7 +294,7 @@
                         android:layout_below="@id/listActivtes"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
-                        android:text="Activite Mobile"
+                        android:text="Gestion des intervenants "
                         android:textSize="24sp"
                         />
                     <ImageView
@@ -227,10 +303,11 @@
                         android:layout_height="75dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        app:srcCompat="@drawable/user" />
+                        app:srcCompat="@drawable/intevenants" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/aplist"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -246,16 +323,16 @@
                         android:layout_below="@id/prisList"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
-                        android:text="Prise en Charge"
-                        android:textSize="24sp"
-                         />
+                        android:text="Gestion des Intrants "
+                        android:textSize="22sp"
+                        />
                     <ImageView
                         android:id="@+id/prisList"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        app:srcCompat="@drawable/mobile2" />
+                        app:srcCompat="@drawable/stocke" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

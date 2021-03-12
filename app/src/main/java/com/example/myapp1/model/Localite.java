@@ -17,12 +17,16 @@ public class Localite {
         @DatabaseField
         @JsonProperty("localitename")
         private String localitename;
+        @DatabaseField
+        private double lat;
+        @DatabaseField
+        private double lon;
         @DatabaseField(foreign = true, foreignAutoRefresh = true)
         @JsonProperty("commune")
         private Commune commune;
-        @DatabaseField(foreign = true, foreignAutoRefresh = true)
-        @JsonProperty("relais")
-        private Relais relais;
+        @ForeignCollectionField(eager=false)
+        @JsonIgnore
+        private ForeignCollection<Relais> relais;
         @ForeignCollectionField(eager=false)
         @JsonIgnore
         private ForeignCollection<Depistage> depistage;
@@ -60,11 +64,12 @@ public class Localite {
         this.commune = commune;
     }
 
-    public Relais getRelais() {
+
+    public ForeignCollection<Relais> getRelais() {
         return relais;
     }
 
-    public void setRelais(Relais relais) {
+    public void setRelais(ForeignCollection<Relais> relais) {
         this.relais = relais;
     }
 
@@ -90,5 +95,21 @@ public class Localite {
 
     public void setPriseEnCharges(ForeignCollection<PriseenCharge> priseEnCharges) {
         this.priseEnCharges = priseEnCharges;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
     }
 }

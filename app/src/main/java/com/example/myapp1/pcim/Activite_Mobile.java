@@ -1,6 +1,7 @@
 package com.example.myapp1.pcim;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapp1.ActivtiteMobileList;
@@ -27,6 +29,7 @@ import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +68,7 @@ public class Activite_Mobile extends Fragment {
     private String mParam1;
     private String mParam2;
     private EditText rougeF,jauneF,vertF,odemeF,rougeG,jauneG,vertG,odemeG;
+    private SimpleDateFormat sdf;
 
 
     public Activite_Mobile() {
@@ -125,8 +129,7 @@ public class Activite_Mobile extends Fragment {
         this.jauneG= (EditText) this.v.findViewById(R.id.JauneG);
         this.vertG= (EditText) this.v.findViewById(R.id.VertG);
         this.odemeG=(EditText) this.v.findViewById(R.id.odemeG);
-
-
+        this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         this.Ajouter =(Button) this.v.findViewById(R.id.Ajouter);
 
@@ -148,6 +151,7 @@ public class Activite_Mobile extends Fragment {
         final List<String> moughata  = new ArrayList<String>();
 
         List<Moughata> ListMoughata=databaseManager.ListMoughata();
+         moughata.add("");
         if(ListMoughata!=null){
             for( Moughata moug : ListMoughata ) {
                 moughata.add(moug.getMoughataname());
@@ -162,11 +166,6 @@ public class Activite_Mobile extends Fragment {
         ArrayAdapter ageadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, ages);
         ageadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerage.setAdapter(ageadapter);
-
-
-
-
-
         ArrayAdapter moisadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, mois);
         moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnermois.setAdapter(moisadapter);
@@ -252,6 +251,7 @@ public class Activite_Mobile extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
+
                 localite = databaseManager.localitename(item);
             }
 
@@ -265,19 +265,24 @@ public class Activite_Mobile extends Fragment {
 
 
     void MoughataComune(String moughata) {
-        Moughata moughataname = databaseManager.Moughataname(moughata);
+        Moughata moughataname =null;
+        if(!moughata.isEmpty()){
+            moughataname=databaseManager.Moughataname(moughata);
+        }
         List<String> communesM = new ArrayList<String>();
-
+                      communesM.add("");
         if (moughataname != null) {
             for (Commune commune : moughataname.getCommunes()) {
 
                 communesM.add(commune.getCommunename().toString());
             }
 
-            ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
-            this.spinnercommune.setAdapter(communadapter);
-            communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         }
+
+        ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
+        this.spinnercommune.setAdapter(communadapter);
+        communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
     }
 
@@ -285,6 +290,7 @@ public class Activite_Mobile extends Fragment {
     void CommuneLocalite(String commune) {
         Commune communesel = databaseManager.communename(commune);
         List<String> localiesCommune = new ArrayList<String>();
+        localiesCommune.add("");
 
         if (communesel != null) {
             for (Localite localite : communesel.getLocalites()) {
@@ -302,32 +308,135 @@ public class Activite_Mobile extends Fragment {
 
 
     void AjouterDepistage(){
-        Depistage depistage = new Depistage();
-        depistage.setAnnee(anne);
-        depistage.setMois(moi);
-        depistage.setAge(age);
-        depistage.setLocalite(localite);
-        depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
-        depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
-        depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
-        depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
-        depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
-        depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
-        depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
-        depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
-        depistage.setDate(new Date());
-        depistage.setType("ActivitéMobile");
+        if(VerficationChampe()){}
+        else {
+            this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Depistage depistage = new Depistage();
+            depistage.setAnnee(anne);
+            depistage.setMois(moi);
+            depistage.setAge(age);
+            depistage.setLocalite(localite);
+            depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
+            depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
+            depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
+            depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+            depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
+            depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
+            depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
+            depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
+            depistage.setDate(this.sdf.format(new Date()));
+            depistage.setType("ActivitéMobile");
 
-        try {
-            databaseManager.inserDepistage(depistage);
+            try {
+                databaseManager.inserDepistage(depistage);
+                Toast.makeText(getActivity(), "ajouter Avec succe" + depistage.getLocalite().getLocalitename(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ActivtiteMobileList.class);
+                intent.putExtra("type", "ActivitéMobile");
+                startActivity(intent);
+                this.onDestroy();
+            } catch (Exception e) {
+                Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
-            Toast.makeText(getActivity(),"ajouter Avec succe"+depistage.getLocalite().getLocalitename(),Toast.LENGTH_SHORT).show();
-            Intent intent= new Intent( getActivity(), ActivtiteMobileList.class);
-            intent.putExtra("type","ActivitéMobile");
-            startActivity(intent);
-        } catch (Exception e) {
-            //Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+    boolean VerficationChampe() {
+
+        boolean error=false;
+        if (jauneG.getText().toString().trim().isEmpty()) {
+            error = true;
+            jauneG.setError("invalid!");
         }
 
+        if (jauneF.getText().toString().trim().isEmpty()) {
+            error = true;
+            jauneF.setError("invalid!");
+        }
+
+        if (rougeG.getText().toString().isEmpty()) {
+            error = true;
+            rougeG.setError("invalid!");
+        }
+        if (rougeF.getText().toString().isEmpty()) {
+            error = true;
+            rougeF.setError("invalid!");
+        }
+        if (vertG.getText().toString().isEmpty()) {
+            error = true;
+            vertG.setError("invalid!");
+        }
+        if (vertF.getText().toString().isEmpty()) {
+            error = true;
+            vertF.setError("invalid!");
+        }
+
+        if (odemeG.getText().toString().isEmpty()) {
+            error = true;
+            odemeG.setError("invalid!");
+        }
+        if (odemeF.getText().toString().isEmpty()) {
+            error = true;
+            odemeF.setError("invalid!");
+        }
+
+        if (age.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnerage.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (anne.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinneranne.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (moi.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnermois.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (localite==null) {
+            error = true;
+            TextView errorText= ((TextView)spinnerlocalite.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnercommune.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnercommune.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnermoughata.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnermoughata.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        return error;
+    }
+
+    @Override
+    public void onDestroy() {
+        jauneF.setText("");
+        rougeF.setText("");
+        vertF.setText("");
+        odemeF.setText("");
+        jauneG.setText("");
+        rougeG.setText("");
+        vertG.setText("");
+        odemeG.setText("");
+        super.onDestroy();
     }
 }

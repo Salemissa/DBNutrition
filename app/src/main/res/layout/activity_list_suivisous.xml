@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/souviList"
     tools:context=".ListSuivisous">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +17,7 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/syn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/sync"
@@ -29,11 +28,21 @@
 
 
         <include
+            android:id="@+id/souviList"
             layout="@layout/content_list_suivisous"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/button2"
-            android:layout_marginTop="12dp" />
+            android:layout_below="@+id/toolbar"
+          />
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="53dp"
+
+            android:layout_marginLeft="14dp"
+            android:gravity="center"
+            android:text="@string/suivi_sous_surveillance"
+            android:textSize="25sp" />
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

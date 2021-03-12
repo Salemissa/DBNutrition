@@ -74,11 +74,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:text="Moughata"
+            android:text="Moughataa"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <Spinner
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/moghata"
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -97,7 +97,7 @@
             android:textSize="19sp"
             android:textStyle="bold" />
 
-        <Spinner
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/commune"
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -126,7 +126,7 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <Spinner
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/structure"
             android:layout_width="0dp"
             android:layout_height="match_parent"

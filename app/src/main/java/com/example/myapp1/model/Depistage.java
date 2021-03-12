@@ -1,5 +1,6 @@
 package com.example.myapp1.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -17,9 +18,14 @@ public class Depistage {
     private String annee;
     @DatabaseField
     private  String  age;
+
     @DatabaseField(dataType = DataType.BYTE_ARRAY)
     @JsonIgnore
     private byte[] rapport;
+    @DatabaseField
+    private String structurerapport;
+    @DatabaseField
+    private  String rapportname;
     @DatabaseField
     private  int rougeG;
     @DatabaseField
@@ -36,19 +42,18 @@ public class Depistage {
     private  int odemeG;
     @DatabaseField
     private  int odemeF;
-
     @DatabaseField
     private  int zscore;
-
     @DatabaseField
     private  int zscore2;
     @DatabaseField
     private String type;
 
-    @DatabaseField(dataType = DataType.DATE_STRING,
-            format = "yyyy-MM-dd")
-    private Date date;
-
+    @DatabaseField
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
+    private String date;
+    @DatabaseField
+    private int syn;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Structure structure;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
@@ -115,7 +120,7 @@ public class Depistage {
     }
 
     public void setJauneF(int jauneF) {
-        jauneF = jauneF;
+        this.jauneF = jauneF;
     }
 
     public int getJauneG() {
@@ -123,7 +128,7 @@ public class Depistage {
     }
 
     public void setJauneG(int jauneG) {
-        jauneG = jauneG;
+        this.jauneG = jauneG;
     }
 
     public int getVertF() {
@@ -131,7 +136,7 @@ public class Depistage {
     }
 
     public void setVertF(int vertF) {
-        vertF = vertF;
+        this.vertF = vertF;
     }
 
     public int getVertG() {
@@ -139,7 +144,7 @@ public class Depistage {
     }
 
     public void setVertG(int vertG) {
-        vertG = vertG;
+        this.vertG = vertG;
     }
 
     public int getOdemeG() {
@@ -147,7 +152,7 @@ public class Depistage {
     }
 
     public void setOdemeG(int odemeG) {
-        odemeG = odemeG;
+        this.odemeG = odemeG;
     }
 
     public int getOdemeF() {
@@ -155,7 +160,7 @@ public class Depistage {
     }
 
     public void setOdemeF(int odemeF) {
-        odemeF = odemeF;
+        this.odemeF = odemeF;
     }
 
     public int getZscore() {
@@ -182,11 +187,11 @@ public class Depistage {
         this.type = type;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -202,9 +207,35 @@ public class Depistage {
         return localite;
     }
 
+    public String getRapportname() {
+        return rapportname;
+    }
+
+    public void setRapportname(String rapportname) {
+        this.rapportname = rapportname;
+    }
+
     public void setLocalite(Localite localite) {
         this.localite = localite;
     }
 
+    public String getStructurerapport() {
+        return structurerapport;
+    }
 
+    public void setStructurerapport(String structurerapport) {
+        this.structurerapport = structurerapport;
+    }
+
+
+
+    public void setSyn(int syn) {
+        this.syn = syn;
+    }
+
+    public int getSyn() {
+        return syn;
+    }
 }
+
+

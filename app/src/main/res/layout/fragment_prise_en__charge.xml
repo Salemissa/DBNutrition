@@ -10,6 +10,7 @@
         layout="@layout/localite"
         android:layout_width="match_parent"
         android:layout_height="180dp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -35,10 +36,13 @@
         android:textStyle="bold"
         android:textSize="20sp" />
 
-    <Spinner
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
         android:id="@+id/localite"
         android:layout_width="141dp"
         android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+
         android:spinnerMode="dropdown" />
     </LinearLayout>
 
@@ -134,6 +138,7 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:textAlignment="center"
             android:text="sexe"
             android:textStyle="bold">
 
@@ -184,7 +189,7 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="2"
             android:gravity="center"
-            android:text="Contact"
+            android:text="TEL"
             android:textStyle="bold">
         </TextView>
         <TextView
@@ -308,8 +313,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:textAlignment="center"
-            android:inputType="number"
-            android:maxLength="6"
+            android:maxLength="10"
             android:textStyle="bold">
         </EditText>
     <Spinner
@@ -320,6 +324,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:textAlignment="center"
+
         android:textStyle="bold">
     </Spinner>
         <Spinner
@@ -328,7 +333,9 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
+
             android:gravity="center"
+            android:textAlignment="center"
             android:textStyle="bold">
 
         </Spinner>
@@ -339,6 +346,7 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:gravity="center"
+
             android:textAlignment="center"
             android:textStyle="bold">
         </Spinner>
@@ -350,10 +358,9 @@
         android:layout_width="190dp"
         android:layout_height="58dp"
         android:layout_below="@+id/line4"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="126dp"
-        android:layout_marginLeft="126dp"
+       android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"
+        android:textColor="#FFF"
         android:layout_marginTop="81dp"
         android:text="Ajouter" />
 

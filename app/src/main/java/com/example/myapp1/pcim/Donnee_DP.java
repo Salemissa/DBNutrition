@@ -2,25 +2,21 @@ package com.example.myapp1.pcim;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.hardware.Camera;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,23 +30,21 @@ import android.widget.Toast;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
 import com.example.myapp1.DepistagePassifList;
-import com.example.myapp1.MainActivity;
 import com.example.myapp1.R;
 import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Depistage;
-import com.example.myapp1.model.DepistagePassif;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.Test;
-import com.j256.ormlite.dao.ForeignCollection;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
-import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 
 /**
@@ -80,7 +74,7 @@ public class Donnee_DP extends Fragment {
     int Rouge, Jaune, Vert, Odeme, Zscor, Zscore2;
     Button Ajouter;
 
-
+    private SimpleDateFormat sdf;
     DatabaseManager databaseManager;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -167,6 +161,7 @@ public class Donnee_DP extends Fragment {
         this.zscore = (EditText) this.v.findViewById(R.id.zscore);
         this.zscore2 = (EditText) this.v.findViewById(R.id.zscore2);
         this.Ajouter = (Button) this.v.findViewById(R.id.Ajouter);
+        this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         // this.Modfier =(Button) this.v.findViewById(R.id.Modfier);
         // this.Modfier.setVisibility(View.GONE);
 
@@ -199,7 +194,7 @@ public class Donnee_DP extends Fragment {
         String[] ages = donnes.ages;
 
         final List<String> moughata = new ArrayList<String>();
-
+        moughata.add("");
         List<Moughata> ListMoughata = databaseManager.ListMoughata();
         if (ListMoughata != null) {
             for (Moughata moug : ListMoughata) {
@@ -282,7 +277,13 @@ public class Donnee_DP extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                MoughataComune(item);
+                if(position==0){
+
+                    Toast.makeText(getActivity(),"vide ",Toast.LENGTH_SHORT).show();
+                }
+
+                    MoughataComune(item);
+
             }
 
             @Override
@@ -296,7 +297,11 @@ public class Donnee_DP extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                CommuneStructure(item);
+
+                    CommuneStructure(item);
+
+
+
             }
 
             @Override
@@ -416,41 +421,52 @@ public class Donnee_DP extends Fragment {
 
     @Override
     public void onResume() {
+
         super.onResume();
     }
 
 
     void MoughataComune(String moughata) {
-        Moughata moughataname = databaseManager.Moughataname(moughata);
+        Moughata moughataname=null;
+        if(!moughata.isEmpty()) {
+           moughataname= databaseManager.Moughataname(moughata);
+        }
         List<String> communesM = new ArrayList<String>();
-
+        communesM.add("");
         if (moughataname != null) {
             for (Commune commune : moughataname.getCommunes()) {
 
                 communesM.add(commune.getCommunename().toString());
             }
 
-            ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
-            this.spinnercommune.setAdapter(communadapter);
-            communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         }
+
+        ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
+        this.spinnercommune.setAdapter(communadapter);
+        communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
 
     }
 
     void CommuneStructure(String commune) {
-        Commune communesel = databaseManager.communename(commune);
+        Commune communesel=null;
+        if(!commune.isEmpty()) {
+            communesel = databaseManager.communename(commune);
+        }
         List<String> StructureCommune = new ArrayList<String>();
-
+          StructureCommune.add("");
         if (communesel != null) {
             for (Structure structurs : communesel.getStructures()) {
 
                 StructureCommune.add(structurs.getStructurename().toString());
             }
 
-            ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, StructureCommune);
-            this.spinnerstructer.setAdapter(structureadapter);
-            structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         }
+        ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, StructureCommune);
+        this.spinnerstructer.setAdapter(structureadapter);
+        structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
         //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -459,57 +475,166 @@ public class Donnee_DP extends Fragment {
 
 
     private void AjouterDepistage() {
-        VerficationChampe();
-        Depistage depistage = new Depistage();
-        depistage.setAnnee(anne);
-        depistage.setMois(moi);
-        depistage.setAge(age);
-        depistage.setStructure(structure);
-        depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
-        depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
-        depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
-        depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
-        depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
-        depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
-        depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
-        depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
-        depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
-        depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
-        depistage.setDate(new Date());
-        depistage.setRapport(this.Rapport);
-        depistage.setType("DepistagePassif");
 
-        try {
-            databaseManager.inserDepistage(depistage);
+       boolean ver= VerficationChampe();
+       if (ver){}
+       else {
+           Depistage depistage = new Depistage();
+           depistage.setAnnee(anne);
+           depistage.setMois(moi);
+           depistage.setAge(age);
+           depistage.setStructure(structure);
+           depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
+           depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
+           depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
+           depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+           depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
+           depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
+           depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
+           depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
+           depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
+           depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
+            depistage.setSyn(0);
+           depistage.setDate(this.sdf.format(new Date()));
+           depistage.setRapport(this.Rapport);
+           String user ="2345";
+           String uniqueID ="Rapport"+depistage.getStructure().getId()+"";
+           //Toast.makeText(this.getActivity(),uniqueID,Toast.LENGTH_LONG).show();
+            depistage.setType("DepistagePassif");
 
-            Toast.makeText(getActivity(), "ajouter Avec succe", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getActivity(), DepistagePassifList.class);
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-        }
+           try {
+               databaseManager.inserDepistage(depistage);
+
+               Toast.makeText(getActivity(), "ajouter Avec succe", Toast.LENGTH_SHORT).show();
+               Intent intent = new Intent(getActivity(), DepistagePassifList.class);
+
+               startActivity(intent);
+               this.onDestroyView();
+           } catch (Exception e) {
+               Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+           }
+       }
     }
 
 
     boolean VerficationChampe() {
 
         boolean error=false;
-        if (jauneF.getText().toString().isEmpty()) {
+        if (jauneG.getText().toString().trim().isEmpty()) {
             error = true;
-            jauneF.setError("invalid!");
+            jauneG.setError("invalid!");
         }
 
-        if (jauneG.getText().toString().isEmpty()) {
+        if (jauneF.getText().toString().trim().isEmpty()) {
             error = true;
             jauneF.setError("invalid!");
         }
 
         if (rougeG.getText().toString().isEmpty()) {
             error = true;
-            jauneF.setError("invalid!");
+            rougeG.setError("invalid!");
         }
+        if (rougeF.getText().toString().isEmpty()) {
+            error = true;
+            rougeF.setError("invalid!");
+        }
+        if (vertG.getText().toString().isEmpty()) {
+            error = true;
+            vertG.setError("invalid!");
+        }
+        if (vertF.getText().toString().isEmpty()) {
+            error = true;
+            vertF.setError("invalid!");
+        }
+
+        if (odemeG.getText().toString().isEmpty()) {
+            error = true;
+            odemeG.setError("invalid!");
+        }
+        if (odemeF.getText().toString().isEmpty()) {
+            error = true;
+            odemeF.setError("invalid!");
+        }
+
+        if (zscore.getText().toString().isEmpty()) {
+            error = true;
+            zscore.setError("invalid!");
+        }
+        if (zscore2.getText().toString().isEmpty()) {
+            error = true;
+            zscore2.setError("invalid!");
+        }
+
+        if (age.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnerage.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (anne.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinneranne.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (moi.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnermois.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (structure==null) {
+            error = true;
+            TextView errorText= ((TextView)spinnerstructer.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnercommune.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnercommune.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnermoughata.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnermoughata.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
 
         return error;
     }
+    @Override
+    public void onDestroy() {
+      jauneF.setText("");
+       rougeF.setText("");
+        vertF.setText("");
+        odemeF.setText("");
+        jauneG.setText("");
+       rougeG.setText("");
+       vertG.setText("");
+       odemeG.setText("");
+       zscore2.setText("");
+       zscore.setText("");
+       super.onDestroy();
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
+
+
+
+
 
 }

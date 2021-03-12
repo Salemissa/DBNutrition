@@ -2,6 +2,7 @@ package com.example.myapp1.pcim;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapp1.DataManager.DatabaseManager;
@@ -27,6 +29,7 @@ import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.SuviSousSurvillance;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +57,7 @@ public class Suvi_Sous_surveillance extends Fragment {
     Spinner spinnerstructer;
     Spinner spinnerage;
     String type = "passif";
-    EditText ssd,venant,ncg,ngf,read,Gueris,Desces,Abonde,NonRep,Ref,trans;
+    EditText ssd, venant, ncg, ngf, read, Gueris, Desces, Abonde, NonRep, Ref, trans;
     SuviSousSurvillance suviSousSurvillance;
     String moi;
     String anne;
@@ -65,6 +68,7 @@ public class Suvi_Sous_surveillance extends Fragment {
 
 
     DatabaseManager databaseManager;
+    private SimpleDateFormat sdf;
 
     public Suvi_Sous_surveillance() {
         // Required empty public constructor
@@ -117,19 +121,19 @@ public class Suvi_Sous_surveillance extends Fragment {
         this.spinnercommune = this.v.findViewById(R.id.commune);
         this.spinnerstructer = this.v.findViewById(R.id.structure);
         this.spinnerage = this.v.findViewById(R.id.age);
-        this.ssd=this.v.findViewById(R.id.ssd);
-        this.venant=this.v.findViewById(R.id.venant);
-        this.ncg=this.v.findViewById(R.id.NCG);
-        this.ngf=this.v.findViewById(R.id.NGF);
-        this.read=this.v.findViewById(R.id.READ);
-        this.Gueris=this.v.findViewById(R.id.Gueris);
-        this.Desces=this.v.findViewById(R.id.Deces);
-        this.Abonde=this.v.findViewById(R.id.Abd);
-        this.NonRep=this.v.findViewById(R.id.Non_rep);
-        this.Ref=this.v.findViewById(R.id.Ref_Creni);
-        this.trans=this.v.findViewById(R.id.Trans_Crenas);
-        this.Ajouter=this.v.findViewById(R.id.Ajouter);
-
+        this.ssd = this.v.findViewById(R.id.ssd);
+        this.venant = this.v.findViewById(R.id.venant);
+        this.ncg = this.v.findViewById(R.id.NCG);
+        this.ngf = this.v.findViewById(R.id.NGF);
+        this.read = this.v.findViewById(R.id.READ);
+        this.Gueris = this.v.findViewById(R.id.Gueris);
+        this.Desces = this.v.findViewById(R.id.Deces);
+        this.Abonde = this.v.findViewById(R.id.Abd);
+        this.NonRep = this.v.findViewById(R.id.Non_rep);
+        this.Ref = this.v.findViewById(R.id.Ref_Creni);
+        this.trans = this.v.findViewById(R.id.Trans_Crenas);
+        this.Ajouter = this.v.findViewById(R.id.Ajouter);
+        this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         this.Ajouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +148,7 @@ public class Suvi_Sous_surveillance extends Fragment {
         String[] mois = donnes.mois;
         String[] ages = donnes.ages;
         final List<String> moughata = new ArrayList<String>();
-
+                          moughata.add("");
         List<Moughata> ListMoughata = databaseManager.ListMoughata();
         if (ListMoughata != null) {
             for (Moughata moug : ListMoughata) {
@@ -152,8 +156,6 @@ public class Suvi_Sous_surveillance extends Fragment {
                 Toast.makeText(getActivity(), moug.getMoughataname(), Toast.LENGTH_SHORT).show();
             }
         }
-
-
 
 
         ArrayAdapter moughatadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, moughata);
@@ -257,15 +259,20 @@ public class Suvi_Sous_surveillance extends Fragment {
         });
 
 
-
     }
 
 
-
-
     void MoughataComune(String moughata) {
-        Moughata moughataname = databaseManager.Moughataname(moughata);
+        Moughata moughataname =null;
         List<String> communesM = new ArrayList<String>();
+        communesM.add("");
+        if(moughata.equals("")){
+
+        }
+        else{
+            moughataname = databaseManager.Moughataname(moughata);
+        }
+
 
         if (moughataname != null) {
             for (Commune commune : moughataname.getCommunes()) {
@@ -273,16 +280,23 @@ public class Suvi_Sous_surveillance extends Fragment {
                 communesM.add(commune.getCommunename().toString());
             }
 
-            ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
-            this.spinnercommune.setAdapter(communadapter);
-            communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         }
+        ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
+        this.spinnercommune.setAdapter(communadapter);
+        communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
     }
 
     void CommuneStructure(String commune) {
-        Commune communesel = databaseManager.communename(commune);
+        Commune  communesel = null;
+        if(commune.equals("")){}
+        else{
+            communesel = databaseManager.communename(commune);
+        }
+
         List<String> StructureCommune = new ArrayList<String>();
+        StructureCommune.add("");
 
         if (communesel != null) {
             for (Structure structurs : communesel.getStructures()) {
@@ -290,39 +304,140 @@ public class Suvi_Sous_surveillance extends Fragment {
                 StructureCommune.add(structurs.getStructurename().toString());
             }
 
-            ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, StructureCommune);
-            this.spinnerstructer.setAdapter(structureadapter);
-            structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        }
-    }
 
+        }
+        ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, StructureCommune);
+        this.spinnerstructer.setAdapter(structureadapter);
+        structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    }
 
 
     private void Ajouter() {
-        SuviSousSurvillance suviSousSurvillance = new SuviSousSurvillance();
-        suviSousSurvillance.setAnnee(anne);
-        suviSousSurvillance.setMois(moi);
-        suviSousSurvillance.setAge(age);
-        suviSousSurvillance.setStructure(structure);
-        suviSousSurvillance.setSsdebuit(Integer.parseInt(ssd.getText().toString()));
-        suviSousSurvillance.setVenant(Integer.parseInt(venant.getText().toString()));
-        suviSousSurvillance.setNCG(Integer.parseInt(ncg.getText().toString()));
-        suviSousSurvillance.setNGF(Integer.parseInt(ngf.getText().toString()));
-        suviSousSurvillance.setRead(Integer.parseInt(read.getText().toString()));
-        suviSousSurvillance.setGueris(Integer.parseInt(Gueris.getText().toString()));
-        suviSousSurvillance.setDeces(Integer.parseInt(Desces.getText().toString()));
-        suviSousSurvillance.setAbonde(Integer.parseInt(Abonde.getText().toString()));
-        suviSousSurvillance.setNonRep(Integer.parseInt(NonRep.getText().toString()));
-        suviSousSurvillance.setRefCRENI(Integer.parseInt(Ref.getText().toString()));
-        suviSousSurvillance.setTransCRENAS(Integer.parseInt(trans.getText().toString()));
-        suviSousSurvillance.setDate(new Date());
-        try {
-           databaseManager.insersuviSousSurvillance(suviSousSurvillance);
-            Intent intent= new Intent( getActivity(), ListSuivisous.class);
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+        if(VerficationChampe()){}
+        else {
+            SuviSousSurvillance suviSousSurvillance = new SuviSousSurvillance();
+            suviSousSurvillance.setAnnee(anne);
+            suviSousSurvillance.setMois(moi);
+            suviSousSurvillance.setAge(age);
+            suviSousSurvillance.setStructure(structure);
+            suviSousSurvillance.setSsdebuit(Integer.parseInt(ssd.getText().toString()));
+            suviSousSurvillance.setVenant(Integer.parseInt(venant.getText().toString()));
+            suviSousSurvillance.setNCG(Integer.parseInt(ncg.getText().toString()));
+            suviSousSurvillance.setNGF(Integer.parseInt(ngf.getText().toString()));
+            suviSousSurvillance.setRea(Integer.parseInt(read.getText().toString()));
+            suviSousSurvillance.setGueris(Integer.parseInt(Gueris.getText().toString()));
+            suviSousSurvillance.setDeces(Integer.parseInt(Desces.getText().toString()));
+            suviSousSurvillance.setAbonde(Integer.parseInt(Abonde.getText().toString()));
+            suviSousSurvillance.setNonRep(Integer.parseInt(NonRep.getText().toString()));
+            suviSousSurvillance.setRefCRENI(Integer.parseInt(Ref.getText().toString()));
+            suviSousSurvillance.setTransCRENAS(Integer.parseInt(trans.getText().toString()));
+            suviSousSurvillance.setDate(sdf.format(new Date()));
+            suviSousSurvillance.setSyn(0);
+            try {
+                databaseManager.insersuviSousSurvillance(suviSousSurvillance);
+                Intent intent = new Intent(getActivity(), ListSuivisous.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
-    }
 
+    boolean VerficationChampe() {
+        boolean error = false;
+        if (ssd.getText().toString().trim().isEmpty()) {
+            error = true;
+            ssd.setError("invalid!");
+        }
+
+        if (venant.getText().toString().trim().isEmpty()) {
+            error = true;
+            venant.setError("invalid!");
+        }
+
+        if (ncg.getText().toString().isEmpty()) {
+            error = true;
+            ncg.setError("invalid!");
+        }
+        if (ngf.getText().toString().isEmpty()) {
+            error = true;
+            ngf.setError("invalid!");
+        }
+        if (read.getText().toString().isEmpty()) {
+            error = true;
+            read.setError("invalid!");
+        }
+        if (Gueris.getText().toString().isEmpty()) {
+            error = true;
+            Gueris.setError("invalid!");
+        }
+
+        if (Desces.getText().toString().isEmpty()) {
+            error = true;
+            Desces.setError("invalid!");
+        }
+        if (Abonde.getText().toString().isEmpty()) {
+            error = true;
+            Abonde.setError("invalid!");
+        }
+
+        if (NonRep.getText().toString().isEmpty()) {
+            error = true;
+            NonRep.setError("invalid!");
+        }
+        if (Ref.getText().toString().isEmpty()) {
+            error = true;
+            Ref.setError("invalid!");
+        }
+        if (trans.getText().toString().isEmpty()) {
+            error = true;
+            trans.setError("invalid!");
+        }
+        if (age.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnerage.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (anne.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinneranne.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (moi.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnermois.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (structure==null) {
+            error = true;
+            TextView errorText= ((TextView)spinnerstructer.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnercommune.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnercommune.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnermoughata.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnermoughata.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        return error;
+    }
+}

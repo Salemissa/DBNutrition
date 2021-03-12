@@ -44,5 +44,15 @@
         android:label="Prise en Charge"
         tools:layout="@layout/fragment_prise_en__charge" />
 
+    <fragment
+        android:id="@+id/stock"
+        android:name="com.example.myapp1.MedicamentIntrants"
+        android:label="Gestion des Intrants "
+        tools:layout="@layout/fragment_medicament_intrants" />
+    <activity
+        android:id="@+id/logout"
+        android:name="com.example.myapp1.MainActivity"
+        tools:layout="@layout/activity_main" />
+
 
 </navigation>

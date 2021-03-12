@@ -1,6 +1,7 @@
 package com.example.myapp1;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import com.example.myapp1.model.PriseenCharge;
 import com.example.myapp1.model.SuviSousSurvillance;
 import com.example.myapp1.pcim.Prise_en_Charge;
 import com.example.myapp1.pcim.Suvi_Sous_surveillance;
+import com.example.myapp1.syn.RetrofitServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -41,9 +43,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.widget.Toast.LENGTH_LONG;
 
-public class ListPrisenCharge extends AppCompatActivity implements UsersCalls.CallbacksPrise {
+public class ListPrisenCharge extends AppCompatActivity {
     private DatabaseManager databaseManager;
     private ListView list;
     private PrisenchargeAdapter adapter;
@@ -55,6 +61,7 @@ public class ListPrisenCharge extends AppCompatActivity implements UsersCalls.Ca
     Button syn;
     ProgressBar progressBar;
     List<PriseenCharge> priseenCharges;
+    ProgressDialog progressDoalog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +77,8 @@ public class ListPrisenCharge extends AppCompatActivity implements UsersCalls.Ca
         this.arrayList = new ArrayList<>();
          this.priseenCharges = databaseManager.ListPrisEnCharge();
         //this.add= findViewById(R.id.add);
-
+       progressDoalog = new ProgressDialog(ListPrisenCharge.this);
+        progressDoalog.setMessage("Loading....");
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,24 +154,28 @@ public class ListPrisenCharge extends AppCompatActivity implements UsersCalls.Ca
     }
 
     private void allPrise() {
-        Toast.makeText(this,"this", Toast.LENGTH_SHORT).show();
-        //progressBar.setVisibility(View.VISIBLE);
-
-        //UsersCalls.allPrise(this);
-
-        if (!this.priseenCharges.isEmpty()) {
-
-             PriseenCharge p=new PriseenCharge();
-             for(PriseenCharge priseenCharge:priseenCharges) {
+        List<PriseenCharge> Listsyn= new ArrayList<PriseenCharge>();
+           for(PriseenCharge priseenCharge:priseenCharges){
+               if(priseenCharge.getSyn()==0){
+                   Listsyn.add(priseenCharge);
+               }
+           }
+        if (!Listsyn.isEmpty()) {
+            List<PriseenCharge> syn= new ArrayList<PriseenCharge>();
+            PriseenCharge p=new PriseenCharge();
+             for(PriseenCharge priseenCharge:Listsyn) {
                  p = priseenCharge;
                  Localite localite = new Localite();
                  localite.setId(p.getLocalite().getId());
                  localite.setLocalitename(p.getLocalite().getLocalitename());
-                 p.setDate(null);
                  p.setLocalite(localite);
+                 syn.add(p);
                  //Toast.makeText(this,p.getLocalite().getCommune().getId()+"++++", Toast.LENGTH_SHORT).show();;
                  try {
-                     UsersCalls.addPrise(this, p);
+                     //progressBar.setVisibility(View.VISIBLE);
+                     this.progressDoalog.show();
+                     //DepistageCalls.addDepistage(this, syn);
+                     this.SynPrisList(syn);
                  } catch (Exception e) {
                      Log.e("ERROR", e.getMessage());
 
@@ -171,38 +183,79 @@ public class ListPrisenCharge extends AppCompatActivity implements UsersCalls.Ca
              }
 
         }
-        else{
-            Toast.makeText(this,"List Vide", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onResponse(@Nullable PriseenCharge priseenCharges) {
-
-       // progressBar.setVisibility(View.INVISIBLE);
-        //progressBar.setVisibility(View.GONE);
-        if (priseenCharges != null){
-                Toast.makeText(this,priseenCharges.toString(), LENGTH_LONG).show();
-
-        }
 
         else{
-            Toast.makeText(this,"ERROR ", LENGTH_LONG).show();
-        }
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("info");
+            alertDialog.setMessage("List Vide");
+
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            alertDialog.show();
+    }
+}
+
+    private void SynPrisList(List<PriseenCharge> syn) {
+
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<PriseenCharge> call =retrofitServices.createPrise(priseenCharges);
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<PriseenCharge>() {
+            @Override
+            public void onResponse(Call<PriseenCharge> call, Response<PriseenCharge> response) {
+                if (response.isSuccessful()) {
+                    progressDoalog.dismiss();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ListPrisenCharge.this).create();
+                    alertDialog.setTitle("info");
+                    alertDialog.setMessage("Les données ont été synchronisées");
+
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            for (PriseenCharge priseenCharge : priseenCharges) {
+                                if (priseenCharge.getSyn() == 0 || priseenCharge.getSyn() == 2) {
+                                    priseenCharge.setSyn(1);
+                                    databaseManager.updatePrise(priseenCharge);
+                                }
+                            }
+                            priseenCharges= databaseManager.ListPrisEnCharge();
+                            arrayList=priseenCharges;
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    });
+
+                    alertDialog.show();
+
+
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    progressDoalog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<PriseenCharge> call, Throwable t) {
+                Log.e("ERROR ", t.getMessage().toString()+"Probleme");
+                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
+                progressDoalog.dismiss();
+            }
+        });
 
 
     }
-
-    @Override
-    public void onFailure() {
-        //progressBar.setVisibility(View.INVISIBLE);
-        //progressBar.setVisibility(View.GONE);
-        Toast.makeText(this,"ERR Connexion", LENGTH_LONG).show();
-
-    }
-
-
-
 
 
     /*
@@ -298,7 +351,7 @@ public class ListPrisenCharge extends AppCompatActivity implements UsersCalls.Ca
             status.setText("Status :"+priseenCharges.get(position).getStatut());
             MAS.setText("Odeme : "+priseenCharges.get(position).getMas());
             Ref.setText("Réferé : "+priseenCharges.get(position).getRefere());
-            date.setText("Date : "+sdf.format(priseenCharges.get(position).getDate()));
+            date.setText("Date : "+priseenCharges.get(position).getDate());
 
 
 
@@ -354,7 +407,8 @@ public class ListPrisenCharge extends AppCompatActivity implements UsersCalls.Ca
 
         // FragmentTransaction transaction = manager.beginTransaction();
         list.setVisibility(View.GONE);
-        this.toolbar.setVisibility(View.GONE);
+        //this.toolbar.setVisibility(View.GONE);
+        syn.setVisibility(View.GONE);
         this.fab.setVisibility(View.GONE);
         FragmentManager myfragmentManager =getSupportFragmentManager();
         FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
@@ -366,8 +420,7 @@ public class ListPrisenCharge extends AppCompatActivity implements UsersCalls.Ca
        void Supprimer (PriseenCharge priseenCharge,int pos){
             databaseManager.supprimmerprise(priseenCharge);
            //Intent intent= new Intent(this,PriseenCharge.class);
-           //startActivity(intent);
-
+           //startActivity(intent)
            arrayList.remove(pos);
           priseenCharges.remove(pos);
            adapter.notifyDataSetChanged();

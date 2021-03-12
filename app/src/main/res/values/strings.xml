@@ -1,16 +1,16 @@
 <resources>
-    <string name="app_name">PCIMA</string>
+    <string name="app_name">Base de données PCIM /ANJE </string>
     <string name="title_activity_main2">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">SISTA.com</string>
+    <string name="nav_header_subtitle">AMAMI</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Menu</string>
-    <string name="menu_gallery">Depisatge Passif</string>
-    <string name="menu_slideshow">Depisatge Active</string>
+    <string name="menu_gallery">Depisatge passif</string>
+    <string name="menu_slideshow">Depisatge active</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_depistage_passif_list">DepistagePassifList</string>
@@ -35,4 +35,12 @@
     <string name="title_activity_update_activite_mobile">UpdateActiviteMobile</string>
     <string name="title_activity_update_suivi">updateSuivi</string>
     <string name="title_activity_update_prise">UpdatePrise</string>
+    <string name="suivi_sous_surveillance">Suivi sous surveillance</string>
+    <string name="passif">Donnée dépistage passif</string>
+    <string name="actif">Dépistage actif</string>
+    <string name="approche">Approche communautaire</string>
+    <string name="compagne">Campagne de depistage</string>
+    <string name="mobil">Activité mobilé</string>
+    <string name="prise">Prise en charge</string>
+    <string name="title_activity_update_approche">UpdateApproche</string>
 </resources>

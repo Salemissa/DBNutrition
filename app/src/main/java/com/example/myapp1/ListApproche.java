@@ -1,19 +1,27 @@
 package com.example.myapp1;
 
 import android.app.AlertDialog;
+import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.ApprocheCommunataire;
+import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.PriseenCharge;
+import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.SuviSousSurvillance;
+import com.example.myapp1.model.USB;
 import com.example.myapp1.pcim.Activite_Mobile;
 import com.example.myapp1.pcim.Approche_communataire;
 import com.example.myapp1.pcim.Prise_en_Charge;
+import com.example.myapp1.syn.DepistageCalls;
+import com.example.myapp1.syn.RetrofitServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -22,18 +30,29 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.makeText;
 
 public class ListApproche extends AppCompatActivity {
     private DatabaseManager databaseManager;
@@ -44,7 +63,9 @@ public class ListApproche extends AppCompatActivity {
     FloatingActionButton fab;
     View toolbar;
     private SimpleDateFormat sdf;
-
+    private View syn;
+    List<ApprocheCommunataire> approcheCommunataires;
+    private ProgressDialog progressDoalog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +75,18 @@ public class ListApproche extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         list = findViewById(R.id.list);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd");
+        progressDoalog = new ProgressDialog(ListApproche.this);
+        progressDoalog.setMessage("Loading....");
+        syn=findViewById(R.id.syn);
+        syn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               synApproche();
+            }
+        });
         databaseManager = new DatabaseManager(this);
         this.arrayList=new ArrayList<>();
-        List<ApprocheCommunataire> approcheCommunataires =databaseManager.approcheCommunataireList();
+        approcheCommunataires =databaseManager.approcheCommunataireList();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,11 +112,97 @@ public class ListApproche extends AppCompatActivity {
             arrayList = databaseManager.approcheCommunataireList();
 
         }
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ApprocheCommunataire clickedItem= (ApprocheCommunataire) list.getItemAtPosition(position);
+                Intent intent= new Intent( ListApproche.this, UpdateApproche.class);
+                intent.putExtra("id",clickedItem.getId().intValue());
+                startActivity(intent);
+
+            }
+        });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                // TODO Auto-generated method stub
+               ApprocheCommunataire clickedItem = (ApprocheCommunataire) list.getItemAtPosition(pos);
+
+
+                showalert(clickedItem,pos);
+                return true;
+            }
+        });
         if(!arrayList.isEmpty()){
             this.adapter = new ApprocheAdapter(this, arrayList);
             ListView list = (ListView)findViewById(R.id.list);
             list.setAdapter(adapter);
         }
+    }
+
+    private void synApproche() {
+        List<ApprocheCommunataire> ListSyn=new ArrayList<ApprocheCommunataire>();
+        for(ApprocheCommunataire  approcheCommunataire:databaseManager.approcheCommunataireList()) {
+            if(approcheCommunataire.getSyn()==0){
+                ListSyn.add(approcheCommunataire);
+            }
+        }
+
+        if (!ListSyn.isEmpty()) {
+            List<ApprocheCommunataire> syn=new ArrayList<ApprocheCommunataire>();
+            makeText(this,"Entre", LENGTH_LONG).show();
+            ApprocheCommunataire approcheCommunatairesyn=new ApprocheCommunataire();
+            for(ApprocheCommunataire approcheCommunataire:ListSyn) {
+                approcheCommunatairesyn = approcheCommunataire;
+                approcheCommunatairesyn.setId(0L);
+                USB usb = new USB();
+                usb.setId(approcheCommunatairesyn.getUsb().getId());
+                usb.setUsbname(approcheCommunataire.getUsb().getUsbname());
+                String rapport="";
+                approcheCommunatairesyn.setStructurerapport("");
+                if(approcheCommunataire.getRapport() !=null) {
+                    rapport = Base64.encodeToString(approcheCommunataire.getRapport(), Base64.DEFAULT);
+                    Toast.makeText(getApplication(),rapport,Toast.LENGTH_SHORT).show();
+                   approcheCommunataire.setRapport(null);
+
+                    approcheCommunatairesyn.setStructurerapport(rapport);
+                }
+                  approcheCommunatairesyn.setUsb(usb);
+                // Toast.makeText(this,depi.getDate()+"", LENGTH_LONG).show();
+                syn.add(approcheCommunatairesyn);
+
+
+            }
+            try {
+                progressDoalog.show();
+                SynApprocheList(syn);
+
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage());
+
+            }
+
+
+        }
+        else{
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("info");
+            alertDialog.setMessage("List Vide");
+
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            alertDialog.show();
+
+        }
+
     }
 
 
@@ -170,7 +286,7 @@ public class ListApproche extends AppCompatActivity {
             diarrhee.setText("Diarrhee : "+approcheCommunataires.get(position).getDiarrhee());
             Vacin.setText("Vaccin  : "+approcheCommunataires.get(position).getVaccin());
             TR.setText("TR  : "+approcheCommunataires.get(position).getTR());
-            date.setText("Date : "+sdf.format(approcheCommunataires.get(position).getDate()));
+            date.setText("Date : "+approcheCommunataires.get(position).getDate());
 
 
 
@@ -192,16 +308,117 @@ public class ListApproche extends AppCompatActivity {
     }
 
 
+    private boolean showalert(final ApprocheCommunataire approcheCommunataire,final int pos) {
+        this.supp = false;
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Confirm ");
+        alertDialog.setMessage("Etes Vous sur de supprimer");
+        // alertDialog.setIcon(R.drawable.delete);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+                Supprimer(approcheCommunataire,pos);
+
+                supp =true;
+
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        alertDialog.show();
+
+        return  supp;
+    }
+
     void GotoDepistage(){
 
         // FragmentTransaction transaction = manager.beginTransaction();
         list.setVisibility(View.GONE);
-        this.toolbar.setVisibility(View.GONE);
+       // this.toolbar.setVisibility(View.GONE);
+        syn.setVisibility(View.GONE);
         fab.setVisibility(View.GONE);
         FragmentManager myfragmentManager =getSupportFragmentManager();
         FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
         Approche_communataire myfragment = new Approche_communataire  ();
         myfragmentTransaction.replace(R.id.approcheList, myfragment).commit();
+        fab.setVisibility(View.GONE);
+
+    }
+
+    void Supprimer (ApprocheCommunataire approcheCommunataire,int pos){
+        databaseManager.supprimmerApproche(approcheCommunataire);
+        //Intent intent= new Intent(this,PriseenCharge.class);
+        //startActivity(intent);
+
+        arrayList.remove(pos);
+        approcheCommunataires.remove(pos);
+        adapter.notifyDataSetChanged();
+
+    }
+
+    private void SynApprocheList(List<ApprocheCommunataire> syn) {
+
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<ApprocheCommunataire> call =retrofitServices.createApprocheCommunataire(syn);
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<ApprocheCommunataire>() {
+            @Override
+            public void onResponse(Call<ApprocheCommunataire> call, Response<ApprocheCommunataire> response) {
+                if (response.isSuccessful()) {
+                    progressDoalog.dismiss();
+                    AlertDialog alertDialog = new AlertDialog.Builder(ListApproche.this).create();
+                    alertDialog.setTitle("info");
+                    alertDialog.setMessage("Les données ont été synchronisées");
+
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            for (ApprocheCommunataire approcheCommunataire : approcheCommunataires) {
+                                if (approcheCommunataire.getSyn() == 0 || approcheCommunataire.getSyn() == 2) {
+                                    approcheCommunataire.setSyn(1);
+                                    databaseManager.UpdateApprocheCommunataire(approcheCommunataire);
+                                }
+                            }
+                            approcheCommunataires= databaseManager.approcheCommunataireList();
+                            arrayList=approcheCommunataires;
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    });
+
+                    alertDialog.show();
+
+
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    //progressBar.setVisibility(View.INVISIBLE);
+                    //progressBar.setVisibility(View.GONE);
+                    progressDoalog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ApprocheCommunataire> call, Throwable t) {
+                Log.e("ERROR ", t.getMessage().toString()+"Probleme");
+                //progressBar.setVisibility(View.INVISIBLE);
+                //progressBar.setVisibility(View.GONE);
+                progressDoalog.dismiss();
+            }
+        });
+
 
     }
 }

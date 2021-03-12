@@ -1,6 +1,7 @@
 package com.example.myapp1;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,14 +9,20 @@ import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Depistage;
+import com.example.myapp1.model.Localite;
+import com.example.myapp1.model.Structure;
 import com.example.myapp1.pcim.Activite_Mobile;
 import com.example.myapp1.pcim.Compagne_DP;
 import com.example.myapp1.pcim.Donnee_DP;
+import com.example.myapp1.syn.DepistageCalls;
+import com.example.myapp1.syn.RetrofitServices;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +34,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static android.widget.Toast.LENGTH_LONG;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class ActivtiteMobileList extends AppCompatActivity {
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.makeText;
+
+public class ActivtiteMobileList extends AppCompatActivity implements DepistageCalls.CallbacksDepistage {
 
     private DatabaseManager databaseManager;
     private ListView list;
@@ -42,11 +55,14 @@ public class ActivtiteMobileList extends AppCompatActivity {
     List<Depistage> arrayList;
     private boolean supp = false;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+    List<Depistage> depistageActive;
+     ProgressDialog progressDoalog;
     //String type="DepistagePassif";//ActivitéMobile
     String type = "ActivitéMobile";
     private View view;
     private View fab;
+    private View progressBar;
+    private Button syn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +75,29 @@ public class ActivtiteMobileList extends AppCompatActivity {
         //this.add= findViewById(R.id.add);
        
         String formattedDate = sdf.format(new Date());
+        TextView title=findViewById(R.id.title);
         this.view =findViewById(R.id.button);
+         progressBar=findViewById(R.id.progressBar);
+         progressBar.setVisibility(View.INVISIBLE);
+        progressDoalog = new ProgressDialog(ActivtiteMobileList.this);
+        progressDoalog.setMessage("Loading....");
+          fab = findViewById(R.id.fab);
+         fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //  .setAction("Action", null).show();
+                GotoDepistage();
+            }
+        });
+
+        syn=findViewById(R.id.syn);
+        syn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                synDepistage();
+            }
+        });
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,10 +110,16 @@ public class ActivtiteMobileList extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             this.type = intent.getStringExtra("type");
+            if(this.type.equalsIgnoreCase("ActivitéMobile")){
+                title.setText("Activité mobile");
+            }
+            else{
+               title.setText("Compagne de depistage");
+            }
             Toast.makeText(this, type, Toast.LENGTH_LONG).show();
         }
 
-        List<Depistage> depistageActive = databaseManager.DepistageByType(this.type);
+         this.depistageActive = databaseManager.DepistageByType(this.type);
 
         if (depistageActive == null) {
             //Toast.makeText(this,"medicament non trouve ",Toast.LENGTH_LONG).show();
@@ -160,6 +204,126 @@ public class ActivtiteMobileList extends AppCompatActivity {
         list.setAdapter(adapter);
     }
 
+    void synDepistage(){
+        List<Depistage> ListSyn=new ArrayList<Depistage>();
+        for(Depistage depistage:databaseManager.DepistageByType(type)) {
+            if(depistage.getSyn()==0){
+                ListSyn.add(depistage);
+            }
+        }
+        if (!ListSyn.isEmpty()) {
+            List<Depistage> syn=new ArrayList<Depistage>();
+            makeText(this,"Entre", LENGTH_LONG).show();
+            Depistage depi=new Depistage();
+            for(Depistage depistage:ListSyn) {
+                depi = depistage;
+                depi.setId(0L);
+              //  Structure structure = new Structure();
+               // structure.setId(depi.getStructure().getId());
+                //structure.setStructurename(depi.getStructure().getStructurename());
+                Localite localite = new Localite();
+                localite.setId(depi.getLocalite().getId());
+                localite.setLocalitename(depi.getLocalite().getLocalitename());
+                //depi.setDate(null);
+                //SimpleDateFormat dateFormat = new SimpleDateFormat(Format);
+               /* try {
+                    //depi.setDate(df1.parse(depi.getDate().toString()));;
+                    //Toast.makeText(this,df1.parse(depi.getDate().toString())+"+++",LENGTH_LONG).show();
+
+                } catch (java.text.ParseException e) {
+                   // Toast.makeText(this,"ERR",LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+*/
+                depi.setLocalite(localite);
+
+                /*
+                 String str=sdf.format(depi.getDate());
+
+                try {
+                    depi.setDate(sdf.parse(str));
+
+                } catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+                */
+                syn.add(depi);
+                //Log.e("Date", depistage.getDate().toString());
+                //Toast.makeText(this,depistage.getDate()+"", Toast.LENGTH_SHORT).show();;
+                //Log.e("Date", depistage.getDate().toString());
+
+            }
+            try {
+                progressBar.setVisibility(View.VISIBLE);
+                progressDoalog.show();
+                DepistageCalls.addDepistage(this, syn);
+
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage());
+
+            }
+
+
+        }
+        else{
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("info");
+            alertDialog.setMessage("List Vide");
+
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            alertDialog.show();
+        }
+
+    }
+
+    @Override
+    public void onResponse(@Nullable Depistage Depistage) {
+
+        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
+        progressDoalog.dismiss();
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("info");
+        alertDialog.setMessage("Les données ont été synchronisées");
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                for(Depistage depistage:depistageActive){
+                    if(depistage.getSyn()==0 || depistage.getSyn()==2) {
+                        depistage.setSyn(1);
+                        databaseManager.updatedepistage(depistage);
+                    }
+                }
+                depistageActive=databaseManager.DepistageByType(type);
+                arrayList=depistageActive;
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    @Override
+    public void onFailure() {
+        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
+        progressDoalog.dismiss();
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
 
     class DepistageActiveList extends BaseAdapter {
 
@@ -227,16 +391,16 @@ public class ActivtiteMobileList extends AppCompatActivity {
                 localite.setText("Localité : ");
             }
             age.setText("Age : " + depistageActives.get(position).getAge());
-            RougeF.setText("RougeF : " + depistageActives.get(position).getRougeF());
-            RougeG.setText("Rouge : " + depistageActives.get(position).getRougeG());
+            RougeF.setText("MAS F : " + depistageActives.get(position).getRougeF());
+            RougeG.setText("MAS G : " + depistageActives.get(position).getRougeG());
 
-            JauneF.setText("Jaune : " + depistageActives.get(position).getJauneF());
-            JauneG.setText("Jaune : " + depistageActives.get(position).getJauneG());
-            VertF.setText("Vert : " + depistageActives.get(position).getVertF());
-            VertG.setText("Vert : " + depistageActives.get(position).getVertG());
-            OdemeF.setText("Odeme : " + depistageActives.get(position).getOdemeF());
-            OdemeG.setText("Odeme : " + depistageActives.get(position).getOdemeG());
-            date.setText("Date :" + sdf.format(depistageActives.get(position).getDate()));
+            JauneF.setText("MAM F : " + depistageActives.get(position).getJauneF());
+            JauneG.setText("MAM G : " + depistageActives.get(position).getJauneG());
+            VertF.setText("SAINT F : " + depistageActives.get(position).getVertF());
+            VertG.setText("SAINT G : " + depistageActives.get(position).getVertG());
+            OdemeF.setText("Odeme F : " + depistageActives.get(position).getOdemeF());
+            OdemeG.setText("Odeme G : " + depistageActives.get(position).getOdemeG());
+            date.setText("Date :" + depistageActives.get(position).getDate());
 
 
             // Rapport.setImageBitmap();
@@ -296,7 +460,8 @@ public class ActivtiteMobileList extends AppCompatActivity {
         // FragmentManager manager = getSupportFragmentManager();
         // FragmentTransaction transaction = manager.beginTransaction();
         list.setVisibility(View.GONE);
-        view.setVisibility(View.GONE);
+        syn.setVisibility(View.GONE);
+       // view.setVisibility(View.GONE);
         this.fab.setVisibility(View.GONE);
         FragmentManager myfragmentManager =getSupportFragmentManager();
         FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
@@ -317,6 +482,9 @@ public class ActivtiteMobileList extends AppCompatActivity {
         //transaction.replace(R.id.dp, new Donnee_DP()).commit();
 
     }
+
+
+
 
 
     private  void  Supprimer(Depistage depistage) {

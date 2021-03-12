@@ -19,7 +19,6 @@
         android:layout_height="56dp"
         android:layout_below="@id/header_VIEW"
         android:layout_marginTop="20dp"
-
         android:orientation="horizontal">
 
         <TextView
@@ -43,7 +42,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:text="ss debuit"
+            android:text="ss debut"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -111,7 +110,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:text="NGF"
+            android:text="NCF"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -130,7 +129,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:text="Read"
+            android:text="Rea"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -198,7 +197,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:text="Abonde"
+            android:text="Abandon"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -285,11 +284,12 @@
         android:layout_width="183dp"
         android:layout_height="67dp"
         android:layout_below="@+id/sort2"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="63dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"
+        android:textColor="#FFFF"
         android:text="Ajouter" />
 
 

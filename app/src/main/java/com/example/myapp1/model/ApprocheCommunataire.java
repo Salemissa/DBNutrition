@@ -33,8 +33,8 @@ public class ApprocheCommunataire {
     @DatabaseField
     private  int fammeEncSuvi;
 
-    @DatabaseField(dataType = DataType.DATE_STRING,format = "yyyy-MM-dd")
-    private Date date;
+    @DatabaseField
+    private String date;
     @DatabaseField
     private String DateCreation;
 
@@ -53,6 +53,10 @@ public class ApprocheCommunataire {
     private  int vaccin;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private USB usb;
+    @DatabaseField
+    int syn;
+    @DatabaseField
+    private String structurerapport;
     public ApprocheCommunataire(){};
     public Long getId() {
         return id;
@@ -134,11 +138,11 @@ public class ApprocheCommunataire {
         this.fammeEncSuvi = fammeEncSuvi;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -179,7 +183,7 @@ public class ApprocheCommunataire {
     }
 
     public void setDiarrhee(int diarrhee) {
-        diarrhee = diarrhee;
+        this.diarrhee = diarrhee;
     }
 
     public int getVaccin() {
@@ -187,7 +191,7 @@ public class ApprocheCommunataire {
     }
 
     public void setVaccin(int vaccin) {
-        vaccin = vaccin;
+        this.vaccin = vaccin;
     }
 
     public USB getUsb() {
@@ -202,7 +206,31 @@ public class ApprocheCommunataire {
         return DateCreation;
     }
 
+    public int getNcg() {
+        return ncg;
+    }
+
+    public int getSyn() {
+        return syn;
+    }
+
+    public void setNcg(int ncg) {
+        this.ncg = ncg;
+    }
+
+    public void setSyn(int syn) {
+        this.syn = syn;
+    }
+
     public void setDateCreation(String dateCreation) {
         DateCreation = dateCreation;
+    }
+
+    public String getStructurerapport() {
+        return structurerapport;
+    }
+
+    public void setStructurerapport(String structurerapport) {
+        this.structurerapport = structurerapport;
     }
 }

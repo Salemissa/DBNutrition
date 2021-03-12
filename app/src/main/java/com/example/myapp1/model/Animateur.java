@@ -6,11 +6,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class Animateur {
-    @DatabaseField(generatedId = true)
-    private Long id;
-    @DatabaseField
-    private  String nom;
+public class Animateur extends Intervenant {
     @DatabaseField
     private String code;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
@@ -18,21 +14,7 @@ public class Animateur {
     @ForeignCollectionField(eager=false)
     private ForeignCollection<Relais> relais;
     public Animateur(){};
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
 
     public String getCode() {
         return code;

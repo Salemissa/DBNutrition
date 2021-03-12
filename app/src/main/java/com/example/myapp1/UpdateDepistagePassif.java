@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
@@ -67,6 +69,9 @@ public class UpdateDepistagePassif extends AppCompatActivity {
     private boolean structurePardefaut=false;
     private boolean communePardefaut=false;
 
+    List<String>  communeList=null;
+    List<String>  StructureList=null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +112,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
            this.id = intent.getIntExtra("id", 0);
             this.depistage= this.databaseManager.depistageById(this.id);
 
-            Toast.makeText(this,this.depistage.getAnnee(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,this.depistage.getAnnee(),Toast.LENGTH_LONG).show();
         }
 
 
@@ -121,6 +126,11 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         });
 
         final List<String> moughata  = new ArrayList<String>();
+        moughata.add("");
+         this.communeList  = new ArrayList<String>();
+        communeList .add("");
+        this.StructureList  = new ArrayList<String>();
+        this.StructureList.add("");
 
         List<Moughata> ListMoughata=databaseManager.ListMoughata();
         if(ListMoughata!=null){
@@ -133,19 +143,21 @@ public class UpdateDepistagePassif extends AppCompatActivity {
 
 
 
-        /*this.Ajouter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AjouterDepistage();
-            }
 
-
-        });*/
 
 
         this.moughatadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, moughata);
         this.moughatadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnermoughata.setAdapter(this.moughatadapter);
+
+        this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,communeList);
+        this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+         this.spinnercommune.setAdapter(this.communadapter);
+
+
+        this.structureadapter= new ArrayAdapter(this, android.R.layout.simple_spinner_item,StructureList);
+        this.structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerstructer.setAdapter(this.structureadapter);
 
         this.ageadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.ages);
         this.ageadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -164,10 +176,6 @@ public class UpdateDepistagePassif extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
                 moi=parent.getItemAtPosition(position).toString();
-
-
-
-
 
             }
 
@@ -212,49 +220,6 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         this.anneeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinneranne.setAdapter(this.anneeadapter);
 
-        spinnermoughata.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
-                MoughataComune(item);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-
-
-
-        this.spinnercommune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
-                CommuneStructure(item);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-
-        this.spinnerstructer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
-                structure=databaseManager.structurename(item);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-            }
-        });
 
 
         rapport.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +241,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         });
 
 
-        this.Valeurpardefaut();
+
 
 
     }
@@ -340,13 +305,70 @@ public class UpdateDepistagePassif extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
+    public void onStart() {
 
-        super.onResume();
+        super.onStart();
+
+        spinnermoughata.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                MoughataComune(item);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+
+
+        this.spinnercommune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                CommuneStructure(item);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+        this.spinnerstructer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                structure=databaseManager.structurename(item);
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
 
 
     }
 
+    @Override
+    public  void  onResume() {
+
+        super.onResume();
+
+
+        this.Valeurpardefaut();
+
+    }
 
    @Override
    public  void  onRestart(){
@@ -357,43 +379,62 @@ public class UpdateDepistagePassif extends AppCompatActivity {
 
 
     void MoughataComune(String moughata) {
-        Toast.makeText(this,"0",Toast.LENGTH_LONG).show();
-        Moughata moughataname = databaseManager.Moughataname(moughata);
-        List<String> communesM = new ArrayList<String>();
+        Moughata  moughataname=null;
+      if(moughata.equals("")){
+          communeList.clear();
+          communeList.add("");
+      }
+      else {
+          moughataname = databaseManager.Moughataname(moughata);
+      }
 
         if (moughataname != null) {
+            this.communadapter.clear();
+            this.communeList.clear();
+            this.communeList.add(" ");
             for (Commune commune : moughataname.getCommunes()) {
-
-                communesM.add(commune.getCommunename().toString());
+               this.communeList.add(commune.getCommunename().toString());
             }
-            this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, communesM);
-            this.spinnercommune.setAdapter(this.communadapter);
-            this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
 
 
         }
+
+
+
+
+        this.communadapter.notifyDataSetChanged();
+
 
     }
     void CommuneStructure(String commune) {
-        Commune communesel=databaseManager.communename(commune);
-        List<String> StructureCommune= new ArrayList<String>();
+        Commune communesel=null;
+        if(commune.equals("")){
+            this.structureadapter.clear();
+            this.StructureList.clear();
+            this.StructureList.add("");
+        }
+        else{
+             communesel=databaseManager.communename(commune);
+        }
+
 
         if(communesel !=null){
-
-            Toast.makeText(this,communesel.getMoughata().getMoughataname(),Toast.LENGTH_LONG).show();
+            this.structureadapter.clear();
+            this.StructureList.clear();
+            StructureList.add("");
             for( Structure structurs:communesel.getStructures() ) {
 
-                StructureCommune.add(structurs.getStructurename().toString());
+                this.StructureList.add(structurs.getStructurename().toString());
             }
-
-            this.structureadapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,StructureCommune);
-            this.spinnerstructer.setAdapter(structureadapter);
-            this.structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
 
 
         }
+
+
+       // this.spinnerstructer.setAdapter(this.structureadapter);
+        this.structureadapter.notifyDataSetChanged();
+
 
     }
 
@@ -410,38 +451,10 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         int annePosition = anneSel.getPosition(annee);
         //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
         this.spinneranne.setSelection(annePosition);
-
-        String age=this.depistage.getAge(); //the value you want the position for
         ArrayAdapter ageSel = (ArrayAdapter) this.spinnerage.getAdapter();
-        int agePosition = ageSel.getPosition(age);
+        int AgePosition = ageSel.getPosition(depistage.getAge());
         //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
-        this.spinnerage.setSelection(agePosition);
-
-
-     /*
-        String comunne=this.depistage.getStructure().getCommune().getCommunename(); //the value you want the position for
-        ArrayAdapter communeSel = (ArrayAdapter) this.spinnercommune.getAdapter();
-        int communePosition = communeSel.getPosition(comunne);
-        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
-        this.spinnercommune.setSelection(communePosition);
-
-        String Moug=this.depistage.getStructure().getCommune().getMoughata().getMoughataname(); //the value you want the position for
-        ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
-        int MougPosition = MougSel.getPosition(Moug);
-        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
-        this.spinnermoughata.setSelection(MougPosition);*/
-        Structure structure=databaseManager.structurename(this.depistage.getStructure().getStructurename());
-        Toast.makeText(this,"2",Toast.LENGTH_LONG).show();
-        String Moug=structure.getCommune().getMoughata().getMoughataname(); //the value you want the position for
-        ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
-        int MougPosition = MougSel.getPosition(Moug);
-        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
-       this.spinnermoughata.setSelection(MougPosition);
-
-       // this.MoughataComune(Moug);
-        //this.CommuneStructure(structure.getCommune().getCommunename());
-
-           Toast.makeText(this,"3",Toast.LENGTH_LONG).show();
+        this.spinnerage.setSelection(AgePosition);
         this.rougeF.setText(this.depistage.getRougeF()+"");
         this.jauneF.setText(this.depistage.getJauneF()+"");
          this.odemeF.setText(this.depistage.getOdemeF()+"");
@@ -452,38 +465,43 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         this.odemeG.setText(this.depistage.getOdemeG()+"");
         this.zscore.setText(this.depistage.getZscore()+"");
         this.zscore2.setText(this.depistage.getZscore2()+"");
+        this.MoughataaPardefaut();
 
         this.Rapport();
     }
 
+   void  MoughataaPardefaut(){
+        Structure structure=databaseManager.structurename(this.depistage.getStructure().getStructurename());
+        String Moug=structure.getCommune().getMoughata().getMoughataname(); //the value you want the position for
+        ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
+        int MougPosition = MougSel.getPosition(Moug);
+        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
 
+        this.spinnermoughata.setSelection(MougPosition);
+       this.MoughataComune(Moug);
+        communePardefaut();
+        this.moughatadapter.notifyDataSetChanged();
+    }
 
     private void communePardefaut() {
-        if(this.communePardefaut){
             String commune=this.depistage.getStructure().getCommune().getCommunename(); //the value you want the position for
-
-            ArrayAdapter CommuneSel = (ArrayAdapter) this.spinnercommune.getAdapter();
-            int StrPosition = CommuneSel.getPosition(commune);
-
+            int StrPosition = ((ArrayAdapter) this.spinnercommune.getAdapter()).getPosition(commune);
+            this.CommuneStructure(commune);
             this.spinnercommune.setSelection(StrPosition);
-
-
-
-        }
+           this.communadapter.notifyDataSetChanged();
+           this.StructurePardefaut();
     }
 
 
     private void StructurePardefaut() {
-        if(this.structurePardefaut){
-            Toast.makeText(this, this.structurePardefaut+"Methode invoke ",Toast.LENGTH_LONG).show();
         String str=this.depistage.getStructure().getStructurename(); //the value you want the position for
         ArrayAdapter StrSel = (ArrayAdapter) this.spinnerstructer.getAdapter();
-            Toast.makeText(this,"Methode invoke true kk ",Toast.LENGTH_LONG).show();
         int StrPosition = StrSel.getPosition(str);
-        Toast.makeText(this,this.depistage.getStructure().getStructurename()+"1"+this.depistage.getStructure().getCommune().getMoughata().toString()+"11",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"StrPosition  "+StrPosition,Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,this.depistage.getStructure().getStructurename()+"1"+this.depistage.getStructure().getCommune().getMoughata().toString()+"11",Toast.LENGTH_LONG).show();
         this.spinnerstructer.setSelection(StrPosition);
-        this.structurePardefaut=false;
-             }
+        this.structureadapter.notifyDataSetChanged();
+
     }
 
     private void Rapport() {
@@ -503,47 +521,135 @@ public class UpdateDepistagePassif extends AppCompatActivity {
     }
 
     private void ModfierDepistage() {
-        this.depistage.setAnnee(anne);
-        this.depistage.setMois(moi);
-        this.depistage.setAge(age);
-        //depistage.setStructure(structure);
+        if (VerficationChampe()) {
+        } else {
+            this.depistage.setAnnee(anne);
+            this.depistage.setMois(moi);
+            this.depistage.setAge(age);
+            depistage.setStructure(structure);
+            Toast.makeText(this,structure.getStructurename()+"",Toast.LENGTH_SHORT).show();
+            depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
+            depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
+            depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
+            depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+            depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
+            depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
+            depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
+            depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
+            depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
+            depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
+            // depistage.setDate(new Date());
+            if (this.Rapport != null) {
 
-        depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
-        depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
-        depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
-        depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
-        depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
-        depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
-        depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
-        depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
-        depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
-        depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
-       // depistage.setDate(new Date());
-        if(this.Rapport!=null){
+                this.depistage.setRapport(this.Rapport);
+            }
 
-            this.depistage.setRapport(this.Rapport);}
+            try {
+              databaseManager.updatedepistage(this.depistage);
 
-        try {
-            databaseManager.updatedepistage(this.depistage);
-
-            Toast.makeText(this,"ajouter Avec succe",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, DepistagePassifList.class);
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
-        }
-    }
-/*
-    private  void  Supprimer(){
-        try {
-            databaseManager.supprimerpistage(this.depistage);
-            Toast.makeText(this,"Supprimer Avec succe",Toast.LENGTH_SHORT).show();
-            Intent intent= new Intent(this, DepistagePassifList.class);
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "ajouter Avec succe", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, DepistagePassifList.class);
+               startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
- */
+
+    boolean VerficationChampe() {
+
+        boolean error=false;
+        if (jauneG.getText().toString().trim().isEmpty()) {
+            error = true;
+            jauneG.setError("invalid!");
+        }
+
+        if (jauneF.getText().toString().trim().isEmpty()) {
+            error = true;
+            jauneF.setError("invalid!");
+        }
+
+        if (rougeG.getText().toString().isEmpty()) {
+            error = true;
+            rougeG.setError("invalid!");
+        }
+        if (rougeF.getText().toString().isEmpty()) {
+            error = true;
+            rougeF.setError("invalid!");
+        }
+        if (vertG.getText().toString().isEmpty()) {
+            error = true;
+            vertG.setError("invalid!");
+        }
+        if (vertF.getText().toString().isEmpty()) {
+            error = true;
+            vertF.setError("invalid!");
+        }
+
+        if (odemeG.getText().toString().isEmpty()) {
+            error = true;
+            odemeG.setError("invalid!");
+        }
+        if (odemeF.getText().toString().isEmpty()) {
+            error = true;
+            odemeF.setError("invalid!");
+        }
+
+        if (zscore.getText().toString().isEmpty()) {
+            error = true;
+            zscore.setError("invalid!");
+        }
+        if (zscore2.getText().toString().isEmpty()) {
+            error = true;
+            zscore2.setError("invalid!");
+        }
+        if (age.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnerage.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (anne.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinneranne.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (moi.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnermois.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (structure==null) {
+            error = true;
+            TextView errorText= ((TextView)spinnerstructer.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnercommune.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnercommune.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnermoughata.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnermoughata.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        return error;
+    }
+
 }

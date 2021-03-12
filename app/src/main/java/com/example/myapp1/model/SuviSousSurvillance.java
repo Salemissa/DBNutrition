@@ -27,7 +27,7 @@ public class SuviSousSurvillance {
     @DatabaseField
     private int ngf;
     @DatabaseField
-    private  int read;
+    private  int rea;
     @DatabaseField
     private int  gueris;
     @DatabaseField
@@ -40,8 +40,11 @@ public class SuviSousSurvillance {
     private int refCRENI;
     @DatabaseField
     private int transCRENAS;
-    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd")
-    private Date date;
+    @DatabaseField
+    private String date;
+
+    @DatabaseField
+    private int syn;
 
     public SuviSousSurvillance (){};
 
@@ -109,20 +112,12 @@ public class SuviSousSurvillance {
         this.ngf = NGF;
     }
 
-    public int getRead() {
-        return read;
-    }
-
-    public void setRead(int read) {
-        read = read;
-    }
-
     public int getGueris() {
         return gueris;
     }
 
     public void setGueris(int gueris) {
-        gueris = gueris;
+        this.gueris = gueris;
     }
 
     public int getDeces() {
@@ -130,7 +125,8 @@ public class SuviSousSurvillance {
     }
 
     public void setDeces(int deces) {
-        deces = deces;
+
+        this.deces = deces;
     }
 
     public int getAbonde() {
@@ -138,7 +134,8 @@ public class SuviSousSurvillance {
     }
 
     public void setAbonde(int abonde) {
-        abonde = abonde;
+
+        this.abonde = abonde;
     }
 
     public int getNonRep() {
@@ -146,15 +143,16 @@ public class SuviSousSurvillance {
     }
 
     public void setNonRep(int nonRep) {
-        nonRep = nonRep;
+        this.nonRep = nonRep;
     }
 
     public int getRefCRENI() {
         return refCRENI;
     }
 
-    public void setRefCRENI(int refCRENI) {
-        refCRENI = refCRENI;
+    public void setRefCRENI(int refCRENI)
+    {
+        this.refCRENI = refCRENI;
     }
 
     public int getTransCRENAS() {
@@ -162,7 +160,8 @@ public class SuviSousSurvillance {
     }
 
     public void setTransCRENAS(int transCRENAS) {
-        transCRENAS = transCRENAS;
+
+        this.transCRENAS = transCRENAS;
     }
 
     public int getSsdebuit() {
@@ -173,11 +172,45 @@ public class SuviSousSurvillance {
         this.ssdebuit = ssdebuit;
     }
 
-    public Date getDate() {
+    public  String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
+
+    public int getNcg() {
+        return ncg;
+    }
+
+    public void setNcg(int ncg) {
+        this.ncg = ncg;
+    }
+
+    public int getNgf() {
+        return ngf;
+    }
+
+    public void setNgf(int ngf) {
+        this.ngf = ngf;
+    }
+
+    public int getRea() {
+        return rea;
+    }
+
+    public void setRea(int rea) {
+        this.rea = rea;
+    }
+
+    public int getSyn() {
+        return syn;
+    }
+
+    public void setSyn(int syn) {
+        this.syn = syn;
+    }
+
+
 }

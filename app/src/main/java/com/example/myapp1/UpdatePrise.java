@@ -1,6 +1,7 @@
 package com.example.myapp1;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
@@ -18,9 +19,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UpdatePrise extends AppCompatActivity {
@@ -39,7 +42,8 @@ public class UpdatePrise extends AppCompatActivity {
     EditText PB,Age,contact,enfant,accompagnant,MAS;
     String sexe,statu,odeme,pec,ref;
     private Button Modfier;
-
+    List<String>  communeList=null;
+    List<String>  localiteeList=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +94,11 @@ public class UpdatePrise extends AppCompatActivity {
             this.priseencharge = this.databaseManager.priseById(this.id);
         }
         final List<String> moughata = new ArrayList<String>();
+        moughata.add("");
+        this.communeList  = new ArrayList<String>();
+        communeList .add("");
+        this.localiteeList  = new ArrayList<String>();
+        this.localiteeList.add("");
 
         List<Moughata> ListMoughata = databaseManager.ListMoughata();
         if (ListMoughata != null) {
@@ -98,6 +107,19 @@ public class UpdatePrise extends AppCompatActivity {
                 // Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
             }
         }
+
+        this.moughatadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, moughata);
+        this.moughatadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnermoughata.setAdapter(this.moughatadapter);
+
+        this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,communeList);
+        this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnercommune.setAdapter(this.communadapter);
+
+
+        this.localiteadapter= new ArrayAdapter(this, android.R.layout.simple_spinner_item,localiteeList);
+        this.localiteadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnerlocalite.setAdapter(this.localiteadapter);
         ArrayAdapter sexeadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,Sexe);
         sexeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnersexe.setAdapter(sexeadapter);
@@ -233,49 +255,70 @@ public class UpdatePrise extends AppCompatActivity {
             }
         });
 
-        this.Valeurpardefaut();
+        //this.Valeurpardefaut();
 
     }
 
 
 
     void MoughataComune(String moughata) {
-        Toast.makeText(this, "0", Toast.LENGTH_LONG).show();
-        Moughata moughataname = databaseManager.Moughataname(moughata);
-        List<String> communesM = new ArrayList<String>();
+        Moughata  moughataname=null;
+        if(moughata.equals("")){
+            communeList.clear();
+            communeList.add("");
+        }
+        else {
+            moughataname = databaseManager.Moughataname(moughata);
+        }
 
         if (moughataname != null) {
+            this.communadapter.clear();
+            this.communeList.clear();
+            this.communeList.add(" ");
             for (Commune commune : moughataname.getCommunes()) {
-
-                communesM.add(commune.getCommunename().toString());
+                this.communeList.add(commune.getCommunename().toString());
             }
-            this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, communesM);
-            this.spinnercommune.setAdapter(this.communadapter);
-            this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
 
 
         }
 
-    }
 
+
+
+        this.communadapter.notifyDataSetChanged();
+
+
+    }
     void CommuneLocalite(String commune) {
-        Commune communesel = databaseManager.communename(commune);
-        List<String> localiteCommune = new ArrayList<String>();
+        Commune communesel=null;
+        if(commune.equals("")){
+            this.localiteadapter.clear();
+            this.localiteeList.clear();
+            this.localiteeList.add("");
+        }
+        else{
+            communesel=databaseManager.communename(commune);
+        }
 
-        if (communesel != null) {
 
-            Toast.makeText(this, communesel.getMoughata().getMoughataname(), Toast.LENGTH_LONG).show();
-            for (Localite localite : communesel.getLocalites()) {
+        if(communesel !=null){
+            this.localiteadapter.clear();
+            this.localiteeList.clear();
+            localiteeList.add("");
+            for( Localite localite:communesel.getLocalites() ) {
 
-                localiteCommune.add(localite.getLocalitename().toString());
+                this.localiteeList.add(localite.getLocalitename().toString());
             }
 
-            this.localiteadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, localiteCommune);
-            this.spinnerlocalite.setAdapter(localiteadapter);
-            this.localiteadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        }
-    }
 
+
+        }
+
+        this.localiteadapter.notifyDataSetChanged();
+        //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+    }
     /**
      *
      */
@@ -286,6 +329,8 @@ public class UpdatePrise extends AppCompatActivity {
 
     }
 
+
+
     void Valeurpardefaut(){
         this.Age.setText(priseencharge.getAge()+"");
         this.PB.setText(priseencharge.getPb()+"");
@@ -293,41 +338,184 @@ public class UpdatePrise extends AppCompatActivity {
         this.enfant.setText(priseencharge.getEnfant());
         this.accompagnant.setText(priseencharge.getNomaccompagnant());
         this.MAS.setText(priseencharge.getMas()+"");
-
         String sexe=this.priseencharge.getSexe(); //the value you want the position for
-        ArrayAdapter ageSel = (ArrayAdapter) this.spinnersexe.getAdapter();
-        int agePosition = ageSel.getPosition(sexe);
-        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
+        ArrayAdapter sexeSel = (ArrayAdapter) this.spinnersexe.getAdapter();
+        int agePosition = sexeSel.getPosition(sexe);
         this.spinnersexe.setSelection(agePosition);
+
+        String statut=this.priseencharge.getStatut(); //the value you want the position for
+        ArrayAdapter statutSel = (ArrayAdapter) this.spinnerStatu.getAdapter();
+        int statutPosition = statutSel.getPosition(statut);
+        this.spinnerStatu.setSelection(statutPosition);
 
         String   odeme=this.priseencharge.getOdeme()+""; //the value you want the position for
         ArrayAdapter odemeSel = (ArrayAdapter) this.spinnerOdeme.getAdapter();
         int odemePosition = odemeSel.getPosition(odeme);
         //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
-        this.spinnerOdeme.setSelection(agePosition);
+        this.spinnerOdeme.setSelection(odemePosition);
+
+        String   refere=this.priseencharge.getRefere()+""; //the value you want the position for
+        ArrayAdapter refSel = (ArrayAdapter) this.spinnerRef.getAdapter();
+        int refPosition = refSel.getPosition(refere);
+
+        this.spinnerRef.setSelection(refPosition);
+
+        String   pec=this.priseencharge.getPec()+""; //the value you want the position for
+        ArrayAdapter pecSel = (ArrayAdapter) this.spinerpec.getAdapter();
+        int pecPosition = pecSel.getPosition(pecSel);
+        this.spinerpec.setSelection(pecPosition);
+        this.MoughataaPardefaut();
+    }
+
+    void  MoughataaPardefaut(){
+        Localite localite=databaseManager.localitename(this.priseencharge.getLocalite().getLocalitename());
+        String Moug=localite.getCommune().getMoughata().getMoughataname(); //the value you want the position for
+        ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
+        int MougPosition = MougSel.getPosition(Moug);
+        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
+
+        this.spinnermoughata.setSelection(MougPosition);
+        this.MoughataComune(Moug);
+        communePardefaut();
+        this.moughatadapter.notifyDataSetChanged();
+    }
+
+    private void communePardefaut() {
+        String commune=this.priseencharge.getLocalite().getCommune().getCommunename(); //the value you want the position for
+        int StrPosition = ((ArrayAdapter) this.spinnercommune.getAdapter()).getPosition(commune);
+        this.CommuneLocalite(commune);
+        this.spinnercommune.setSelection(StrPosition);
+        this.communadapter.notifyDataSetChanged();
+        this.LocalitePardefaut();
+    }
+
+
+
+
+
+    private void LocalitePardefaut() {
+
+        String str=this.priseencharge.getLocalite().getLocalitename(); //the value you want the position for
+        ArrayAdapter StrSel = (ArrayAdapter) this.spinnerlocalite.getAdapter();
+        int StrPosition = StrSel.getPosition(str);
+        //Toast.makeText(this,this.depistage.getStructure().getStructurename()+"1"+this.depistage.getStructure().getCommune().getMoughata().toString()+"11",Toast.LENGTH_LONG).show();
+        this.spinnerlocalite.setSelection(StrPosition);
+        this.localiteadapter.notifyDataSetChanged();
+
     }
 
     private void ModfierPrise() {
-        priseencharge.setAge(Integer.parseInt(Age.getText().toString()));
-        priseencharge.setContact(contact.getText().toString());
-        priseencharge.setNomaccompagnant(accompagnant.getText().toString());
-        priseencharge.setSexe(sexe);
-        priseencharge.setLocalite(localite);
-        priseencharge.setPec(pec);
-        priseencharge.setRefere(ref);
-        priseencharge.setStatut(statu);
-        priseencharge.setEnfant(enfant.getText().toString());
-        priseencharge.setMas(Integer.parseInt(MAS.getText().toString()));
-        priseencharge.setPb(Integer.parseInt(PB.getText().toString()));
-        //priseencharge.setDate(new Date());
-        try {
-            databaseManager.updatePrise(priseencharge);
+        if(!VerficationChampe()) {
+            priseencharge.setAge(Integer.parseInt(Age.getText().toString()));
+            priseencharge.setContact(contact.getText().toString());
+            priseencharge.setNomaccompagnant(accompagnant.getText().toString());
+            priseencharge.setSexe(sexe);
+            priseencharge.setLocalite(localite);
+            priseencharge.setPec(pec);
+            priseencharge.setRefere(ref);
+            priseencharge.setStatut(statu);
+            priseencharge.setEnfant(enfant.getText().toString());
+            priseencharge.setMas(MAS.getText().toString());
+            priseencharge.setPb(Integer.parseInt(PB.getText().toString()));
+            //priseencharge.setDate(new Date());
+            try {
+                databaseManager.updatePrise(priseencharge);
 
-            Intent intent= new Intent( this, ListPrisenCharge.class);
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ListPrisenCharge.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    boolean VerficationChampe() {
+        boolean error=false;
+        if (enfant.getText().toString().trim().isEmpty()) {
+            error = true;
+            enfant.setError("invalid!");
         }
 
+        if (Age.getText().toString().trim().isEmpty()) {
+            error = true;
+            Age.setError("invalid!");
+        }
+
+        if (PB.getText().toString().isEmpty()) {
+            error = true;
+            PB.setError("invalid!");
+        }
+        if (contact.getText().toString().isEmpty()) {
+            error = true;
+            contact.setError("invalid!");
+        }
+        if (MAS.getText().toString().isEmpty()) {
+            error = true;
+            MAS.setError("invalid!");
+        }
+
+        if (accompagnant.getText().toString().isEmpty()) {
+            error = true;
+            accompagnant.setError("invalid!");
+        }
+
+
+        if (localite==null) {
+            error = true;
+            TextView errorText= ((TextView)spinnerlocalite.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnercommune.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnercommune.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnermoughata.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnermoughata.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (spinnersexe.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnersexe.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnerStatu.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnerStatu.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnerRef.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnerRef.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnerOdeme.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnerOdeme.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinerpec.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinerpec.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        return error;
     }
     }

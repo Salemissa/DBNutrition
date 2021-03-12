@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Arrays;
 
 @DatabaseTable
-public class DepistagePassif {
+public class DepistagePassif  {
     @DatabaseField(generatedId = true)
     private Long id;
     @DatabaseField
@@ -182,4 +182,6 @@ public class DepistagePassif {
                 ", structure=" + structure +
                 '}';
     }
+
+
 }

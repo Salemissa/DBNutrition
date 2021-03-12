@@ -45,19 +45,20 @@ public class PriseenCharge {
 
     @DatabaseField
     @JsonProperty("mas")
-    private Integer mas;
+    private String mas;
 
     @DatabaseField
     @JsonProperty("pb")
-
     private Integer pb;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     @JsonProperty("localite")
     private Localite localite;
-    @DatabaseField(dataType = DataType.DATE_STRING, format = "yyyy-MM-dd")
+    @DatabaseField
     @JsonProperty
-    private Date date;
+    private String date;
+    @DatabaseField
+    int syn ;
     public PriseenCharge (){};
 
     public Long getId() {
@@ -140,11 +141,11 @@ public class PriseenCharge {
         this.enfant = enfant;
     }
 
-    public int getMas() {
+    public String getMas() {
         return mas;
     }
 
-    public void setMas(int mas) {
+    public void setMas(String mas) {
         this.mas = mas;
     }
 
@@ -164,11 +165,13 @@ public class PriseenCharge {
         this.localite = localite;
     }
 
-    public Date getDate() {
+    public String  getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+
+
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -189,5 +192,21 @@ public class PriseenCharge {
                 ", localite=" + localite.getLocalitename() +
                 ", date=" + date +
                 '}';
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public void setPb(Integer pb) {
+        this.pb = pb;
+    }
+
+    public int getSyn() {
+        return syn;
+    }
+
+    public void setSyn(int syn) {
+        this.syn = syn;
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.PriseenCharge;
 import com.example.myapp1.model.User;
 import com.example.myapp1.model.UserForm;
@@ -35,6 +36,10 @@ public class UsersCalls {
 
     public interface CallbacksPrise {
         void onResponse(@Nullable PriseenCharge priseenCharges);
+        void onFailure();
+    }
+    public interface CallbacksDepistage {
+        void onResponse(@Nullable Depistage Depistage);
         void onFailure();
     }
 
@@ -156,6 +161,42 @@ public class UsersCalls {
 
             @Override
             public void onFailure(Call<PriseenCharge> call, Throwable t) {
+                Log.e("ERROR ", t.getMessage().toString()+"Probleme");
+                if (callbacksWeakReference.get() != null) callbacksWeakReference.get().onFailure();
+
+            }
+        });
+
+    }
+
+
+    public static void addDepistage(CallbacksDepistage callbacks,List<Depistage> depistage){
+
+        // 2.1 - Create a weak reference to callback (avoid memory leaks)
+        final WeakReference<CallbacksDepistage> callbacksWeakReference = new WeakReference<CallbacksDepistage>(callbacks);
+
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        UserService userService = UserService.retrofit.create(UserService.class);
+
+        // 2.3 - Create the call on Github API
+        Call<Depistage> call =userService.createDepistage(depistage);
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<Depistage>() {
+
+
+            @Override
+            public void onResponse(Call<Depistage> call, Response<Depistage> response) {
+                if (callbacksWeakReference.get() != null) callbacksWeakReference.get().onResponse(response.body());
+                if(response.isSuccessful()){
+                    Log.i("OK", response.message());
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Depistage> call, Throwable t) {
                 Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 if (callbacksWeakReference.get() != null) callbacksWeakReference.get().onFailure();
 

@@ -1,6 +1,7 @@
 package com.example.myapp1;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
@@ -55,6 +56,9 @@ public class UpdateDepistage extends AppCompatActivity {
     private boolean structurePardefaut = false;
     private boolean communePardefaut = false;
 
+    List<String>  communeList=null;
+    List<String>  localiteeList=null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +110,11 @@ public class UpdateDepistage extends AppCompatActivity {
 
 
         final List<String> moughata = new ArrayList<String>();
+        moughata.add("");
+        this.communeList  = new ArrayList<String>();
+        communeList .add("");
+        this.localiteeList  = new ArrayList<String>();
+        this.localiteeList.add("");
 
         List<Moughata> ListMoughata = databaseManager.ListMoughata();
         if (ListMoughata != null) {
@@ -118,6 +127,15 @@ public class UpdateDepistage extends AppCompatActivity {
         this.moughatadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, moughata);
         this.moughatadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnermoughata.setAdapter(this.moughatadapter);
+
+        this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,communeList);
+        this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnercommune.setAdapter(this.communadapter);
+
+
+        this.localiteadapter= new ArrayAdapter(this, android.R.layout.simple_spinner_item,localiteeList);
+        this.localiteadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerlocalite.setAdapter(this.localiteadapter);
         this.ageadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, this.ages);
         this.ageadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerage.setAdapter(this.ageadapter);
@@ -217,50 +235,76 @@ public class UpdateDepistage extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
-        this.Valeurpardefaut();
+
     }
 
 
     void MoughataComune(String moughata) {
-        Toast.makeText(this, "0", Toast.LENGTH_LONG).show();
-        Moughata moughataname = databaseManager.Moughataname(moughata);
-        List<String> communesM = new ArrayList<String>();
+        Moughata  moughataname=null;
+        if(moughata.equals("")){
+            communeList.clear();
+            communeList.add("");
+        }
+        else {
+            moughataname = databaseManager.Moughataname(moughata);
+        }
 
         if (moughataname != null) {
+            this.communadapter.clear();
+            this.communeList.clear();
+            this.communeList.add(" ");
             for (Commune commune : moughataname.getCommunes()) {
-
-                communesM.add(commune.getCommunename().toString());
+                this.communeList.add(commune.getCommunename().toString());
             }
-            this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, communesM);
-            this.spinnercommune.setAdapter(this.communadapter);
-            this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
 
 
         }
+
+
+
+
+        this.communadapter.notifyDataSetChanged();
+
+
+    }
+    void CommuneLocalite(String commune) {
+        Commune communesel=null;
+        if(commune.equals("")){
+            this.localiteadapter.clear();
+            this.localiteeList.clear();
+            this.localiteeList.add("");
+        }
+        else{
+            communesel=databaseManager.communename(commune);
+        }
+
+
+        if(communesel !=null){
+            this.localiteadapter.clear();
+            this.localiteeList.clear();
+            localiteeList.add("");
+            for( Localite localite:communesel.getLocalites() ) {
+
+                this.localiteeList.add(localite.getLocalitename().toString());
+            }
+
+
+
+        }
+
+      this.localiteadapter.notifyDataSetChanged();
+        //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
     }
 
-    void CommuneLocalite(String commune) {
-        Commune communesel = databaseManager.communename(commune);
-        List<String> localiteCommune = new ArrayList<String>();
+    @Override
+    public  void  onResume() {
 
-        if (communesel != null) {
-
-            Toast.makeText(this, communesel.getMoughata().getMoughataname(), Toast.LENGTH_LONG).show();
-            for (Localite localite : communesel.getLocalites()) {
-
-                localiteCommune.add(localite.getLocalitename().toString());
-            }
-
-            this.localiteadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, localiteCommune);
-            this.spinnerlocalite.setAdapter(localiteadapter);
-            this.localiteadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        super.onResume();
 
 
-        }
-
-
-        //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.Valeurpardefaut();
 
     }
 
@@ -277,21 +321,14 @@ public class UpdateDepistage extends AppCompatActivity {
         //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
         this.spinneranne.setSelection(annePosition);
 
-        String age = this.depistage.getAge(); //the value you want the position for
         ArrayAdapter ageSel = (ArrayAdapter) this.spinnerage.getAdapter();
-        int agePosition = ageSel.getPosition(age);
+        int AgePosition = ageSel.getPosition(depistage.getAge());
         //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
-        this.spinnerage.setSelection(agePosition);
+        this.spinnerage.setSelection(AgePosition);
 
 
-        Localite localite = databaseManager.localitename((this.depistage.getLocalite().getLocalitename()));
-        Toast.makeText(this, "2", Toast.LENGTH_LONG).show();
-        String Moug = localite.getCommune().getMoughata().getMoughataname(); //the value you want the position for
-        ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
-        int MougPosition = MougSel.getPosition(Moug);
-        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
-        this.spinnermoughata.setSelection(MougPosition);
 
+        this.MoughataaPardefaut();
         // this.MoughataComune(Moug);
         //this.CommuneStructure(structure.getCommune().getCommunename());
 
@@ -308,37 +345,152 @@ public class UpdateDepistage extends AppCompatActivity {
     }
 
 
+    void  MoughataaPardefaut(){
+        Localite localite=databaseManager.localitename(this.depistage.getLocalite().getLocalitename());
+        String Moug=localite.getCommune().getMoughata().getMoughataname(); //the value you want the position for
+        ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
+        int MougPosition = MougSel.getPosition(Moug);
+        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
+
+        this.spinnermoughata.setSelection(MougPosition);
+        this.MoughataComune(Moug);
+        communePardefaut();
+        this.moughatadapter.notifyDataSetChanged();
+    }
+
     private void communePardefaut() {
-        if (this.communePardefaut) {
-            String commune = this.depistage.getLocalite().getCommune().getCommunename(); //the value you want the position for
+        String commune=this.depistage.getLocalite().getCommune().getCommunename(); //the value you want the position for
+        int StrPosition = ((ArrayAdapter) this.spinnercommune.getAdapter()).getPosition(commune);
+        this.CommuneLocalite(commune);
+        this.spinnercommune.setSelection(StrPosition);
+        this.communadapter.notifyDataSetChanged();
+        this.LocalitePardefaut();
+    }
 
-            ArrayAdapter CommuneSel = (ArrayAdapter) this.spinnercommune.getAdapter();
-            int StrPosition = CommuneSel.getPosition(commune);
-            this.spinnercommune.setSelection(StrPosition);
 
 
-        }
+
+
+    private void LocalitePardefaut() {
+
+        String str=this.depistage.getLocalite().getLocalitename(); //the value you want the position for
+        ArrayAdapter StrSel = (ArrayAdapter) this.spinnerlocalite.getAdapter();
+        int StrPosition = StrSel.getPosition(str);
+        //Toast.makeText(this,this.depistage.getStructure().getStructurename()+"1"+this.depistage.getStructure().getCommune().getMoughata().toString()+"11",Toast.LENGTH_LONG).show();
+        this.spinnerlocalite.setSelection(StrPosition);
+        this.localiteadapter.notifyDataSetChanged();
+
     }
 
     private void updatedepistage() {
-        this.depistage.setAnnee(anne);
-        this.depistage.setMois(moi);
-        this.depistage.setAge(age);
-        depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
-        depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
-        depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
-        depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+        if(VerficationChampe()){}
+        else {
+            this.depistage.setAnnee(anne);
+            this.depistage.setMois(moi);
+            this.depistage.setAge(age);
+            depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
+            depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
+            depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
+            depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+            depistage.setLocalite(localite);
 
-        try {
-            databaseManager.updatedepistage(this.depistage);
-            Toast.makeText(this, "ajouter Avec succe", Toast.LENGTH_SHORT).show();
-            Intent intent= new Intent( this, ActivtiteMobileList.class);
-            intent.putExtra("type",depistage.getType());
-            startActivity(intent);
+            try {
+                databaseManager.updatedepistage(this.depistage);
+                Toast.makeText(this, "ajouter Avec succe", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ActivtiteMobileList.class);
+                intent.putExtra("type", depistage.getType());
+                startActivity(intent);
 
-    } catch(Exception e){
-        Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-    }
-
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
 }
+
+    boolean VerficationChampe() {
+
+        boolean error=false;
+        if (jauneG.getText().toString().trim().isEmpty()) {
+            error = true;
+            jauneG.setError("invalid!");
+        }
+
+        if (jauneF.getText().toString().trim().isEmpty()) {
+            error = true;
+            jauneF.setError("invalid!");
+        }
+
+        if (rougeG.getText().toString().isEmpty()) {
+            error = true;
+            rougeG.setError("invalid!");
+        }
+        if (rougeF.getText().toString().isEmpty()) {
+            error = true;
+            rougeF.setError("invalid!");
+        }
+        if (vertG.getText().toString().isEmpty()) {
+            error = true;
+            vertG.setError("invalid!");
+        }
+        if (vertF.getText().toString().isEmpty()) {
+            error = true;
+            vertF.setError("invalid!");
+        }
+
+        if (odemeG.getText().toString().isEmpty()) {
+            error = true;
+            odemeG.setError("invalid!");
+        }
+        if (odemeF.getText().toString().isEmpty()) {
+            error = true;
+            odemeF.setError("invalid!");
+        }
+
+        if (age.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnerage.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (anne.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinneranne.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (moi.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnermois.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (localite==null) {
+            error = true;
+            TextView errorText= ((TextView)spinnerlocalite.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnercommune.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnercommune.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnermoughata.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnermoughata.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        return error;
+    }
 }
