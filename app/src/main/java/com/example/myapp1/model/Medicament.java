@@ -6,14 +6,19 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class Medicament {
-    @DatabaseField( generatedId = true )
-    private int id;
+    @DatabaseField(generatedId = true)
+    private Long id;
     @DatabaseField
     private String name;
     @ForeignCollectionField(eager=false)
     private ForeignCollection<MedicamentIntrants> medicamentIntrants;
 
-    public int getId() {
+
+    public Medicament(){}
+    public  Medicament(String name){
+        this.name=name;
+    }
+    public Long getId() {
         return id;
     }
 
@@ -21,7 +26,7 @@ public class Medicament {
         return name;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

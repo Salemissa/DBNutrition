@@ -17,8 +17,9 @@ public class Relais extends  Intervenant {
     @JsonIgnore
     private Animateur animateur;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    @JsonProperty("relais")
     private Localite localite;
+    @ForeignCollectionField(eager=false)
+    private ForeignCollection<Gaspa> gaspas;
     public Relais(){};
 
     public String getCode() {
@@ -43,5 +44,18 @@ public class Relais extends  Intervenant {
 
     public void setLocalite(Localite localite) {
         this.localite = localite;
+    }
+
+    public ForeignCollection<Gaspa> getGaspas() {
+        return gaspas;
+    }
+
+    public void setGaspas(ForeignCollection<Gaspa> gaspas) {
+        this.gaspas = gaspas;
+    }
+
+    @Override
+    public String toString() {
+        return getNom();
     }
 }

@@ -30,7 +30,9 @@ import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.GithubUser;
 import com.example.myapp1.model.Localite;
+import com.example.myapp1.model.Medicament;
 import com.example.myapp1.model.Moughata;
+import com.example.myapp1.model.Relais;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.SuperViseur;
 import com.example.myapp1.model.SuviSousSurvillance;
@@ -91,8 +93,10 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         s.setUsername("SUP1");
         s.setPassword("1234");
         databaseManager.inserSuperViseur(s);
-
-
+      if(databaseManager.MedicamentsList().size()==0) {
+          databaseManager.insertMedicament(new Medicament("Pumpy Nut"));
+          databaseManager.insertMedicament(new Medicament("Amoxiciline"));
+      }
 
         List<Moughata> Moughata = databaseManager.ListMoughata();
         if (Moughata.size()==0) {
@@ -320,9 +324,9 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         databaseManager.inserMoughata(moughata2);
         Moughata moughata3 = new Moughata("Tintane");
         databaseManager.inserMoughata(moughata3);
-       // AjouterCommune();
+       AjouterCommune();
 
-        SynCommunes();
+        //SynCommunes();
        progressDoalog.setMessage("Loading Communne ....");
        progressDoalog.show();
 
@@ -457,6 +461,15 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         databaseManager.insersusb(usb);
         usb.setUsbname("Koubeni");
         usb.setLocalite(localite);
+
+        Relais relais=new Relais();
+        relais.setNom("Salem");
+        relais.setCin("359988776655");
+        relais.setSexe("G");
+        relais.setLocalite(localite);
+        relais.setType("AR");
+        relais.setStatut("A");
+        databaseManager.insertRealais(relais);
         databaseManager.insersusb(usb);
 
     }

@@ -1,7 +1,6 @@
 package com.example.myapp1.pcim;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -11,15 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.example.myapp1.ActivtiteMobileList;
 import com.example.myapp1.DepistagePassifList;
 import com.example.myapp1.ListApproche;
+import com.example.myapp1.ListGaspa;
 import com.example.myapp1.ListPrisenCharge;
 import com.example.myapp1.ListSuivisous;
 import com.example.myapp1.R;
-import com.example.myapp1.UpdateDepistagePassif;
+import com.example.myapp1.StockeList;
 
 
 /**
@@ -81,6 +80,8 @@ public class home extends Fragment {
         CardView listSuivi=view.findViewById(R.id.ssslist);
         CardView lisPris=view.findViewById(R.id.prilist);
         CardView listapproches=view.findViewById(R.id.aplist);
+        CardView liststocke=view.findViewById(R.id.stocklist);
+        CardView intervenantlist=view.findViewById(R.id.intervenantlist);
         depistagpasif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,7 +156,30 @@ public class home extends Fragment {
 
         });
 
+        liststocke.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent( getActivity(), StockeList.class);
+                //intent.putExtra("type","CampagneDepistage");
+                startActivity(intent);
 
+            }
+
+
+        });
+
+
+        intervenantlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent( getActivity(), ListGaspa.class);
+                //intent.putExtra("type","CampagneDepistage");
+                startActivity(intent);
+
+            }
+
+
+        });
 
         return view;
     }

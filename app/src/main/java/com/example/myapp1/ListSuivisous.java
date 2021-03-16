@@ -82,8 +82,6 @@ public class ListSuivisous extends AppCompatActivity {
         this.add= findViewById(R.id.add);
         progressDoalog = new ProgressDialog(ListSuivisous.this);
         progressDoalog.setMessage("Loading....");
-
-
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,8 +197,6 @@ public class ListSuivisous extends AppCompatActivity {
                 suviSousSurvillanceSyn.setStructure(structure);
 
                 syn.add(suviSousSurvillanceSyn);
-
-
             }
             try {
                 //progressBar.setVisibility(View.VISIBLE);
@@ -315,18 +311,6 @@ public class ListSuivisous extends AppCompatActivity {
             }
 
 
-            // Rapport.setImageBitmap();
-//            nomPhamacie.setText("Pharmacie : "+medicamentPharmacies.get(position).getPharmacie().getName()+"\n"+"Zone : "+medicamentPharmacies.get(position).getPharmacie().getZone());
-//            nomMedicament.setText("Medicament : "+medicamentPharmacies.get(position).getMedicament().getName());
-//            dateExpiration.setText("Date Exp : "+medicamentPharmacies.get(position).getMedicament().getDateExp());
-//            prix.setText("Prix : "+medicamentPharmacies.get(position).getPrice()+" MRU");
-
-
-
-
-
-
-            //On retourne l'item créé.
             return layoutItem;
         }
     }
@@ -434,12 +418,24 @@ public class ListSuivisous extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<SuviSousSurvillance> call, Throwable t) {
-                Log.e("ERROR ", t.getMessage().toString()+"Probleme");
+                 Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 //progressBar.setVisibility(View.INVISIBLE);
                 //progressBar.setVisibility(View.GONE);
                 progressDoalog.dismiss();
             }
         });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity2.class);
+        //intent.putExtra("type", "ActivitéMobile");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
 
     }
 }

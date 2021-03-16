@@ -28,7 +28,8 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface RetrofitServices {
-    public static final String ENDPOINT = "http://173.249.20.209:8080/PCIMA-0.0.1/";
+    //public static final String ENDPOINT = "http://173.249.20.209:8080/PCIMA-0.0.1/";
+    public static final String ENDPOINT = "http://192.168.1.118:8080/";
 
       @GET("allMoughatas")
       Call<List<Moughata>> getMoughataas();
@@ -66,7 +67,8 @@ public interface RetrofitServices {
     Call<SuviSousSurvillance> createDepistage(@Body SuviSousSurvillance sousSurvillance);
 
 
-    @POST("addListDepistage")
+    //@POST("addListDepistage")
+     @POST("general/addDepistageList")
     Call<Depistage> createDepistage(@Body List<Depistage> depistages);
 
     @POST("addApprocheList")

@@ -54,7 +54,8 @@ public class DepistageCalls {
 
             @Override
             public void onFailure(Call<Depistage> call, Throwable t) {
-                Log.e("ERROR ", t.getMessage().toString()+"Probleme");
+                Log.e("ERROR ", t.getCause().toString());
+
                 if (callbacksWeakReference.get() != null) callbacksWeakReference.get().onFailure();
 
             }

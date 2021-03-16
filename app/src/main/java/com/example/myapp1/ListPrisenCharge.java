@@ -427,6 +427,18 @@ public class ListPrisenCharge extends AppCompatActivity {
 
           }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity2.class);
+        //intent.putExtra("type", "ActivitéMobile");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
+
+    }
+
 
 }
 

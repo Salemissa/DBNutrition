@@ -20,33 +20,21 @@ import android.widget.Toast;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
 import com.example.myapp1.model.Commune;
-import com.example.myapp1.model.Medicament;
+import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
-import com.example.myapp1.model.Structure;
+import com.example.myapp1.model.Relais;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MedicamentIntrants#newInstance} factory method to
+ * Use the {@link Gaspa#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MedicamentIntrants extends Fragment {
-    View v;
-    Spinner spinnermois;
-    Spinner spinneranne;
-    Spinner spinnermoughata;
-    Spinner spinnercommune;
-    Spinner spinnerstructer;
-    Spinner spinnerMedicament;
-    Structure structure;
-    EditText StockeI,Qr,Qp,Qu;
-    String moi, anne;
-    com.example.myapp1.model.MedicamentIntrants medicamentIntrants=new  com.example.myapp1.model.MedicamentIntrants() ;
-    Medicament medicament;
+public class Gaspa extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -55,11 +43,21 @@ public class MedicamentIntrants extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    Spinner spinnermoughata  ;
+    Spinner spinnercommune ;
+    Spinner spinnerlocalite ;
+    Spinner spinnerrelais;
+    Spinner spinnermois, spinneranne;
+    Relais relais;
+    EditText FE,FEP,FA06R,FAO6P,FA23R,FA23P;
+    DatabaseManager databaseManager;
+    private  String moi,anne;
     private SimpleDateFormat sdf;
-    private DatabaseManager databaseManager;
+    View view;
     private Button Ajouter;
 
-    public MedicamentIntrants() {
+
+    public Gaspa() {
         // Required empty public constructor
     }
 
@@ -69,11 +67,11 @@ public class MedicamentIntrants extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MedicamentIntrants.
+     * @return A new instance of fragment Gaspa.
      */
     // TODO: Rename and change types and number of parameters
-    public static MedicamentIntrants newInstance(String param1, String param2) {
-        MedicamentIntrants fragment = new MedicamentIntrants();
+    public static Gaspa newInstance(String param1, String param2) {
+        Gaspa fragment = new Gaspa();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -94,69 +92,63 @@ public class MedicamentIntrants extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v= inflater.inflate(R.layout.fragment_medicament_intrants, container, false);
-        this.databaseManager = new DatabaseManager(this.getActivity());
+       view= inflater.inflate(R.layout.fragment_gaspa, container, false);
+
+        databaseManager=new DatabaseManager(getActivity());
         this.onViewCreated();
-        return v;
+       return view;
     }
 
-    void onViewCreated() {
-        //btn = this.v.findViewById(R.id.button);
+    private void onViewCreated() {
+        this.spinnermois = this.view.findViewById(R.id.mois);
+        this.spinneranne = this.view.findViewById(R.id.annee);
+        this.spinnermoughata = this.view.findViewById(R.id.moghata);
+        this.spinnercommune = this.view.findViewById(R.id.commune);
+        this.spinnerlocalite = this.view.findViewById(R.id.localite);
+        this.spinnerrelais=this.view.findViewById(R.id.relais);
+        this.FE= (EditText) this.view.findViewById(R.id.fe);
+        this.FEP= (EditText) this.view.findViewById(R.id.fep);
+        this.FA06R= (EditText) this.view.findViewById(R.id.fa06);
+        this.FAO6P=(EditText) this.view.findViewById(R.id.fa06p);
+        this.FA23R= (EditText) this.view.findViewById(R.id.fa23);
+        this.FA23P= (EditText) this.view.findViewById(R.id.fa23p);
+        this.Ajouter = (Button) this.view.findViewById(R.id.Ajouter);
+        Donnes donnes=new Donnes();
+        final String[] annee = donnes.annee;
+        String[] mois = donnes.mois;
+        String[] ages=donnes.ages;
 
+        final List<String> moughata  = new ArrayList<String>();
+        moughata.add("");
 
-        this.spinnermois = this.v.findViewById(R.id.mois);
-        this.spinneranne = this.v.findViewById(R.id.annee);
-        this.spinnermoughata = this.v.findViewById(R.id.moghata);
-        this.spinnercommune = this.v.findViewById(R.id.commune);
-        this.spinnerstructer = this.v.findViewById(R.id.structure);
-        this.spinnerMedicament=this.v.findViewById(R.id.medicament);
-        this.StockeI=this.v.findViewById(R.id.stockini);
-        this.Qr=this.v.findViewById(R.id.QR);
-        this.Qu=this.v.findViewById(R.id.QU);
-        this.Qp=this.v.findViewById(R.id.QP);
-        this.Ajouter = (Button) this.v.findViewById(R.id.Ajouter);
-        this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        List<Moughata> ListMoughata=databaseManager.ListMoughata();
 
+        if(ListMoughata!=null){
+            for( Moughata moug : ListMoughata ) {
+                moughata.add(moug.getMoughataname());
+                Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
+            }
+        }
 
         this.Ajouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AjouterMedicamentIntrants();
+                AjouterGaspa();
             }
 
 
         });
-        Donnes donnes = new Donnes();
-        final String[] annee = donnes.annee;
-        String[] mois = donnes.mois;
-        String[] ages = donnes.ages;
-
-        final List<String> moughata = new ArrayList<String>();
-        final  List<String> medicaments=new ArrayList<String>();
-        moughata.add("");
-        medicaments.add("");
-        List<Moughata> ListMoughata = databaseManager.ListMoughata();
-        if (ListMoughata != null) {
-            for (Moughata moug : ListMoughata) {
-                moughata.add(moug.getMoughataname());
-                //Toast.makeText(getActivity(), moug.getMoughataname(), Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        List<Medicament> ListMedicament = databaseManager.MedicamentsList();
-        if (ListMedicament != null) {
-            for (Medicament medicament : ListMedicament) {
-                medicaments.add(medicament.getName());
-                //Toast.makeText(getActivity(), moug.getMoughataname(), Toast.LENGTH_SHORT).show();
-            }
-        }
 
         ArrayAdapter moughatadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, moughata);
         moughatadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnermoughata.setAdapter(moughatadapter);
-        ArrayAdapter medicamentadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, medicaments);
-        medicamentadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMedicament.setAdapter(medicamentadapter);
+
+        //ArrayAdapter ageadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, ages);
+        //ageadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinnerage.setAdapter(ageadapter);
+
+
+
 
 
         ArrayAdapter moisadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, mois);
@@ -167,7 +159,7 @@ public class MedicamentIntrants extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                moi = parent.getItemAtPosition(position).toString();
+                moi=parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -175,13 +167,14 @@ public class MedicamentIntrants extends Fragment {
                 // TODO Auto-generated method stub
             }
         });
+
 
 
         spinneranne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                anne = parent.getItemAtPosition(position).toString();
+                anne=parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -191,8 +184,18 @@ public class MedicamentIntrants extends Fragment {
         });
 
 
-
-
+//        spinnerage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String item = parent.getItemAtPosition(position).toString();
+//                age=parent.getItemAtPosition(position).toString();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                // TODO Auto-generated method stub
+//            }
+//        });
 
 
         ArrayAdapter anneeadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, annee);
@@ -203,13 +206,7 @@ public class MedicamentIntrants extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                if(position==0){
-
-                    Toast.makeText(getActivity(),"vide ",Toast.LENGTH_SHORT).show();
-                }
-
                 MoughataComune(item);
-
             }
 
             @Override
@@ -218,25 +215,6 @@ public class MedicamentIntrants extends Fragment {
             }
         });
 
-
-
-        spinnerMedicament.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
-                if(position==0){
-
-                }
-
-                medicament=databaseManager.MedicamentByNom(item);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-            }
-        });
 
 
 
@@ -244,11 +222,7 @@ public class MedicamentIntrants extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-
-                CommuneStructure(item);
-
-
-
+                CommuneLocalite(item);
             }
 
             @Override
@@ -258,11 +232,28 @@ public class MedicamentIntrants extends Fragment {
         });
 
 
-        spinnerstructer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerlocalite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                structure = databaseManager.structurename(item);
+                LocaliteRelais(item);
+                if(!item.isEmpty()) {
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+        spinnerrelais.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                relais = (Relais) parent.getSelectedItem();
+
 
             }
 
@@ -271,6 +262,7 @@ public class MedicamentIntrants extends Fragment {
                 // TODO Auto-generated method stub
             }
         });
+
 
     }
 
@@ -278,101 +270,136 @@ public class MedicamentIntrants extends Fragment {
 
 
     void MoughataComune(String moughata) {
-        Moughata moughataname=null;
-        if(!moughata.isEmpty()) {
-            moughataname= databaseManager.Moughataname(moughata);
+        Moughata moughataname =null;
+        if(!moughata.isEmpty()){
+            moughataname=databaseManager.Moughataname(moughata);
         }
         List<String> communesM = new ArrayList<String>();
         communesM.add("");
         if (moughataname != null) {
             for (Commune commune : moughataname.getCommunes()) {
-
                 communesM.add(commune.getCommunename().toString());
             }
-
-
         }
 
         ArrayAdapter communadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, communesM);
         this.spinnercommune.setAdapter(communadapter);
         communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
     }
 
-    void CommuneStructure(String commune) {
-        Commune communesel=null;
-        if(!commune.isEmpty()) {
+
+    void CommuneLocalite(String commune) {
+        Commune communesel = null;
+        if(!commune.isEmpty()){
             communesel = databaseManager.communename(commune);
         }
-        List<String> StructureCommune = new ArrayList<String>();
-        StructureCommune.add("");
-        if (communesel != null) {
-            for (Structure structurs : communesel.getStructures()) {
+        List<String> localiesCommune = new ArrayList<String>();
+        localiesCommune.add("");
 
-                StructureCommune.add(structurs.getStructurename().toString());
+        if (communesel != null) {
+            for (Localite localite : communesel.getLocalites()) {
+
+                localiesCommune.add(localite.getLocalitename().toString());
             }
 
 
         }
-        ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, StructureCommune);
-        this.spinnerstructer.setAdapter(structureadapter);
+
+        ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, localiesCommune);
+        this.spinnerlocalite.setAdapter(structureadapter);
         structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    }
 
 
-        //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    void LocaliteRelais(String localite) {
+        Localite localitee= null;
+        if(!localite.isEmpty()){
+           localitee = databaseManager.localitename(localite);
+        }
+        List<Relais> RelaisLocalite = new ArrayList<Relais>();
+        List<String> Relais = new ArrayList<String>();
+        Relais.add("");
+        RelaisLocalite.add(new Relais());
+
+        if (localitee != null) {
+            for (Relais relais : localitee.getRelais()) {
+                    //Relais.add(relais.s)
+                RelaisLocalite.add(relais);
+            }
+
+
+        }
+        ArrayAdapter<Relais> adapter = new ArrayAdapter<Relais>(this.getActivity(), android.R.layout.simple_spinner_item, RelaisLocalite);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+      //  ArrayAdapter relaisadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, RelaisLocalite);
+        this.spinnerrelais.setAdapter(adapter);
 
     }
 
-    private void AjouterMedicamentIntrants() {
-       if(!this.VerficationChampe()) {
-           medicamentIntrants.setDate(sdf.format(new Date()));
-           medicamentIntrants.setMois(moi);
-           medicamentIntrants.setAnnee(anne);
-           medicamentIntrants.setStockinit(Integer.parseInt(StockeI.getText().toString()));
-           medicamentIntrants.setQuantiteperdue(Integer.parseInt(Qp.getText().toString()));
-           medicamentIntrants.setQuantiteutilisee(Integer.parseInt(Qu.getText().toString()));
-           medicamentIntrants.setRecu(Integer.parseInt(Qr.getText().toString()));
-           medicamentIntrants.setStructure(structure);
+    private void AjouterGaspa() {
+        if(!VerficationChampe()){
+
+            com.example.myapp1.model.Gaspa gaspa= new com.example.myapp1.model.Gaspa();
+            gaspa.setFe(Integer.parseInt(FE.getText().toString()));
+            gaspa.setFep(Integer.parseInt(FEP.getText().toString()));
+            gaspa.setFa06p(Integer.parseInt(FAO6P.getText().toString()));
+            gaspa.setFa06r(Integer.parseInt(FA06R.getText().toString()));
+            gaspa.setFa23r(Integer.parseInt(FA23R.getText().toString()));
+            gaspa.setFa23p(Integer.parseInt(FA23P.getText().toString()));
+            gaspa.setRelais(relais);
+            try {
+                databaseManager.insertGaspa(gaspa);
+                Intent intent = new Intent(getActivity(), ListGaspa.class);
+                startActivity(intent);
+                this.onDestroyView();
 
 
-           medicamentIntrants.setMedicament(medicament);
+            } catch (Exception e){
 
-           try {
-               databaseManager.insertMedicamentIntrants(medicamentIntrants);
-               Intent intent = new Intent(getActivity(), StockeList.class);
-               startActivity(intent);
-               this.onDestroyView();
-
-           } catch (Exception e){
-               Toast.makeText(getActivity(), e.getMessage()+"", Toast.LENGTH_LONG).show();
-           }
+            }
 
 
-
-       }
+        }
     }
 
     boolean VerficationChampe() {
 
         boolean error=false;
-        if (StockeI.getText().toString().trim().isEmpty()) {
+
+        if (FE.getText().toString().isEmpty()) {
             error = true;
-            StockeI.setError("invalid!");
+            FE.setError("invalid!");
+        }
+        if (FEP.getText().toString().isEmpty()) {
+            error = true;
+            FEP.setError("invalid!");
+        }
+        if (FA06R.getText().toString().isEmpty()) {
+            error = true;
+            FA06R.setError("invalid!");
         }
 
-        if (Qp.getText().toString().trim().isEmpty()) {
+        if (FAO6P.getText().toString().isEmpty()) {
             error = true;
-            Qp.setError("invalid!");
+            FAO6P.setError("invalid!");
         }
-        if (Qr.getText().toString().trim().isEmpty()) {
+        if (FA06R.getText().toString().isEmpty()) {
             error = true;
-            Qr.setError("invalid!");
+            FA06R.setError("invalid!");
         }
-        if (Qu.getText().toString().trim().isEmpty()) {
+
+        if (FA23R.getText().toString().isEmpty()) {
             error = true;
-            Qu.setError("invalid!");
+            FA23R.setError("invalid!");
         }
+        if (FA23P.getText().toString().isEmpty()) {
+            error = true;
+            FA23P.setError("invalid!");
+        }
+
+
+
         if (anne.isEmpty()) {
             error = true;
             TextView errorText= ((TextView)spinneranne.getSelectedView());
@@ -388,17 +415,16 @@ public class MedicamentIntrants extends Fragment {
             errorText.setText("Ce champ est obligatire");
         }
 
-        if (medicament==null) {
+        if (spinnerrelais.getSelectedItemPosition()==0) {
             error = true;
-            TextView errorText= ((TextView)spinnerMedicament.getSelectedView());
+            TextView errorText= ((TextView)spinnerrelais.getSelectedView());
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Ce champ est obligatire");
         }
-
-        if (structure==null) {
+        if (spinnerlocalite.getSelectedItemPosition()==0) {
             error = true;
-            TextView errorText= ((TextView)spinnerstructer.getSelectedView());
+            TextView errorText= ((TextView)spinnerlocalite.getSelectedView());
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("Ce champ est obligatire");
@@ -421,4 +447,5 @@ public class MedicamentIntrants extends Fragment {
 
         return error;
     }
+
 }

@@ -49,6 +49,12 @@
         android:name="com.example.myapp1.MedicamentIntrants"
         android:label="Gestion des Intrants "
         tools:layout="@layout/fragment_medicament_intrants" />
+
+    <fragment
+        android:id="@+id/gaspa"
+        android:name="com.example.myapp1.Gaspa"
+        android:label="Suivi des GASPA "
+        tools:layout="@layout/fragment_gaspa" />
     <activity
         android:id="@+id/logout"
         android:name="com.example.myapp1.MainActivity"

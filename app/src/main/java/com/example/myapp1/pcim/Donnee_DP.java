@@ -199,7 +199,7 @@ public class Donnee_DP extends Fragment {
         if (ListMoughata != null) {
             for (Moughata moug : ListMoughata) {
                 moughata.add(moug.getMoughataname());
-                Toast.makeText(getActivity(), moug.getMoughataname(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), moug.getMoughataname(), Toast.LENGTH_SHORT).show();
             }
         }
 
