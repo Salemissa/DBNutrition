@@ -1,10 +1,13 @@
 package com.example.myapp1;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
+import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.SuviSousSurvillance;
 import com.example.myapp1.pcim.Activite_Mobile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,25 +21,31 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import  com.example.myapp1.model.MedicamentIntrants;
+
+import static android.widget.Toast.LENGTH_LONG;
+
 public class StockeList extends AppCompatActivity {
 
     private DatabaseManager databaseManager;
     private ListView list;
     List<MedicamentIntrants> arrayList;
-    private boolean supp=false;
+    private boolean supp = false;
     private SimpleDateFormat sdf;
     private MedicamentInrantsAdapter adapter;
     private View fab;
     private View syn;
+    private View progressBar;
 
 
     @Override
@@ -45,9 +54,12 @@ public class StockeList extends AppCompatActivity {
         setContentView(R.layout.activity_stocke_list);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd");
         list = findViewById(R.id.list);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         databaseManager = new DatabaseManager(this);
-        this.arrayList=new ArrayList<>();
-        arrayList=databaseManager.MedicamentIntrantsList();
+        this.arrayList = new ArrayList<>();
+        arrayList = databaseManager.MedicamentIntrantsList();
         this.adapter = new MedicamentInrantsAdapter(this, arrayList);
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,17 +71,80 @@ public class StockeList extends AppCompatActivity {
             }
         });
 
-        syn=findViewById(R.id.syn);
+        syn = findViewById(R.id.syn);
         syn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //synDepistage();
             }
         });
-        ListView list = (ListView)findViewById(R.id.list);
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                // TODO Auto-generated method stub
+                MedicamentIntrants clickedItem = (MedicamentIntrants) list.getItemAtPosition(pos);
+
+
+                boolean res = showalert(clickedItem, pos);
+                if (res) {
+                    arrayList.remove(pos);
+                    adapter.notifyDataSetChanged();
+                    //Toast.makeText(this,"list non vide ",Toast.LENGTH_LONG).show();
+                }
+                return true;
+            }
+        });
+
+
+
+    ListView list = (ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
 
     }
+
+    private boolean showalert(final MedicamentIntrants medicamentIntrants ,int pos) {
+        this.supp = false;
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Confirm ");
+        alertDialog.setMessage("Etes Vous sur de supprimer");
+        // alertDialog.setIcon(R.drawable.delete);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+                Supprimer(medicamentIntrants,pos);
+
+                supp =true;
+
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        alertDialog.show();
+
+        return  supp;
+    }
+
+
+    void Supprimer (MedicamentIntrants medicamentIntrants ,int pos){
+        databaseManager.DeleteMedicamentIntrants(medicamentIntrants);
+        //Intent intent= new Intent(this,PriseenCharge.class);
+        //startActivity(intent);
+        arrayList.remove(pos);
+        adapter.notifyDataSetChanged();
+
+    }
+
 
     private void GotoAddMedicament() {
         list.setVisibility(View.GONE);
@@ -81,8 +156,9 @@ public class StockeList extends AppCompatActivity {
 
             com.example.myapp1.MedicamentIntrants myfragment = new com.example.myapp1.MedicamentIntrants();
             myfragmentTransaction.replace(R.id.listStock, myfragment).commit();
-
     }
+
+
 
 
     class MedicamentInrantsAdapter extends BaseAdapter {

@@ -50,7 +50,7 @@ public class ListGaspa extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_gaspa);
+        //setContentView(R.layout.activity_list_gaspa);
         toolbar = findViewById(R.id.button);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd");
         progressBar = findViewById(R.id.progressBar);
@@ -116,7 +116,7 @@ public class ListGaspa extends AppCompatActivity {
         FragmentManager myfragmentManager =getSupportFragmentManager();
         FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
         com.example.myapp1.Gaspa myfragment = new com.example.myapp1.Gaspa();
-        myfragmentTransaction.replace(R.id.gaspaList, myfragment).commit();
+       // myfragmentTransaction.replace(R.id.gaspaList, myfragment).commit();
     }
 
 

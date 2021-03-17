@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".pcim.Prise_en_Charge">
+
+    <include
+        android:id="@+id/header_VIEW"
+        layout="@layout/localite"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="39dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="125dp"
+
+        android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="89dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text="Localité"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/localite"
+        android:layout_width="141dp"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+
+        android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/libelles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_VIEW"
+        android:layout_marginTop="30dp"
+        android:weightSum="5">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="Nom de l'enfant"
+            android:textStyle="bold">
+
+        </TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Age"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="sexe"
+            android:textStyle="bold">
+
+        </TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="PB"
+            android:textStyle="bold">
+
+        </TextView>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/libelles"
+
+        android:weightSum="5">
+
+        <EditText
+            android:id="@+id/enfant"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:textStyle="bold">
+
+        </EditText>
+        <EditText
+            android:id="@+id/age"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="4"
+            android:textStyle="bold">
+
+        </EditText>
+        <Spinner
+            android:id="@+id/sexe"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="sexe"
+            android:textStyle="bold">
+
+        </Spinner>
+
+
+
+
+
+        <EditText
+            android:id="@+id/PB"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="4"
+            android:textStyle="bold">
+
+        </EditText>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line1"
+         android:layout_marginTop="30dp"
+        android:weightSum="6">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="Nom de l'accompagnant"
+            android:textStyle="bold">
+
+        </TextView>
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="TEL"
+            android:textStyle="bold">
+        </TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Statut"
+            android:textStyle="bold">
+        </TextView>
+    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line2"
+
+            android:weightSum="6">
+
+        <EditText
+            android:id="@+id/accompagnat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="3"
+            android:inputType="textPersonName"
+            android:gravity="center"
+            android:textStyle="bold">
+
+        </EditText>
+        <EditText
+            android:id="@+id/contact"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:maxLength="11"
+            android:inputType="phone"
+            android:textStyle="bold">
+        </EditText>
+            <Spinner
+                android:id="@+id/Staut"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="sexe"
+                android:textStyle="bold">
+
+            </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line3"
+        android:layout_marginTop="20dp"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="Numero MAS"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Réferé"
+            android:textStyle="bold">
+
+        </TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Odeme"
+            android:textStyle="bold">
+
+        </TextView>
+
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="PEC"
+            android:textStyle="bold">
+
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/line5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line4"
+
+        android:weightSum="5">
+        <EditText
+            android:id="@+id/MAS"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:maxLength="10"
+            android:textStyle="bold">
+        </EditText>
+    <Spinner
+        android:id="@+id/Ref"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textAlignment="center"
+
+        android:textStyle="bold">
+    </Spinner>
+        <Spinner
+            android:id="@+id/OdemeChoix"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textStyle="bold">
+
+        </Spinner>
+        <Spinner
+            android:id="@+id/PEC"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+
+            android:textAlignment="center"
+            android:textStyle="bold">
+        </Spinner>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/Ajouter"
+        android:layout_width="190dp"
+        android:layout_height="58dp"
+        android:layout_below="@+id/line4"
+       android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"
+        android:textColor="#FFF"
+        android:layout_marginTop="81dp"
+        android:text="Ajouter" />
+
+</RelativeLayout>

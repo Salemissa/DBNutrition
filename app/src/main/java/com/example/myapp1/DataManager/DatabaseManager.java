@@ -770,6 +770,22 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         return medicaments;
     }
 
+    public  boolean DeleteMedicamentIntrants(MedicamentIntrants medicamentIntrants){
+
+        try {
+            Dao<MedicamentIntrants, Integer> dao = getDao(MedicamentIntrants.class);
+              dao.delete(medicamentIntrants);
+
+          return  true;
+        } catch (Exception exception) {
+
+            Log.e("DATABASE", "Can't Probleme ", exception);
+            return false;
+        }
+
+
+
+    }
 
 
     public void insertRealais(Relais relais) {

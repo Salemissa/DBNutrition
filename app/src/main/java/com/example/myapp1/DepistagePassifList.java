@@ -83,10 +83,10 @@ public class DepistagePassifList extends AppCompatActivity  implements Depistage
          this.type="DepistagePassif";
          this.depistagePassif =databaseManager.DepistageByType(this.type);
         fab = findViewById(R.id.fab);
-        progressBar=findViewById(R.id.progressBar);
+
         progressDoalog = new ProgressDialog(DepistagePassifList.this);
         progressDoalog.setMessage("Loading....");
-
+        progressBar=findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
