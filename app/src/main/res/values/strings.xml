@@ -49,4 +49,6 @@
     <string name="title_activity_intervenant">Intervenant</string>
     <string name="messageSupp">suppresion réussie</string>
     <string name="messageSyn">Synchronisé avec succés</string>
+    <string name="ajout">Ajout effectué avec succés</string>
+    <string name="msgModfier">\"Modification effectuée avec succés \"</string>
 </resources>

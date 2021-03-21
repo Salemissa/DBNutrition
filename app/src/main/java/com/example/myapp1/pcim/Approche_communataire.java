@@ -254,7 +254,7 @@ public class Approche_communataire extends Fragment {
         if(ListMoughata!=null){
         for( Moughata moug : ListMoughata ) {
             moughata.add(moug.getMoughataname());
-            Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -411,8 +411,9 @@ public class Approche_communataire extends Fragment {
 
         if (communesel != null) {
             for (Localite localite : communesel.getLocalites()) {
-
-                localiesCommune.add(localite.getLocalitename().toString());
+                if(localite.getUsb()!=null) {
+                    localiesCommune.add(localite.getLocalitename().toString());
+                }
             }
 
 
@@ -438,6 +439,7 @@ public class Approche_communataire extends Fragment {
 
         if (localite != null) {
             for (USB usb :localite.getUsb()) {
+
                 localieusb.add(localite.getLocalitename().toString());
             }
         }
@@ -475,7 +477,7 @@ public class Approche_communataire extends Fragment {
             try {
                 databaseManager.inserApprocheCommunataire(approcheCommunataire);
 
-                Toast.makeText(getActivity(), "ajouter Avec succe" + approcheCommunataire.getRapport() + "" + approcheCommunataire.getDateCreation(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), ListApproche.class);
                 startActivity(intent);
             } catch (Exception e) {

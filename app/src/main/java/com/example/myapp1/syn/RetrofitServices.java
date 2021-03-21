@@ -59,19 +59,29 @@ public interface RetrofitServices {
 
 
 
-
-
     @POST("general/addDepistageList")
-    Call<Depistage> createDepistage(@Body List<Depistage> depistages);
+    Call<List<Depistage>> createDepistage(@Body List<Depistage> depistages);
     @POST("general/addApprocheCommunataireList")
-    Call<ApprocheCommunataire> createApprocheCommunataire(@Body List<ApprocheCommunataire> approcheCommunataires);
+    Call<List<ApprocheCommunataire>> createApprocheCommunataire(@Body List<ApprocheCommunataire> approcheCommunataires);
     @POST("general/addPriseEnChargeList")
-    Call<PriseenCharge> createPrise(@Body List<PriseenCharge> priseenCharges);
+    Call<List<PriseenCharge>> createPrise(@Body List<PriseenCharge> priseenCharges);
 
     @POST("general/addSuiviSousSurvillanceList")
-    Call<SuviSousSurvillance> createSuviSous(@Body List<SuviSousSurvillance> sousSurvillances);
+    Call<List<SuviSousSurvillance>> createSuviSous(@Body List<SuviSousSurvillance> sousSurvillances);
     @POST("general/addMedicamentEntrantList")
     Call<List<MedicamentIntrants>> createMedicamentIntrants(@Body List<MedicamentIntrants> medicamentIntrants);
+
+//    @POST("general/addDepistageList")
+//    Call<Depistage> createDepistage(@Body List<Depistage> depistages);
+//    @POST("general/addApprocheCommunataireList")
+//    Call<ApprocheCommunataire> createApprocheCommunataire(@Body List<ApprocheCommunataire> approcheCommunataires);
+//    @POST("general/addPriseEnChargeList")
+//    Call<PriseenCharge> createPrise(@Body List<PriseenCharge> priseenCharges);
+//
+//    @POST("general/addSuiviSousSurvillanceList")
+//    Call<SuviSousSurvillance> createSuviSous(@Body List<SuviSousSurvillance> sousSurvillances);
+//    @POST("general/addMedicamentEntrantList")
+//    Call<List<MedicamentIntrants>> createMedicamentIntrants(@Body List<MedicamentIntrants> medicamentIntrants);
 
 
 

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
@@ -49,7 +50,7 @@ import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static com.example.myapp1.R.string.messageSupp;
 
-public class ActivtiteMobileList extends AppCompatActivity implements DepistageCalls.CallbacksDepistage {
+public class ActivtiteMobileList extends AppCompatActivity  {
 
     private DatabaseManager databaseManager;
     private ListView list;
@@ -70,6 +71,7 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activite_list);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         list = findViewById(R.id.list);
         databaseManager = new DatabaseManager(this);
         this.arrayList = new ArrayList<>();
@@ -308,64 +310,18 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
 
     }
 
-    @Override
-    public void onResponse(@Nullable Depistage Depistage) {
-        if(Depistage !=null) {
-            progressBar.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.GONE);
-            progressDoalog.dismiss();
-
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
-            alertDialog.setMessage("Les données ont été synchronisées");
-
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    for (Depistage depistage : depistageActive) {
-                        if (depistage.getSyn() == 0 || depistage.getSyn() == 2) {
-                            depistage.setSyn(1);
-                            databaseManager.updatedepistage(depistage);
-                        }
-                    }
-                    depistageActive = databaseManager.DepistageByType(type);
-                    arrayList = depistageActive;
-                    adapter.notifyDataSetChanged();
-                }
-            });
-
-            alertDialog.show();
-        }
-        else{
-
-        }
-    }
-
-    @Override
-    public void onFailure() {
-        progressBar.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.GONE);
-        progressDoalog.dismiss();
-
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 
 
     private void SynList(List<Depistage> syn) {
-
         // 2.2 - Get a Retrofit instance and the related endpoints
         RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
 
         // 2.3 - Create the call on Github API
-        Call<Depistage> call =retrofitServices.createDepistage(syn);
+        Call<List<Depistage>> call =retrofitServices.createDepistage(syn);
         // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<Depistage>() {
+        ((Call) call).enqueue(new Callback<List<Depistage>>() {
             @Override
-            public void onResponse(Call<Depistage> call, Response<Depistage> response) {
+            public void onResponse(Call<List<Depistage>> call, Response<List<Depistage>> response) {
                 if (response.isSuccessful()) {
                     progressDoalog.dismiss();
                     AlertDialog alertDialog = new AlertDialog.Builder(ActivtiteMobileList.this).create();
@@ -389,7 +345,7 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
                         }
                     });
 
-                    alertDialog.show();
+                   // alertDialog.show();
 
 
                 }else{
@@ -404,7 +360,7 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
             }
 
             @Override
-            public void onFailure(Call<Depistage> call, Throwable t) {
+            public void onFailure(Call<List<Depistage>> call, Throwable t) {
                 Log.e("ERROR ", t.getCause().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);

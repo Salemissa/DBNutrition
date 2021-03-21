@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
@@ -68,6 +69,7 @@ public class ListPrisenCharge extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_prisen_charge);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = findViewById(R.id.button);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd");
         progressBar=findViewById(R.id.progressBar);
@@ -233,11 +235,11 @@ public class ListPrisenCharge extends AppCompatActivity {
         RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
 
         // 2.3 - Create the call on Github API
-        Call<PriseenCharge> call =retrofitServices.createPrise(priseenCharges);
+        Call<List<PriseenCharge>> call =retrofitServices.createPrise(priseenCharges);
         // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<PriseenCharge>() {
+        ((Call) call).enqueue(new Callback<List<PriseenCharge>>() {
             @Override
-            public void onResponse(Call<PriseenCharge> call, Response<PriseenCharge> response) {
+            public void onResponse(Call<List<PriseenCharge>> call, Response<List<PriseenCharge>> response) {
                 if (response.isSuccessful()) {
                     progressDoalog.dismiss();
                     AlertDialog alertDialog = new AlertDialog.Builder(ListPrisenCharge.this).create();
@@ -273,7 +275,7 @@ public class ListPrisenCharge extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<PriseenCharge> call, Throwable t) {
+            public void onFailure(Call<List<PriseenCharge>> call, Throwable t) {
                 Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);

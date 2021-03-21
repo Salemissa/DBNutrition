@@ -1,6 +1,7 @@
 package com.example.myapp1;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -48,6 +49,7 @@ public class UpdatePrise extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_prise);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.spinnermoughata = this.findViewById(R.id.moghata);
         this.spinnercommune = this.findViewById(R.id.commune);
         this.spinnerlocalite = this.findViewById(R.id.localite);
@@ -64,8 +66,7 @@ public class UpdatePrise extends AppCompatActivity {
         this.accompagnant=this.findViewById(R.id.accompagnat);
         this.MAS=this.findViewById(R.id.MAS);
 
-        this.findViewById(R.id.textView3).setVisibility(View.GONE);
-        this.findViewById(R.id.textView4).setVisibility(View.GONE);
+
         this.Ajouter =(Button) this.findViewById(R.id.Ajouter);
         this.Ajouter.setVisibility(View.GONE);
 
@@ -87,7 +88,6 @@ public class UpdatePrise extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             this.id = intent.getIntExtra("id", 0);
-            Toast.makeText(this,id+"",Toast.LENGTH_SHORT);
             this.priseencharge = this.databaseManager.priseById(this.id);
         }
         final List<String> moughata = new ArrayList<String>();
@@ -354,12 +354,11 @@ public class UpdatePrise extends AppCompatActivity {
         String   refere=this.priseencharge.getRefere()+""; //the value you want the position for
         ArrayAdapter refSel = (ArrayAdapter) this.spinnerRef.getAdapter();
         int refPosition = refSel.getPosition(refere);
-
         this.spinnerRef.setSelection(refPosition);
 
         String   pec=this.priseencharge.getPec()+""; //the value you want the position for
         ArrayAdapter pecSel = (ArrayAdapter) this.spinerpec.getAdapter();
-        int pecPosition = pecSel.getPosition(pecSel);
+        int pecPosition = pecSel.getPosition(pec);
         this.spinerpec.setSelection(pecPosition);
         this.MoughataaPardefaut();
     }
@@ -385,10 +384,6 @@ public class UpdatePrise extends AppCompatActivity {
         this.communadapter.notifyDataSetChanged();
         this.LocalitePardefaut();
     }
-
-
-
-
 
     private void LocalitePardefaut() {
 
@@ -417,7 +412,7 @@ public class UpdatePrise extends AppCompatActivity {
             //priseencharge.setDate(new Date());
             try {
                 databaseManager.updatePrise(priseencharge);
-
+                Toast.makeText(this, R.string.msgModfier, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, ListPrisenCharge.class);
                 startActivity(intent);
             } catch (Exception e) {

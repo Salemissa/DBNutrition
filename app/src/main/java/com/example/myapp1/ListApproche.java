@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -72,6 +73,7 @@ public class ListApproche extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_approche);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = findViewById(R.id.button);
         fab = findViewById(R.id.fab);
         list = findViewById(R.id.list);
@@ -114,7 +116,8 @@ public class ListApproche extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            GotoDepistage();
+            GotoApproche();
+
             }
         });
 
@@ -363,7 +366,7 @@ public class ListApproche extends AppCompatActivity {
         return  supp;
     }
 
-    void GotoDepistage(){
+    void GotoApproche(){
 
         // FragmentTransaction transaction = manager.beginTransaction();
         list.setVisibility(View.GONE);
@@ -397,11 +400,11 @@ public class ListApproche extends AppCompatActivity {
         RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
 
         // 2.3 - Create the call on Github API
-        Call<ApprocheCommunataire> call =retrofitServices.createApprocheCommunataire(syn);
+        Call<List<ApprocheCommunataire>> call =retrofitServices.createApprocheCommunataire(syn);
         // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<ApprocheCommunataire>() {
+        ((Call) call).enqueue(new Callback<List<ApprocheCommunataire>>() {
             @Override
-            public void onResponse(Call<ApprocheCommunataire> call, Response<ApprocheCommunataire> response) {
+            public void onResponse(Call<List<ApprocheCommunataire>> call, Response<List<ApprocheCommunataire>> response) {
                 if (response.isSuccessful()) {
                     progressDoalog.dismiss();
                     AlertDialog alertDialog = new AlertDialog.Builder(ListApproche.this).create();
@@ -437,7 +440,7 @@ public class ListApproche extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApprocheCommunataire> call, Throwable t) {
+            public void onFailure(Call<List<ApprocheCommunataire>> call, Throwable t) {
                 Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 //progressBar.setVisibility(View.INVISIBLE);
                 //progressBar.setVisibility(View.GONE);

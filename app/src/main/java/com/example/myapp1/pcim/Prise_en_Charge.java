@@ -146,7 +146,7 @@ public class Prise_en_Charge extends Fragment {
         if(ListMoughata!=null){
             for( Moughata moug : ListMoughata ) {
                 moughata.add(moug.getMoughataname());
-                Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -364,7 +364,7 @@ public class Prise_en_Charge extends Fragment {
               try {
                   databaseManager.inserPrisEnCharge(priseenCharge);
 
-                  Toast.makeText(getActivity(), "ajouter Avec succe" + priseenCharge.getLocalite().getLocalitename(), Toast.LENGTH_SHORT).show();
+                  Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
                   Intent intent = new Intent(getActivity(), ListPrisenCharge.class);
                   startActivity(intent);
               } catch (Exception e) {

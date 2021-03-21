@@ -1,6 +1,7 @@
 package com.example.myapp1;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -63,6 +64,7 @@ public class UpdateDepistage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_depistage);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.spinnermois = this.findViewById(R.id.mois);
         this.spinneranne = this.findViewById(R.id.annee);
         this.spinnermoughata = this.findViewById(R.id.moghata);
@@ -100,7 +102,7 @@ public class UpdateDepistage extends AppCompatActivity {
             this.id = intent.getIntExtra("id", 0);
             this.type = intent.getStringExtra("type");
             this.depistage = this.databaseManager.depistageById(this.id);
-            Toast.makeText(this, type, Toast.LENGTH_LONG).show();
+
         }
 
         if (type.equalsIgnoreCase("CampagneDepistage")) {
@@ -332,7 +334,7 @@ public class UpdateDepistage extends AppCompatActivity {
         // this.MoughataComune(Moug);
         //this.CommuneStructure(structure.getCommune().getCommunename());
 
-        Toast.makeText(this, "3", Toast.LENGTH_LONG).show();
+
         this.rougeF.setText(this.depistage.getRougeF() + "");
         this.jauneF.setText(this.depistage.getJauneF() + "");
         this.odemeF.setText(this.depistage.getOdemeF() + "");
@@ -396,7 +398,7 @@ public class UpdateDepistage extends AppCompatActivity {
 
             try {
                 databaseManager.updatedepistage(this.depistage);
-                Toast.makeText(this, "ajouter Avec succe", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.msgModfier, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, ActivtiteMobileList.class);
                 intent.putExtra("type", depistage.getType());
                 startActivity(intent);
@@ -445,15 +447,15 @@ public class UpdateDepistage extends AppCompatActivity {
             error = true;
             odemeF.setError("invalid!");
         }
-
-        if (age.isEmpty()) {
-            error = true;
-            TextView errorText= ((TextView)spinnerage.getSelectedView());
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText("Ce champ est obligatire");
-        }
-
+       if(type.equals("ActivitéMobile")) {
+           if (age.isEmpty()) {
+               error = true;
+               TextView errorText = ((TextView) spinnerage.getSelectedView());
+               errorText.setError("");
+               errorText.setTextColor(Color.RED);//just to highlight that this is an error
+               errorText.setText("Ce champ est obligatire");
+           }
+       }
         if (anne.isEmpty()) {
             error = true;
             TextView errorText= ((TextView)spinneranne.getSelectedView());

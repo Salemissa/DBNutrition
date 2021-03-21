@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -76,6 +77,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_depistage_passif);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
@@ -497,7 +499,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         String str=this.depistage.getStructure().getStructurename(); //the value you want the position for
         ArrayAdapter StrSel = (ArrayAdapter) this.spinnerstructer.getAdapter();
         int StrPosition = StrSel.getPosition(str);
-        Toast.makeText(this,"StrPosition  "+StrPosition,Toast.LENGTH_LONG).show();
+       // Toast.makeText(this,"StrPosition  "+StrPosition,Toast.LENGTH_LONG).show();
         //Toast.makeText(this,this.depistage.getStructure().getStructurename()+"1"+this.depistage.getStructure().getCommune().getMoughata().toString()+"11",Toast.LENGTH_LONG).show();
         this.spinnerstructer.setSelection(StrPosition);
         this.structureadapter.notifyDataSetChanged();
@@ -527,7 +529,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
             this.depistage.setMois(moi);
             this.depistage.setAge(age);
             depistage.setStructure(structure);
-            Toast.makeText(this,structure.getStructurename()+"",Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(this,structure.getStructurename()+"",Toast.LENGTH_SHORT).show();
             depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
             depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
             depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
@@ -547,7 +549,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
             try {
               databaseManager.updatedepistage(this.depistage);
 
-                Toast.makeText(this, "ajouter Avec succe", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.msgModfier, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, DepistagePassifList.class);
                startActivity(intent);
             } catch (Exception e) {

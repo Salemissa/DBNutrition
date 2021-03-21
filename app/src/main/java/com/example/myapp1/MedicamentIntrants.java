@@ -205,7 +205,6 @@ public class MedicamentIntrants extends Fragment {
                 String item = parent.getItemAtPosition(position).toString();
                 if(position==0){
 
-                    Toast.makeText(getActivity(),"vide ",Toast.LENGTH_SHORT).show();
                 }
 
                 MoughataComune(item);
@@ -341,6 +340,7 @@ public class MedicamentIntrants extends Fragment {
            try {
                databaseManager.insertMedicamentIntrants(medicamentIntrants);
                Intent intent = new Intent(getActivity(), StockeList.class);
+               Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
                startActivity(intent);
                this.onDestroyView();
 

@@ -32,7 +32,6 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="53dp"
-
             android:layout_marginLeft="14dp"
             android:gravity="center"
             android:text="List GASPA"
@@ -44,113 +43,16 @@
             android:weightSum="2"
             android:layout_below="@id/toolbar"
             android:id="@+id/l1">
-            <LinearLayout
-                android:id="@+id/l2"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:weightSum="4"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:text="Moughataa"
-                    android:textSize="@dimen/label"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/moghata"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:textColor="#000000"
-                    android:spinnerMode="dropdown" />
-
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:text="Commune"
-                    android:textSize="@dimen/label"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/commune"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:textColor="#000000"
-                    android:layout_height="match_parent"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:textColor="#000000"
-                android:weightSum="4">
-
-                <TextView
-                    android:id="@+id/textView33"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:text="Localité"
-                    android:textSize="@dimen/label"
-                    android:textColor="#000000"
-                    android:textStyle="bold" />
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/localite"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
-                    android:gravity="center_horizontal"
-                    android:spinnerMode="dropdown" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="30dp"
-                    android:layout_weight="1"
-                    android:text="Relais"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/label"
-                    android:textStyle="bold" />
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/relais"
-                    android:textColor="#000000"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
         </LinearLayout>
+
         <include
             android:id="@+id/gaspalist"
             layout="@layout/content_list_gaspa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
             android:layout_below="@+id/l1"
-            />
+            android:layout_marginTop="2dp" />
     </RelativeLayout>
 
 

@@ -279,7 +279,7 @@ public class Donnee_DP extends Fragment {
                 String item = parent.getItemAtPosition(position).toString();
                 if(position==0){
 
-                    Toast.makeText(getActivity(),"vide ",Toast.LENGTH_SHORT).show();
+
                 }
 
                     MoughataComune(item);
@@ -505,7 +505,7 @@ public class Donnee_DP extends Fragment {
            try {
                databaseManager.inserDepistage(depistage);
 
-               Toast.makeText(getActivity(), "ajouter Avec succe", Toast.LENGTH_SHORT).show();
+               Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
                Intent intent = new Intent(getActivity(), DepistagePassifList.class);
 
                startActivity(intent);

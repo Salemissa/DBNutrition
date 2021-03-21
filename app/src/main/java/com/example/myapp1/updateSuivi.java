@@ -1,6 +1,7 @@
 package com.example.myapp1;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -56,6 +57,7 @@ public class updateSuivi extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_suivi);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.spinnermois = this.findViewById(R.id.mois);
         this.spinneranne = this.findViewById(R.id.annee);
         this.spinnermoughata = this.findViewById(R.id.moghata);
@@ -94,7 +96,7 @@ public class updateSuivi extends AppCompatActivity {
         if (intent != null) {
             this.id = intent.getIntExtra("id", 0);
             this.suviSousSurvillance= this.databaseManager.SousSurvillanceByid(this.id);
-            Toast.makeText(this,this.suviSousSurvillance.getAnnee(),Toast.LENGTH_LONG).show();
+
         }
         final List<String> moughata  = new ArrayList<String>();
         moughata.add("");
@@ -304,7 +306,7 @@ public class updateSuivi extends AppCompatActivity {
         String str=this.suviSousSurvillance.getStructure().getStructurename(); //the value you want the position for
         ArrayAdapter StrSel = (ArrayAdapter) this.spinnerstructer.getAdapter();
         int StrPosition = StrSel.getPosition(str);
-        Toast.makeText(this,"StrPosition  "+StrPosition,Toast.LENGTH_LONG).show();
+       // Toast.makeText(this,"StrPosition  "+StrPosition,Toast.LENGTH_LONG).show();
         //Toast.makeText(this,this.depistage.getStructure().getStructurename()+"1"+this.depistage.getStructure().getCommune().getMoughata().toString()+"11",Toast.LENGTH_LONG).show();
         this.spinnerstructer.setSelection(StrPosition);
         this.structureadapter.notifyDataSetChanged();
@@ -393,6 +395,7 @@ public class updateSuivi extends AppCompatActivity {
             try {
                 databaseManager.updatesuviSousSurvillance(suviSousSurvillance);
                 Intent intent = new Intent(updateSuivi.this, ListSuivisous.class);
+                Toast.makeText(this, R.string.msgModfier, Toast.LENGTH_LONG).show();
                 startActivity(intent);
             } catch (Exception e) {
 

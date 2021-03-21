@@ -105,10 +105,7 @@ public class StockeList extends AppCompatActivity {
 
                     }
                 });
-
-
-
-                alertDialog.show();
+                 alertDialog.show();
 
             }
         });
@@ -199,9 +196,9 @@ public class StockeList extends AppCompatActivity {
         // 2.3 - Create the call on Github API
         Call<List<MedicamentIntrants>> call =retrofitServices.createMedicamentIntrants(syn);
         // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<MedicamentIntrants>() {
+        ((Call) call).enqueue(new Callback<List<MedicamentIntrants>>() {
             @Override
-            public void onResponse(Call<MedicamentIntrants> call, Response<MedicamentIntrants> response) {
+            public void onResponse(Call<List<MedicamentIntrants>> call, Response<List<MedicamentIntrants>> response) {
                 if (response.isSuccessful()) {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(StockeList.this).create();
@@ -236,7 +233,7 @@ public class StockeList extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<MedicamentIntrants> call, Throwable t) {
+            public void onFailure(Call<List<MedicamentIntrants>> call, Throwable t) {
                 Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);

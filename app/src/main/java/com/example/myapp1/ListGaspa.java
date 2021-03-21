@@ -1,27 +1,35 @@
 package com.example.myapp1;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Gaspa;
 import com.example.myapp1.model.Relais;
+import com.example.myapp1.pcim.Approche_communataire;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ListGaspa extends AppCompatActivity {
@@ -30,13 +38,27 @@ public class ListGaspa extends AppCompatActivity {
    GaspaAdapter gaspaAdapter;
     List<Gaspa> gaspas;
     LayoutInflater inflater;
+    private View toolbar;
+    private View fab;
+    private View list;
+     private Button syn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_gaspa);
-
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        toolbar = findViewById(R.id.button);
+        fab = findViewById(R.id.fab);
+        //list = findViewById(R.id.list);
+        syn=findViewById(R.id.syn);
         databaseManager = new DatabaseManager(this);
         gaspas = databaseManager.ListGaspa();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GotoAddGaspa();
+            }
+        });
         RecycleView = (RecyclerView) findViewById(R.id.ListRecyclerView);
         if (gaspas.size() > 0) {
             RecycleView = (RecyclerView) findViewById(R.id.ListRecyclerView);
@@ -45,11 +67,24 @@ public class ListGaspa extends AppCompatActivity {
             RecycleView.setLayoutManager(new LinearLayoutManager(this));
             RecycleView.setAdapter(gaspaAdapter);
         } else {
-            new AlertDialog.Builder(ListGaspa.this)
-                    .setMessage("Rien ")
-                    .show();
+//            new AlertDialog.Builder(ListGaspa.this)
+//                    .setMessage("Rien ")
+//                    .show();
         }
 
+    }
+
+    private void GotoAddGaspa() {
+
+        // FragmentTransaction transaction = manager.beginTransaction();
+        // this.toolbar.setVisibility(View.GONE);
+        syn.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
+        FragmentManager myfragmentManager =getSupportFragmentManager();
+        FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
+        com.example.myapp1.Gaspa myfragment = new com.example.myapp1.Gaspa();
+        myfragmentTransaction.replace(R.id.gaspalist, myfragment).commit();
+        fab.setVisibility(View.GONE);
     }
 
     private class GaspaAdapter  extends RecyclerView.Adapter<GaspaAdapter.ViewHolder> {
@@ -121,5 +156,17 @@ public class ListGaspa extends AppCompatActivity {
                 linearLayout = (LinearLayout) v.findViewById(R.id.linearlayout);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity2.class);
+        //intent.putExtra("type", "ActivitéMobile");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
+
     }
 }

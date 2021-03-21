@@ -155,7 +155,7 @@ public class Activite_Mobile extends Fragment {
         if(ListMoughata!=null){
             for( Moughata moug : ListMoughata ) {
                 moughata.add(moug.getMoughataname());
-                Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -329,7 +329,7 @@ public class Activite_Mobile extends Fragment {
 
             try {
                 databaseManager.inserDepistage(depistage);
-                Toast.makeText(getActivity(), "ajouter Avec succe" + depistage.getLocalite().getLocalitename(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), ActivtiteMobileList.class);
                 intent.putExtra("type", "ActivitéMobile");
                 startActivity(intent);

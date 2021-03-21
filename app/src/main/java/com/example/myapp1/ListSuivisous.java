@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -71,6 +72,7 @@ public class ListSuivisous extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_suivisous);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
          this.sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -404,11 +406,11 @@ public class ListSuivisous extends AppCompatActivity {
         RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
 
         // 2.3 - Create the call on Github API
-        Call<SuviSousSurvillance> call =retrofitServices.createSuviSous(syn);
+        Call<List<SuviSousSurvillance>> call =retrofitServices.createSuviSous(syn);
         // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<SuviSousSurvillance>() {
+        ((Call) call).enqueue(new Callback<List<SuviSousSurvillance>>() {
             @Override
-            public void onResponse(Call<SuviSousSurvillance> call, Response<SuviSousSurvillance> response) {
+            public void onResponse(Call<List<SuviSousSurvillance>> call, Response<List<SuviSousSurvillance>> response) {
                 if (response.isSuccessful()) {
                     progressDoalog.dismiss();
                     AlertDialog alertDialog = new AlertDialog.Builder(ListSuivisous.this).create();
@@ -444,7 +446,7 @@ public class ListSuivisous extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<SuviSousSurvillance> call, Throwable t) {
+            public void onFailure(Call<List<SuviSousSurvillance>> call, Throwable t) {
                  Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 //progressBar.setVisibility(View.INVISIBLE);
                 //progressBar.setVisibility(View.GONE);

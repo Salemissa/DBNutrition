@@ -2,6 +2,7 @@ package com.example.myapp1;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import java.util.Date;
 import java.util.List;
 
 import static android.widget.Toast.makeText;
+import static com.example.myapp1.R.*;
 
 public class UpdateApproche extends AppCompatActivity {
     private String[] Anne;
@@ -73,7 +75,8 @@ public class UpdateApproche extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_approche);
+        setContentView(layout.activity_update_approche);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         this.spinnermois = this.findViewById(R.id.mois);
@@ -408,7 +411,7 @@ public class UpdateApproche extends AppCompatActivity {
     }
 
     void MoughataComune(String moughata) {
-        Toast.makeText(this,"0",Toast.LENGTH_LONG).show();
+
         Moughata moughataname = databaseManager.Moughataname(moughata);
         List<String> communesM = new ArrayList<String>();
 
@@ -430,7 +433,7 @@ public class UpdateApproche extends AppCompatActivity {
 
             if (communesel != null) {
 
-                Toast.makeText(this, communesel.getMoughataa().getMoughataname(), Toast.LENGTH_LONG).show();
+
                 for (Localite localite : communesel.getLocalites()) {
 
                     localiteCommune.add(localite.getLocalitename().toString());
@@ -464,7 +467,7 @@ public class UpdateApproche extends AppCompatActivity {
      public  void  onStart () {
 
         super.onStart();
-        Toast.makeText(this,"OnStart",Toast.LENGTH_LONG).show();
+
         Valeurpardefaut();
     }
 
@@ -521,7 +524,7 @@ public class UpdateApproche extends AppCompatActivity {
             //this.approchecommunataire.setDate(new Date());
             try {
                 databaseManager.inserApprocheCommunataire(this.approchecommunataire);
-
+                Toast.makeText(this, string.msgModfier, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, ListApproche.class);
                 startActivity(intent);
             } catch (Exception e) {

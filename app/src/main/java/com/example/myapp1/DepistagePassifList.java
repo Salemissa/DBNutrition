@@ -14,6 +14,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -40,6 +41,7 @@ import com.example.myapp1.model.PriseenCharge;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.pcim.Donnee_DP;
 import com.example.myapp1.syn.DepistageCalls;
+import com.example.myapp1.syn.RetrofitServices;
 
 import org.w3c.dom.Text;
 
@@ -49,11 +51,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static com.example.myapp1.R.string.messageSupp;
 
-public class DepistagePassifList extends AppCompatActivity  implements DepistageCalls.CallbacksDepistage,DepistageCalls.CallbacksRapport{
+public class DepistagePassifList extends AppCompatActivity {
     private DatabaseManager databaseManager;
     private ListView list;
     private  DepistagePassifAdapter adapter;
@@ -76,6 +82,7 @@ public class DepistagePassifList extends AppCompatActivity  implements Depistage
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_depistage_passif_list);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         list = findViewById(R.id.list);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         this.view =findViewById(R.id.button);
@@ -104,7 +111,7 @@ public class DepistagePassifList extends AppCompatActivity  implements Depistage
             public void onClick(View view) {
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(DepistagePassifList.this);
-                alertDialog.setTitle("Confirm ");
+                alertDialog.setTitle("Confirmation ");
                 alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
                 // alertDialog.setIcon(R.drawable.delete);
                 alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
@@ -262,7 +269,8 @@ public class DepistagePassifList extends AppCompatActivity  implements Depistage
                 try {
                     progressBar.setVisibility(View.VISIBLE);
                     progressDoalog.show();
-                    DepistageCalls.addDepistage(this, syn);
+                    SynList(syn);
+
 
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage());
@@ -287,6 +295,66 @@ public class DepistagePassifList extends AppCompatActivity  implements Depistage
 
         }
 
+
+
+    }
+
+
+    private void SynList(List<Depistage> syn) {
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<Depistage>> call =retrofitServices.createDepistage(syn);
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Depistage>>() {
+            @Override
+            public void onResponse(Call<List<Depistage>> call, Response<List<Depistage>> response) {
+                if (response.isSuccessful()) {
+                    progressDoalog.dismiss();
+                    AlertDialog alertDialog = new AlertDialog.Builder(DepistagePassifList.this).create();
+                    alertDialog.setTitle("info");
+                    alertDialog.setMessage("Synchronisé avec succés");
+                    Toast.makeText(getApplication(), R.string.messageSyn, LENGTH_LONG).show();
+
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            for (Depistage depistage : syn) {
+                                if (depistage.getSyn() == 0 ||  depistage.getSyn() == 2) {
+                                    depistage.setSyn(1);
+                                    databaseManager.updatedepistage(depistage);
+                                }
+                            }
+                            depistagePassif= databaseManager.DepistageByType(type);
+                            arrayList=depistagePassif;
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    });
+
+                    // alertDialog.show();
+
+
+                }else{
+                    // Log.e("Errure", response.errorBody().string());
+                    // Toast.makeText(getApplication(),"Body" +response.errorBody().toString(), LENGTH_LONG).show();
+                    // Toast.makeText(getApplication(),"" +response.errorBody(), LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    progressDoalog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Depistage>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().toString()+"Probleme");
+                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
+                progressDoalog.dismiss();
+            }
+        });
 
 
     }
@@ -329,42 +397,7 @@ public class DepistagePassifList extends AppCompatActivity  implements Depistage
         return  supp;
     }
 
-    @Override
-    public void onResponse(@Nullable Depistage depistage) {
-        progressBar.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.GONE);
-        progressDoalog.dismiss();
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("info");
-        alertDialog.setMessage("Les données ont été synchronisées");
-
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                for(Depistage depistage:depistagePassif){
-                    if(depistage.getSyn()==0 || depistage.getSyn()==2) {
-                        depistage.setSyn(1);
-                        databaseManager.updatedepistage(depistage);
-                    }
-                }
-                depistagePassif=databaseManager.DepistageByType(type);
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        alertDialog.show();
-    }
-
-    @Override
-    public void onFailure() {
-        progressBar.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.GONE);
-        progressDoalog.dismiss();
-        Toast.makeText(this,"ERR", LENGTH_LONG).show();
-        //Toast.makeText(this,depistagePassif.get(0).getDate()+"", LENGTH_LONG).show();
-
-    }
 /*
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {

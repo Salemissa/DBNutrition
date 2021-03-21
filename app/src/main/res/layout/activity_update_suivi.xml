@@ -33,13 +33,16 @@
         android:layout_height="586dp"
         android:layout_marginTop="12dp"
         android:textStyle="bold"></include>
+
     <Button
         android:id="@+id/Modfier"
-        android:layout_width="103dp"
-        android:layout_height="61dp"
+        android:layout_width="209dp"
+        android:layout_height="82dp"
         android:layout_below="@+id/dp"
-        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="-93dp"
+        android:textColor="#FFFF"
+        android:background="?attr/colorPrimary"
         android:text="Modfier" />
 
 </RelativeLayout>

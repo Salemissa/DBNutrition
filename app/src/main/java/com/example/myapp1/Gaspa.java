@@ -126,7 +126,6 @@ public class Gaspa extends Fragment {
         if(ListMoughata!=null){
             for( Moughata moug : ListMoughata ) {
                 moughata.add(moug.getMoughataname());
-                Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -300,7 +299,9 @@ public class Gaspa extends Fragment {
         if (communesel != null) {
             for (Localite localite : communesel.getLocalites()) {
 
-                localiesCommune.add(localite.getLocalitename().toString());
+                if(localite.getUsb()!=null) {
+                    localiesCommune.add(localite.getLocalitename().toString());
+                }
             }
 
 
@@ -351,6 +352,7 @@ public class Gaspa extends Fragment {
             try {
                 databaseManager.insertGaspa(gaspa);
                 Intent intent = new Intent(getActivity(), ListGaspa.class);
+                Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
                 startActivity(intent);
                 this.onDestroyView();
 

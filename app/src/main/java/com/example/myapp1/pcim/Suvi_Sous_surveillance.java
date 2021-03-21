@@ -153,7 +153,7 @@ public class Suvi_Sous_surveillance extends Fragment {
         if (ListMoughata != null) {
             for (Moughata moug : ListMoughata) {
                 moughata.add(moug.getMoughataname());
-                Toast.makeText(getActivity(), moug.getMoughataname(), Toast.LENGTH_SHORT).show();
+
             }
         }
 
@@ -335,6 +335,7 @@ public class Suvi_Sous_surveillance extends Fragment {
             suviSousSurvillance.setSyn(0);
             try {
                 databaseManager.insersuviSousSurvillance(suviSousSurvillance);
+                Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), ListSuivisous.class);
                 startActivity(intent);
             } catch (Exception e) {

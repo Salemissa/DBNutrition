@@ -20,45 +20,65 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ListGaspa"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_list_gaspa"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
             android:name=".Intervenant"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_intervenant"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".StockeList"
             android:label="@string/title_activity_stocke_list"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UpdateApproche"
             android:label="@string/approche"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UpdatePrise"
             android:label="@string/title_activity_update_prise"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".updateSuivi"
             android:label="@string/title_activity_update_suivi"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListApproche"
             android:label="@string/title_activity_list_approche"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListPrisenCharge"
             android:label="@string/title_activity_list_prisen_charge"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListSuivisous"
             android:label="@string/title_activity_list_suivisous"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UpdateDepistage"
             android:label="@string/title_activity_update_depistage"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UpdateDepistagePassif"
@@ -66,16 +86,20 @@
         <activity
             android:name=".DepistagePassifList"
             android:label="@string/title_activity_depistage_passif_list"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ActivtiteMobileList"
             android:label="@string/title_activity_depistage_passif_list"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity2"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_main2"
             android:screenOrientation="portrait"
+            android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar">
             >
         </activity>
@@ -84,7 +108,6 @@
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

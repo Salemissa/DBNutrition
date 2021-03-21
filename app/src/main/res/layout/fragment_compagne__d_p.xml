@@ -284,6 +284,8 @@
                 android:background="#BBBB"
                 android:inputType="number"
                 android:maxLength="4"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:textStyle="bold" />
         </LinearLayout>
 

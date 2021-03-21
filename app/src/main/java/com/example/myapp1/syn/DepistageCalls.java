@@ -20,7 +20,7 @@ import retrofit2.Response;
 
 public class DepistageCalls {
     public interface CallbacksDepistage {
-        void onResponse(@Nullable Depistage Depistage);
+        void onResponse(@Nullable List<Depistage> Depistage);
         void onFailure();
     }
     public interface CallbacksRapport {
@@ -36,28 +36,25 @@ public class DepistageCalls {
         RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
 
         // 2.3 - Create the call on Github API
-        Call<Depistage> call =retrofitServices.createDepistage(depistage);
+        Call<List<Depistage>> call =retrofitServices.createDepistage(depistage);
         // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<Depistage>() {
+        ((Call) call).enqueue(new Callback<List<Depistage>>() {
 
 
             @Override
-            public void onResponse(Call<Depistage> call, Response<Depistage> response) {
+            public void onResponse(Call<List<Depistage>> call, Response<List<Depistage>> response) {
                 if (callbacksWeakReference.get() != null) callbacksWeakReference.get().onResponse(response.body());
                 if(response.isSuccessful()){
                     Log.i("OK", response.message());
                 }else{
                     Log.i("REPONSE", response.errorBody().toString());
                 }
-
             }
 
             @Override
-            public void onFailure(Call<Depistage> call, Throwable t) {
-                Log.e("ERROR ", t.getCause().toString());
-
+            public void onFailure(Call<List<Depistage>> call, Throwable t) {
+                Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 if (callbacksWeakReference.get() != null) callbacksWeakReference.get().onFailure();
-
             }
         });
 
