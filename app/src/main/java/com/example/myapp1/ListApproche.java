@@ -53,6 +53,7 @@ import retrofit2.Response;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
+import static com.example.myapp1.R.string.messageSupp;
 
 public class ListApproche extends AppCompatActivity {
     private DatabaseManager databaseManager;
@@ -81,7 +82,30 @@ public class ListApproche extends AppCompatActivity {
         syn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               synApproche();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ListApproche.this);
+                alertDialog.setTitle("Confirm ");
+                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        synApproche();
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
             }
         });
         databaseManager = new DatabaseManager(this);
@@ -162,13 +186,13 @@ public class ListApproche extends AppCompatActivity {
                 usb.setId(approcheCommunatairesyn.getUsb().getId());
                 usb.setUsbname(approcheCommunataire.getUsb().getUsbname());
                 String rapport="";
-                approcheCommunatairesyn.setStructurerapport("");
+                approcheCommunatairesyn.setRapportusb("");
                 if(approcheCommunataire.getRapport() !=null) {
                     rapport = Base64.encodeToString(approcheCommunataire.getRapport(), Base64.DEFAULT);
                     Toast.makeText(getApplication(),rapport,Toast.LENGTH_SHORT).show();
                    approcheCommunataire.setRapport(null);
 
-                    approcheCommunatairesyn.setStructurerapport(rapport);
+                    approcheCommunatairesyn.setRapportusb(rapport);
                 }
                   approcheCommunatairesyn.setUsb(usb);
                 // Toast.makeText(this,depi.getDate()+"", LENGTH_LONG).show();
@@ -285,7 +309,7 @@ public class ListApproche extends AppCompatActivity {
             PC.setText("Palu Confirme  : "+approcheCommunataires.get(position).getPaluconfirme());
             diarrhee.setText("Diarrhee : "+approcheCommunataires.get(position).getDiarrhee());
             Vacin.setText("Vaccin  : "+approcheCommunataires.get(position).getVaccin());
-            TR.setText("TR  : "+approcheCommunataires.get(position).getTR());
+            TR.setText("TR  : "+approcheCommunataires.get(position).getTr());
             date.setText("Date : "+approcheCommunataires.get(position).getDate());
 
 
@@ -312,7 +336,7 @@ public class ListApproche extends AppCompatActivity {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirm ");
-        alertDialog.setMessage("Etes Vous sur de supprimer");
+        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -362,6 +386,8 @@ public class ListApproche extends AppCompatActivity {
         arrayList.remove(pos);
         approcheCommunataires.remove(pos);
         adapter.notifyDataSetChanged();
+
+        Toast.makeText(getApplication(), messageSupp, LENGTH_LONG).show();
 
     }
 

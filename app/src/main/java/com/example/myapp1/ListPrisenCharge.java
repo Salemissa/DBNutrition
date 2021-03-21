@@ -48,6 +48,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.widget.Toast.LENGTH_LONG;
+import static com.example.myapp1.R.string.messageSupp;
 
 public class ListPrisenCharge extends AppCompatActivity {
     private DatabaseManager databaseManager;
@@ -90,7 +91,33 @@ public class ListPrisenCharge extends AppCompatActivity {
        syn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               allPrise();
+
+
+               AlertDialog.Builder alertDialog = new AlertDialog.Builder(ListPrisenCharge.this);
+               alertDialog.setTitle("Confirm ");
+               alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+               // alertDialog.setIcon(R.drawable.delete);
+               alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       synPrise();
+
+
+                   }
+               });
+               alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+
+
+                   }
+               });
+
+
+
+               alertDialog.show();
+
 
 
            }
@@ -153,7 +180,7 @@ public class ListPrisenCharge extends AppCompatActivity {
 
     }
 
-    private void allPrise() {
+    private void  synPrise() {
         List<PriseenCharge> Listsyn= new ArrayList<PriseenCharge>();
            for(PriseenCharge priseenCharge:priseenCharges){
                if(priseenCharge.getSyn()==0){
@@ -424,6 +451,7 @@ public class ListPrisenCharge extends AppCompatActivity {
            arrayList.remove(pos);
           priseenCharges.remove(pos);
            adapter.notifyDataSetChanged();
+           Toast.makeText(getApplication(), messageSupp, LENGTH_LONG).show();
 
           }
 

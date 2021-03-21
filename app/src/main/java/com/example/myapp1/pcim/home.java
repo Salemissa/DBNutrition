@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.example.myapp1.ActivtiteMobileList;
 import com.example.myapp1.DepistagePassifList;
+import com.example.myapp1.Intervenant;
 import com.example.myapp1.ListApproche;
 import com.example.myapp1.ListGaspa;
 import com.example.myapp1.ListPrisenCharge;

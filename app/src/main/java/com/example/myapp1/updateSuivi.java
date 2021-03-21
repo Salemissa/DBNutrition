@@ -279,7 +279,7 @@ public class updateSuivi extends AppCompatActivity {
 
     void  MoughataaPardefaut(){
         Structure structure=databaseManager.structurename(this.suviSousSurvillance.getStructure().getStructurename());
-        String Moug=structure.getCommune().getMoughata().getMoughataname(); //the value you want the position for
+        String Moug=structure.getCommune().getMoughataa().getMoughataname(); //the value you want the position for
         ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
         int MougPosition = MougSel.getPosition(Moug);
         //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();

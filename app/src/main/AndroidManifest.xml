@@ -22,7 +22,12 @@
             android:name=".ListGaspa"
             android:label="@string/title_activity_list_gaspa"
             android:theme="@style/AppTheme.NoActionBar">
-            </activity>
+
+        </activity>
+        <activity
+            android:name=".Intervenant"
+            android:label="@string/title_activity_intervenant"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".StockeList"
             android:label="@string/title_activity_stocke_list"
@@ -74,7 +79,8 @@
             android:theme="@style/AppTheme.NoActionBar">
             >
         </activity>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

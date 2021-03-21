@@ -25,6 +25,8 @@
             android:text="Sync"
             />
 
+
+
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"

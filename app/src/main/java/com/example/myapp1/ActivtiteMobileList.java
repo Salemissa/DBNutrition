@@ -47,6 +47,7 @@ import retrofit2.Response;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
+import static com.example.myapp1.R.string.messageSupp;
 
 public class ActivtiteMobileList extends AppCompatActivity implements DepistageCalls.CallbacksDepistage {
 
@@ -96,7 +97,31 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
         syn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                synDepistage();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ActivtiteMobileList.this);
+                alertDialog.setTitle("Confirm ");
+                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        synDepistage();
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
             }
         });
         fab = findViewById(R.id.fab);
@@ -117,7 +142,7 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
             else{
                title.setText("Compagne de depistage");
             }
-            Toast.makeText(this, type, Toast.LENGTH_LONG).show();
+
         }
 
          this.depistageActive = databaseManager.DepistageByType(this.type);
@@ -184,8 +209,7 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
                                            int pos, long id) {
                 // TODO Auto-generated method stub
                 Depistage clickedItem = (Depistage) list.getItemAtPosition(pos);
-                Toast.makeText(getApplicationContext(), pos + "++" + id, LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), clickedItem.getOdemeF() + "", LENGTH_LONG).show();
+
 
 
                 boolean res = showalert(clickedItem);
@@ -346,7 +370,8 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
                     progressDoalog.dismiss();
                     AlertDialog alertDialog = new AlertDialog.Builder(ActivtiteMobileList.this).create();
                     alertDialog.setTitle("info");
-                    alertDialog.setMessage("Les données ont été synchronisées");
+                    alertDialog.setMessage("Synchronisé avec succés");
+                    Toast.makeText(getApplication(), R.string.messageSyn, LENGTH_LONG).show();
 
                     alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -369,8 +394,8 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
 
                 }else{
                    // Log.e("Errure", response.errorBody().string());
-                      Toast.makeText(getApplication(),"Body" +response.errorBody().toString(), LENGTH_LONG).show();
-                    Toast.makeText(getApplication(),"" +response.errorBody(), LENGTH_LONG).show();
+                     // Toast.makeText(getApplication(),"Body" +response.errorBody().toString(), LENGTH_LONG).show();
+                   // Toast.makeText(getApplication(),"" +response.errorBody(), LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
                     progressDoalog.dismiss();
@@ -487,12 +512,12 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirm ");
-        alertDialog.setMessage("Etes Vous sur de supprimer");
+        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+
                 Supprimer(depistagePassif);
 
                 supp =true;
@@ -503,18 +528,12 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
 
             }
         });
-        alertDialog.setNeutralButton( "Cancel", new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"NOl",Toast.LENGTH_SHORT).show();
 
-            }
-        });
 
         alertDialog.show();
 
@@ -557,7 +576,7 @@ public class ActivtiteMobileList extends AppCompatActivity implements DepistageC
     private  void  Supprimer(Depistage depistage) {
         try {
             databaseManager.supprimerpistage(depistage);
-            Toast.makeText(this, "Supprimer Avec succe", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplication(), messageSupp, LENGTH_LONG).show();
             Intent intent = new Intent(this, ActivtiteMobileList.class);
             intent.putExtra("type",this.type);
             startActivity(intent);

@@ -19,9 +19,9 @@ public class Commune {
     @DatabaseField
     @JsonProperty("communnename")
     private String communename;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    @JsonProperty("moughata")
-    private Moughata moughata;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true,columnName = "id_moughataa")
+    @JsonProperty("moughataa")
+    private Moughata moughataa;
     @JsonIgnore
     @ForeignCollectionField(eager=false)
     private ForeignCollection<Structure> structures;
@@ -36,7 +36,7 @@ public class Commune {
     }
     public Commune(String communename,Moughata moughata) {
         this.communename = communename;
-        this.moughata=moughata;
+        this.moughataa=moughata;
     }
 
     public Long getId() {
@@ -55,12 +55,12 @@ public class Commune {
         this.communename = communename;
     }
 
-    public Moughata getMoughata() {
-        return moughata;
+    public Moughata getMoughataa() {
+        return moughataa;
     }
 
-    public void setMoughata(Moughata moughata) {
-        this.moughata = moughata;
+    public void setMoughataa(Moughata moughata) {
+        this.moughataa = moughata;
     }
     public ForeignCollection<Structure> getStructures() {
         return structures;
@@ -78,3 +78,5 @@ public class Commune {
         this.localites = localites;
     }
 }
+
+

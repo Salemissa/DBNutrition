@@ -8,8 +8,12 @@ import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Depistage;
+import com.example.myapp1.model.Medicament;
+import com.example.myapp1.model.PriseenCharge;
+import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.SuviSousSurvillance;
 import com.example.myapp1.pcim.Activite_Mobile;
+import com.example.myapp1.syn.RetrofitServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -18,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 import  com.example.myapp1.model.MedicamentIntrants;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static android.widget.Toast.LENGTH_LONG;
+import static com.example.myapp1.R.string.messageSupp;
 
 public class StockeList extends AppCompatActivity {
 
@@ -74,8 +84,32 @@ public class StockeList extends AppCompatActivity {
         syn = findViewById(R.id.syn);
         syn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                //synDepistage();
+            public void onClick(View view)
+            {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(StockeList.this);
+                alertDialog.setTitle("Confirm ");
+                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        synStocke();
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
             }
         });
 
@@ -104,11 +138,120 @@ public class StockeList extends AppCompatActivity {
 
     }
 
+    private void synStocke() {
+        List<MedicamentIntrants> Listsyn=new ArrayList<MedicamentIntrants>();
+
+        for(MedicamentIntrants medicamentIntrants:databaseManager.MedicamentIntrantsList()){
+            if(medicamentIntrants.getSyn()==0){
+                Listsyn.add(medicamentIntrants);
+            }
+        }
+        if (!Listsyn.isEmpty()) {
+            List<MedicamentIntrants> syn=new ArrayList<MedicamentIntrants>();
+            MedicamentIntrants medicamentSyn=new MedicamentIntrants();
+            for(MedicamentIntrants medicamentIntrants:Listsyn) {
+                medicamentSyn =medicamentIntrants;
+                medicamentSyn.setId(0L);
+                Structure structure = new Structure();
+                structure.setId(medicamentIntrants.getStructure().getId());
+                structure.setStructurename(medicamentIntrants.getStructure().getStructurename());
+                medicamentSyn.setStructure(structure);
+
+                Medicament medicament = new Medicament();
+                medicament.setId(medicamentIntrants.getMedicament().getId());
+                medicamentSyn.setMedicament(medicament);
+
+                syn.add(medicamentSyn);
+            }
+            try {
+                //progressBar.setVisibility(View.VISIBLE);
+                //DepistageCalls.addDepistage(this, syn);
+                this.SynStockeList(syn);
+
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage());
+
+            }
+
+
+        }
+        else{
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("info");
+            alertDialog.setMessage("List Vide");
+
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            alertDialog.show();
+        }
+    }
+
+    private void SynStockeList(List<MedicamentIntrants> syn) {
+
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<MedicamentIntrants>> call =retrofitServices.createMedicamentIntrants(syn);
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<MedicamentIntrants>() {
+            @Override
+            public void onResponse(Call<MedicamentIntrants> call, Response<MedicamentIntrants> response) {
+                if (response.isSuccessful()) {
+
+                    AlertDialog alertDialog = new AlertDialog.Builder(StockeList.this).create();
+                    alertDialog.setTitle("info");
+                    alertDialog.setMessage("Les données ont été synchronisées");
+
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            for (MedicamentIntrants medicamentIntrants : arrayList) {
+                                if (medicamentIntrants.getSyn() == 0 || medicamentIntrants.getSyn() == 2) {
+                                    medicamentIntrants.setSyn(1);
+                                    //databaseManager.upda(priseenCharge);
+                                }
+                            }
+                            arrayList= databaseManager.MedicamentIntrantsList();
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    });
+
+                    alertDialog.show();
+
+
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    //progressDoalog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MedicamentIntrants> call, Throwable t) {
+                Log.e("ERROR ", t.getMessage().toString()+"Probleme");
+                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
+                //progressDoalog.dismiss();
+            }
+        });
+
+
+    }
+
     private boolean showalert(final MedicamentIntrants medicamentIntrants ,int pos) {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirm ");
-        alertDialog.setMessage("Etes Vous sur de supprimer");
+        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -142,6 +285,7 @@ public class StockeList extends AppCompatActivity {
         //startActivity(intent);
         arrayList.remove(pos);
         adapter.notifyDataSetChanged();
+        Toast.makeText(getApplication(), messageSupp, LENGTH_LONG).show();
 
     }
 

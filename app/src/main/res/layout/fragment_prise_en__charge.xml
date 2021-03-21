@@ -3,54 +3,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".pcim.Prise_en_Charge">
-
-    <include
-        android:id="@+id/header_VIEW"
-        layout="@layout/localite"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/card"
+        android:id="@+id/card"
+       app:cardElevation="2dp"
+        app:cardCornerRadius="5dp"
+        app:contentPadding="10dp"
+        >
 
-    <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="2">
 
-        android:layout_width="wrap_content"
-        android:layout_height="39dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="125dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="4">
 
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="Moughata"
+                    android:textSize="@dimen/label"
+                    android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textView33"
-        android:layout_width="89dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:gravity="center"
-        android:text="Localité"
-        android:textStyle="bold"
-        android:textSize="20sp" />
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/moghata"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown" />
 
-    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-        android:id="@+id/localite"
-        android:layout_width="141dp"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center"
 
-        android:spinnerMode="dropdown" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:text="Commune"
+                    android:textSize="@dimen/label"
+                    android:textStyle="bold" />
+
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/commune"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="2dp"
+                android:weightSum="4"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Localité"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    android:id="@+id/localite"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="20dp"
+
+                    android:gravity="center_horizontal"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:id="@+id/libelles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/header_VIEW"
+        android:layout_below="@id/card"
         android:layout_marginTop="30dp"
         android:weightSum="5">
 

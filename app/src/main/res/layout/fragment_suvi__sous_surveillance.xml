@@ -3,55 +3,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".pcim.Suvi_Sous_surveillance">
 
-    <include
-        android:id="@+id/header_VIEW"
-        layout="@layout/structurelayout"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="10dp" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/card"
+        android:id="@+id/card"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="3dp"
+        app:contentPadding="10dp"
+        >
 
+        <include
+            android:id="@+id/header_VIEW"
+            layout="@layout/structurelayout"
+            android:layout_width="match_parent"
+            android:layout_height="86dp"
+            android:layout_marginTop="10dp" />
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:id="@+id/lyoutage"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_below="@id/header_VIEW"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/card"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textView7"
-            android:layout_width="61dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="Age"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/age"
-            android:layout_width="102dp"
-            android:layout_height="match_parent" />
+            android:layout_width="61dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/textView8"
-            android:layout_width="114dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="ss debut"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/ssd"
-            android:layout_width="93dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
-            android:ems="10"
             android:inputType="number"
             android:maxLength="4" />
 
@@ -59,18 +73,18 @@
             android:id="@+id/textView9"
             android:layout_width="95dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="venant"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/venant"
-            android:layout_width="93dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:ems="10"
             android:inputType="number"
             android:maxLength="4" />
     </LinearLayout>
@@ -81,23 +95,24 @@
         android:layout_height="56dp"
         android:layout_below="@id/lyoutage"
         android:layout_marginTop="33dp"
-
         android:orientation="horizontal">
 
 
         <TextView
             android:id="@+id/textView20"
-            android:layout_width="69dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="NCG"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/NCG"
-            android:layout_width="95dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
             android:ems="10"
@@ -106,12 +121,13 @@
 
         <TextView
             android:id="@+id/textView12"
-            android:layout_width="115dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="NCF"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
@@ -125,20 +141,22 @@
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_width="93dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="Rea"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/READ"
-            android:layout_width="89dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:ems="10"
+
             android:inputType="number"
             android:maxLength="4" />
     </LinearLayout>
@@ -155,17 +173,19 @@
 
         <TextView
             android:id="@+id/textView22"
-            android:layout_width="69dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="Gueris"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/Gueris"
-            android:layout_width="95dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
             android:ems="10"
@@ -174,17 +194,20 @@
 
         <TextView
             android:id="@+id/textView23"
-            android:layout_width="115dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="Deces"
-            android:textSize="18sp"
+
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/Deces"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="56dp"
             android:layout_gravity="center"
             android:ems="10"
@@ -193,17 +216,18 @@
 
         <TextView
             android:id="@+id/textView24"
-            android:layout_width="93dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="Abandon"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/Abd"
-            android:layout_width="89dp"
+            android:layout_width="71dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
@@ -223,17 +247,19 @@
 
         <TextView
             android:id="@+id/textView30"
-            android:layout_width="69dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="Non Rep"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/Non_rep"
-            android:layout_width="95dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
             android:ems="10"
@@ -242,17 +268,19 @@
 
         <TextView
             android:id="@+id/textView32"
-            android:layout_width="115dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="Ref CRENI"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/Ref_Creni"
-            android:layout_width="94dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
@@ -261,17 +289,19 @@
 
         <TextView
             android:id="@+id/textView33"
-            android:layout_width="93dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
             android:text="Trans CRENAS"
-            android:textSize="18sp"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/Trans_Crenas"
-            android:layout_width="89dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
@@ -281,16 +311,16 @@
 
     <Button
         android:id="@+id/Ajouter"
-        android:layout_width="183dp"
-        android:layout_height="67dp"
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/sort2"
-        android:layout_marginTop="63dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
-        android:layout_centerHorizontal="true"
         android:background="@color/colorPrimary"
-        android:textColor="#FFFF"
-        android:text="Ajouter" />
+        android:text="Ajouter"
+        android:textColor="#FFFF" />
 
 
 </RelativeLayout>

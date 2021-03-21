@@ -63,10 +63,7 @@ public class UpdatePrise extends AppCompatActivity {
         this.enfant=this.findViewById(R.id.enfant);
         this.accompagnant=this.findViewById(R.id.accompagnat);
         this.MAS=this.findViewById(R.id.MAS);
-        View moi=this.findViewById(R.id.mois);
-        View anne =this.findViewById(R.id.annee);
-        moi.setVisibility(View.GONE);
-        anne.setVisibility(View.GONE);
+
         this.findViewById(R.id.textView3).setVisibility(View.GONE);
         this.findViewById(R.id.textView4).setVisibility(View.GONE);
         this.Ajouter =(Button) this.findViewById(R.id.Ajouter);
@@ -369,7 +366,7 @@ public class UpdatePrise extends AppCompatActivity {
 
     void  MoughataaPardefaut(){
         Localite localite=databaseManager.localitename(this.priseencharge.getLocalite().getLocalitename());
-        String Moug=localite.getCommune().getMoughata().getMoughataname(); //the value you want the position for
+        String Moug=localite.getCommune().getMoughataa().getMoughataname(); //the value you want the position for
         ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
         int MougPosition = MougSel.getPosition(Moug);
         //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();

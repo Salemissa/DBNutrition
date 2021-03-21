@@ -119,12 +119,7 @@ public class Prise_en_Charge extends Fragment {
        this.accompagnant=this.v.findViewById(R.id.accompagnat);
        this.MAS=this.v.findViewById(R.id.MAS);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        View moi=this.v.findViewById(R.id.mois);
-        View anne =this.v.findViewById(R.id.annee);
-        moi.setVisibility(View.GONE);
-        anne.setVisibility(View.GONE);
-        this.v.findViewById(R.id.textView3).setVisibility(View.GONE);
-        this.v.findViewById(R.id.textView4).setVisibility(View.GONE);
+
 
         this.Ajouter =(Button) this.v.findViewById(R.id.Ajouter);
 

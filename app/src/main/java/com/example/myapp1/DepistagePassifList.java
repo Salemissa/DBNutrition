@@ -51,6 +51,7 @@ import java.util.List;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
+import static com.example.myapp1.R.string.messageSupp;
 
 public class DepistagePassifList extends AppCompatActivity  implements DepistageCalls.CallbacksDepistage,DepistageCalls.CallbacksRapport{
     private DatabaseManager databaseManager;
@@ -101,7 +102,31 @@ public class DepistagePassifList extends AppCompatActivity  implements Depistage
         syn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                synDepistage();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(DepistagePassifList.this);
+                alertDialog.setTitle("Confirm ");
+                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        synDepistage();
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
             }
         });
 
@@ -270,7 +295,7 @@ public class DepistagePassifList extends AppCompatActivity  implements Depistage
          this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirm ");
-        alertDialog.setMessage("Etes Vous sur de supprimer");
+        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -476,6 +501,7 @@ public class DepistagePassifList extends AppCompatActivity  implements Depistage
             arrayList.remove(pos);
             depistagePassif.remove(pos);
             adapter.notifyDataSetChanged();
+            Toast.makeText(getApplication(), messageSupp, LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }

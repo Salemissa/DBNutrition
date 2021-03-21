@@ -60,7 +60,11 @@
             <item
                 android:id="@+id/gaspa"
                 android:icon="@drawable/intevenants"
-                android:title="Gestion des intervenants" />
+                android:title="Suvi des GASPA" />
+                <item
+                    android:id="@+id/intervenant"
+                    android:icon="@drawable/intevenants"
+                    android:title="Intervenants" />
             </group>
         </menu>
         </item>

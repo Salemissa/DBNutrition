@@ -50,6 +50,7 @@ import retrofit2.Response;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
+import static com.example.myapp1.R.string.messageSupp;
 
 public class ListSuivisous extends AppCompatActivity {
     private DatabaseManager databaseManager;
@@ -96,7 +97,32 @@ public class ListSuivisous extends AppCompatActivity {
         syn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                synSuiviSous();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ListSuivisous.this);
+                alertDialog.setTitle("Confirm ");
+                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        synSuiviSous();
+
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
             }
         });
 
@@ -334,7 +360,7 @@ public class ListSuivisous extends AppCompatActivity {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirm ");
-        alertDialog.setMessage("Etes Vous sur de supprimer");
+        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -368,6 +394,7 @@ public class ListSuivisous extends AppCompatActivity {
         //startActivity(intent);
         arrayList.remove(pos);
         adapter.notifyDataSetChanged();
+        Toast.makeText(getApplication(), messageSupp, LENGTH_LONG).show();
 
     }
 

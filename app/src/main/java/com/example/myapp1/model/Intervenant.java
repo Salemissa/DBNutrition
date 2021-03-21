@@ -1,5 +1,8 @@
 package com.example.myapp1.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.j256.ormlite.field.DatabaseField;
 
 public abstract class  Intervenant {
@@ -12,11 +15,18 @@ public abstract class  Intervenant {
   @DatabaseField
   private String cin;
   @DatabaseField
+  @JsonProperty("tel")
   private  String telephone;
   @DatabaseField
   private  String statut;
   @DatabaseField
   private String type ;
+
+  @DatabaseField
+  private String dateformation ;
+  @DatabaseField
+  private String formation ;
+
 
   public Long getId() {
     return id;
@@ -60,6 +70,7 @@ public abstract class  Intervenant {
     this.telephone = telephone;
   }
 
+
   public String getStatut() {
     return statut;
   }
@@ -74,5 +85,21 @@ public abstract class  Intervenant {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public String getDateformation() {
+    return dateformation;
+  }
+
+  public void setDateformation(String dateformation) {
+    this.dateformation = dateformation;
+  }
+
+  public String getFormation() {
+    return formation;
+  }
+
+  public void setFormation(String formation) {
+    this.formation = formation;
   }
 }

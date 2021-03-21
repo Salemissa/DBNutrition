@@ -467,10 +467,10 @@ public class Approche_communataire extends Fragment {
             approcheCommunataire.setMenages(Integer.parseInt(menage.getText().toString()));
             approcheCommunataire.setVaccin(Integer.parseInt(vaccin.getText().toString()));
             approcheCommunataire.setVisite(Integer.parseInt(viste.getText().toString()));
-            approcheCommunataire.setTR(Integer.parseInt(TR.getText().toString()));
+            approcheCommunataire.setTr(Integer.parseInt(TR.getText().toString()));
             approcheCommunataire.setDateCreation(date.getText().toString());
             approcheCommunataire.setRapport(this.Rapport);
-            approcheCommunataire.setStructurerapport("");
+            approcheCommunataire.setRapportusb("");
             approcheCommunataire.setDate(sdf.format(new Date()));
             try {
                 databaseManager.inserApprocheCommunataire(approcheCommunataire);

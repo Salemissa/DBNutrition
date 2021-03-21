@@ -15,6 +15,8 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapp1.DataManager.DatabaseManager;
+import com.example.myapp1.model.Animateur;
+import com.example.myapp1.model.Annee;
 import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.GithubUser;
 import com.example.myapp1.model.Localite;
@@ -75,7 +79,15 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         databaseManager = new DatabaseManager(this);
         Moughata moughata = new Moughata("Koubeni");
+         Relais relais=new Relais();
+         relais.setNom("Oumar");
+         relais.setCin("2211334455");
+         //relais.setLocalite(databaseManager.localitename("Koubeni"));
+         relais.setTelephone("33224488");
 
+         //databaseManager.insertRealais(relais);
+        Medicament medicament=new Medicament("Micronutriments");
+        //databaseManager.insertMedicament(medicament);
          session=new Session(getApplicationContext());
 
         progressDoalog = new ProgressDialog(MainActivity.this);
@@ -96,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
       if(databaseManager.MedicamentsList().size()==0) {
           databaseManager.insertMedicament(new Medicament("Pumpy Nut"));
           databaseManager.insertMedicament(new Medicament("Amoxiciline"));
+          databaseManager.insertMedicament(new Medicament("Micronutriments"));
       }
 
         List<Moughata> Moughata = databaseManager.ListMoughata();
@@ -202,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
                     //  Toast.makeText(MainActivity.this,"usernmae is invalide",Toast.LENGTH_LONG).show();
                 }
 
-                if (password.getText().toString().isEmpty() ) {
+                if (password.getText().toString().isEmpty()) {
                     error = true;
                     password.setError("password is invalid!");
                     Toast.makeText(MainActivity.this, "passowrd is invalide", Toast.LENGTH_LONG).show();
@@ -210,39 +223,44 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
 
 
                 if (!error) {
-                    SuperViseur user=databaseManager.Login(username.getText().toString().trim(),password.getText().toString().trim());
-                    if(user!=null){
-                    Intent intent4 = new Intent(MainActivity.this, MainActivity2.class);
+                    SuperViseur user = databaseManager.Login(username.getText().toString().trim(), password.getText().toString().trim());
+                    if (user != null) {
+                        //SynCommunes();
+                        Intent intent4 = new Intent(MainActivity.this, MainActivity2.class);
                         session.setJwt("Token");
-                         startActivity(intent4);
 
-                        }
-                    else{
-                        Toast.makeText(getApplicationContext(),"Login Invalid",Toast.LENGTH_LONG).show();
-
-                    }
-                    //executeHttpRequestWithRetrofit();
-                    //add();
-                    //
-                    List<Moughata> users = databaseManager.ListMoughata();
-                    if (users != null) {
-
-
-                            // Toast.makeText(MainActivity.this,user.getLocalitename()+"=="+user.getId(),Toast.LENGTH_LONG).show();
-                            //   Toast.makeText(MainActivity.this,user.getId()+"",Toast.LENGTH_LONG).show();
-
-
-                            //alertView(etudient.toString());
-
-                        //
+                        startActivity(intent4);
                     } else {
-
-                        Toast.makeText(MainActivity.this, "Charge les données", Toast.LENGTH_LONG).show();
-                        //executeHttpRequestWithRetrofit();
-
+                        Toast.makeText(getApplicationContext(), "Commune" + 0, Toast.LENGTH_LONG).show();
                         //startActivity(intent4);
                     }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Login Invalid", Toast.LENGTH_LONG).show();
+
                 }
+                //executeHttpRequestWithRetrofit();
+                //add();
+                //
+                List<Moughata> users = databaseManager.ListMoughata();
+                if (users != null) {
+
+
+                    // Toast.makeText(MainActivity.this,user.getLocalitename()+"=="+user.getId(),Toast.LENGTH_LONG).show();
+                    //   Toast.makeText(MainActivity.this,user.getId()+"",Toast.LENGTH_LONG).show();
+
+
+                    //alertView(etudient.toString());
+
+                    //
+                } else {
+
+                    Toast.makeText(MainActivity.this, "Charge les données", Toast.LENGTH_LONG).show();
+                    //executeHttpRequestWithRetrofit();
+
+                    //startActivity(intent4);
+                }
+
             }
 
 
@@ -260,11 +278,32 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         setContentView(R.layout.activity_main);
         this.username = (EditText) findViewById(R.id.editTextTextPersonName2);
         this.password = (EditText) findViewById(R.id.editPassword);
-        this.progressBar = findViewById(R.id.login_progress);
+        //this.progressBar = findViewById(R.id.login_progress);
         this.bt = (Button) findViewById(R.id.button);
         this.text= (TextView) findViewById(R.id.textView5);
        // this.btncharge=(Button) findViewById(R.id.Charge);
 
+        username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+               // Toast.makeText(getApplication(),s.toString(),Toast.LENGTH_LONG).show();
+            }
+
+
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Toast.makeText(getApplication(),"beforeTextChanged",Toast.LENGTH_LONG).show();
+               // // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //Toast.makeText(getApplication(),"beforeTextChanged",Toast.LENGTH_LONG).show();
+
+                // TODO Auto-generated method stub
+            }
+        });
 
 
     }
@@ -324,9 +363,9 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         databaseManager.inserMoughata(moughata2);
         Moughata moughata3 = new Moughata("Tintane");
         databaseManager.inserMoughata(moughata3);
-       AjouterCommune();
+      // AjouterCommune();
 
-        //SynCommunes();
+        SynCommunes();
        progressDoalog.setMessage("Loading Communne ....");
        progressDoalog.show();
 
@@ -340,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         for (String communename : commune1) {
             Commune commune = new Commune();
             commune.setCommunename(communename);
-            commune.setMoughata(moughata1);
+            commune.setMoughataa(moughata1);
             databaseManager.insercommune(commune);
 
         }
@@ -351,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         for (String communename : commune2) {
             Commune commune = new Commune();
             commune.setCommunename(communename);
-            commune.setMoughata(moughata2);
+            commune.setMoughataa(moughata2);
             databaseManager.insercommune(commune);
 
         }
@@ -364,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         for (String communename : commune3) {
             Commune commune = new Commune();
             commune.setCommunename(communename);
-            commune.setMoughata(moughata3);
+            commune.setMoughataa(moughata3);
             databaseManager.insercommune(commune);
 
 
@@ -461,7 +500,6 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         databaseManager.insersusb(usb);
         usb.setUsbname("Koubeni");
         usb.setLocalite(localite);
-
         Relais relais=new Relais();
         relais.setNom("Salem");
         relais.setCin("359988776655");
@@ -554,8 +592,7 @@ void add(){
             public void onResponse(Call<List<Commune>> call, Response<List<Commune>> response) {
 
                 if(response.isSuccessful()){
-                    Toast.makeText(getApplication(),"OK",Toast.LENGTH_LONG).show();
-                    Log.i("OK", response.message());
+
                     this.communes=response.body();
                     Toast.makeText(getApplication(),"Commune"+this.communes.size(),Toast.LENGTH_SHORT);
                     for(Commune commune:communes){
@@ -564,7 +601,7 @@ void add(){
                     progressDoalog.dismiss();
                     progressDoalog.setMessage("Loading Structures et Localites....");
                     progressDoalog.show();
-                    SynStructure();
+                      SynStructure();
 
                 }else{
                     Log.i("ERROR Commune", response.errorBody().toString());
@@ -600,7 +637,7 @@ void add(){
 
                 if(response.isSuccessful()){
                     Log.i("OK", response.message());
-                    Toast.makeText(getApplication(),"Structur"+structures.size(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplication(),"Structur"+structures.size(),Toast.LENGTH_SHORT).show();
                     this.structures=response.body();
                     for(Structure structure:structures){
                         databaseManager.inserstructure(structure);
@@ -696,9 +733,11 @@ void add(){
                     }
 
                     progressDoalog.dismiss();
+                    SynSUP();
                 }else{
                     Log.i("REPONSE", response.errorBody().toString());
                     Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
+                    progressDoalog.dismiss();
                 }
 
             }
@@ -712,4 +751,139 @@ void add(){
         });
 
     }
+
+    public void SynSUP(){
+        this.progressDoalog.setMessage("Loding SuP ......");
+        this.progressDoalog.show();
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<SuperViseur>> call =retrofitServices.getSuperViseur();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<SuperViseur>>() {
+            private List<USB>usbs;
+
+            @Override
+            public void onResponse(Call<List<SuperViseur>> call, Response<List<SuperViseur>> response) {
+
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplication(),"OK",Toast.LENGTH_LONG).show();
+                    Log.i("OK", response.message());
+                    for(SuperViseur superViseur:response.body()){
+
+                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
+                        databaseManager.inserSuperViseur(superViseur);
+                    }
+
+                    progressDoalog.dismiss();
+                    SynAnimnateur();
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
+                    progressDoalog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<SuperViseur>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),"Probleme SuperViseur",Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+
+    public void SynAnimnateur(){
+        this.progressDoalog.setMessage("Loding Animateur ......");
+        this.progressDoalog.show();
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<Animateur>> call =retrofitServices.getAnimateur();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Animateur>>() {
+            private List<Animateur>animateurs;
+
+            @Override
+            public void onResponse(Call<List<Animateur>> call, Response<List<Animateur>> response) {
+
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplication(),"OK",Toast.LENGTH_LONG).show();
+                    Log.i("OK", response.message());
+                    for(Animateur animateur:response.body()){
+
+                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
+                        databaseManager.insertAnimateur(animateur);
+                    }
+
+                    progressDoalog.dismiss();
+                    SynRelais();
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
+                    progressDoalog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Animateur>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),"Probleme Animateur",Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+    public void SynRelais(){
+        this.progressDoalog.setMessage("Loding Relais ......");
+        this.progressDoalog.show();
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<Relais>> call =retrofitServices.getRelais();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Relais>>() {
+            private List<Relais>relais;
+
+            @Override
+            public void onResponse(Call<List<Relais>> call, Response<List<Relais>> response) {
+
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplication(),"OK",Toast.LENGTH_LONG).show();
+                    Log.i("OK", response.message());
+                    for(Relais relais:response.body()){
+
+                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
+                        databaseManager.insertRealais(relais);
+                    }
+
+                    progressDoalog.dismiss();
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Relais>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),"Probleme Relais",Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
 }

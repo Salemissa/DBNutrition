@@ -21,6 +21,7 @@ public class Localite {
         private double lat;
         @DatabaseField
         private double lon;
+
         @DatabaseField(foreign = true, foreignAutoRefresh = true)
         @JsonProperty("commune")
         private Commune commune;

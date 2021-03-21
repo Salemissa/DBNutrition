@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Base de données PCIM /ANJE </string>
+    <string name="app_name">Base de données PCIMA /ANJE </string>
     <string name="title_activity_main2">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -39,11 +39,14 @@
     <string name="passif">Donnée dépistage passif</string>
     <string name="actif">Dépistage actif</string>
     <string name="approche">Approche communautaire</string>
-    <string name="compagne">Campagne de depistage</string>
+    <string name="compagne">Campagne de dépistage</string>
     <string name="mobil">Activité mobilé</string>
     <string name="prise">Prise en charge</string>
     <string name="title_activity_update_approche">UpdateApproche</string>
     <string name="title_activity_stocke_list">StockeList</string>
     <string name="title_activity_gaspa">Gaspa</string>
     <string name="title_activity_list_gaspa">ListGaspa</string>
+    <string name="title_activity_intervenant">Intervenant</string>
+    <string name="messageSupp">suppresion réussie</string>
+    <string name="messageSyn">Synchronisé avec succés</string>
 </resources>

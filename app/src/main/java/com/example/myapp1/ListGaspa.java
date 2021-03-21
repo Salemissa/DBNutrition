@@ -1,187 +1,125 @@
 package com.example.myapp1;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Gaspa;
-import com.example.myapp1.model.PriseenCharge;
-import com.example.myapp1.pcim.Prise_en_Charge;
+import com.example.myapp1.model.Relais;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListGaspa extends AppCompatActivity {
+    RecyclerView RecycleView;
     private DatabaseManager databaseManager;
-    private ListView list;
-    List<Gaspa> arrayList;
-    boolean supp ;
-    FloatingActionButton fab;
-    View toolbar;
-    private SimpleDateFormat sdf;
-    Button syn;
-    ProgressBar progressBar;
-    List<Gaspa> gaspaList;
-    ProgressDialog progressDoalog;
-    private GaspaAdapter adapter;
-
+   GaspaAdapter gaspaAdapter;
+    List<Gaspa> gaspas;
+    LayoutInflater inflater;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_list_gaspa);
-        toolbar = findViewById(R.id.button);
-        this.sdf = new SimpleDateFormat("yyyy-MM-dd");
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
-        syn = findViewById(R.id.button2);
-        list = findViewById(R.id.list);
+        setContentView(R.layout.activity_list_gaspa);
+
         databaseManager = new DatabaseManager(this);
-        this.arrayList = new ArrayList<>();
-        this.gaspaList = databaseManager.ListGaspa();
-        //this.add= findViewById(R.id.add);
-        progressDoalog = new ProgressDialog(ListGaspa.this);
-        progressDoalog.setMessage("Loading....");
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GotoGaspa();
-
-            }
-        });
-/*
-        FloatingActionButton fab = findViewById(R.id.fab);
-       / fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-
-        if (gaspaList == null) {
-            //Toast.makeText(this,"medicament non trouve ",Toast.LENGTH_LONG).show();
-
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
-            alertDialog.setMessage("List est indispansable");
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //finish();
-                }
-            });
-            alertDialog.show();
-
+        gaspas = databaseManager.ListGaspa();
+        RecycleView = (RecyclerView) findViewById(R.id.ListRecyclerView);
+        if (gaspas.size() > 0) {
+            RecycleView = (RecyclerView) findViewById(R.id.ListRecyclerView);
+            gaspaAdapter = new GaspaAdapter(gaspas, this);
+            RecycleView.setHasFixedSize(true);
+            RecycleView.setLayoutManager(new LinearLayoutManager(this));
+            RecycleView.setAdapter(gaspaAdapter);
         } else {
-            arrayList = databaseManager.ListGaspa();
+            new AlertDialog.Builder(ListGaspa.this)
+                    .setMessage("Rien ")
+                    .show();
         }
 
-        if(!arrayList.isEmpty()){
-            this.adapter = new GaspaAdapter(this, arrayList);
-            ListView list = (ListView)findViewById(R.id.list);
-            list.setAdapter(adapter);
-        }
     }
 
-    private void GotoGaspa() {
-        // FragmentTransaction transaction = manager.beginTransaction();
-        list.setVisibility(View.GONE);
-        //this.toolbar.setVisibility(View.GONE);
-        syn.setVisibility(View.GONE);
-        this.fab.setVisibility(View.GONE);
-        FragmentManager myfragmentManager =getSupportFragmentManager();
-        FragmentTransaction myfragmentTransaction = myfragmentManager.beginTransaction ();
-        com.example.myapp1.Gaspa myfragment = new com.example.myapp1.Gaspa();
-       // myfragmentTransaction.replace(R.id.gaspaList, myfragment).commit();
-    }
+    private class GaspaAdapter  extends RecyclerView.Adapter<GaspaAdapter.ViewHolder> {
+        private List<Gaspa>GaspaList;
+        Context ctx;
+        public GaspaAdapter(List<Gaspa> gaspas, Context ctx) {
+            this.GaspaList=gaspas;
+            this.ctx=ctx;
+        }
 
 
-    class GaspaAdapter extends BaseAdapter {
-
-        private List<Gaspa>gaspas;
-        private Context mContext;
-        private LayoutInflater mInflater;
-
-
-        public GaspaAdapter(Context context, List<Gaspa> gaspa) {
-            mContext = context;
-            this.gaspas =gaspa;
-            mInflater = LayoutInflater.from(mContext);
+        @NonNull
+        @Override
+        public GaspaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View InterventItem = inflater.inflate(R.layout.gaspaitem, parent, false);
+            ViewHolder viewHolder = new ViewHolder(InterventItem);
+            return viewHolder;
         }
 
 
         @Override
-        public int getCount() {
-            return gaspas.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return gaspas.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LinearLayout layoutItem;
-            //(1) : Réutilisation des layouts
-            if (convertView == null) {
-                //Initialisation de notre item à partir du  layout XML "personne_layout.xml"
-                layoutItem = (LinearLayout) mInflater.inflate(R.layout.listprise, parent, false);
-            } else {
-                layoutItem = (LinearLayout) convertView;
+        public void onBindViewHolder(@NonNull GaspaAdapter.ViewHolder holder, int position) {
+            final Gaspa gaspa= GaspaList.get(position);
+            holder.fe.setText("FE Réf :"+gaspa.getFe());
+            holder.fep.setText("FE Présentes"+gaspa.getFep());
+            holder.fa06.setText("FA 0-6 Réf"+gaspa.getFa06r());
+            holder.fa06p.setText("FA 0-6 Présentes"+gaspa.getFa06p());
+            holder.fa23.setText("FA 6-23 Réf"+gaspa.getFa23r());
+            holder.fa23p.setText("Fa 6-23 Présentes"+gaspa.getFa23p());
+            holder.mois.setText("Mois "+"janvier");
+            holder.annee.setText("Annee"+"2021");
+            if(gaspa.getRelais() !=null) {
+                holder.relais.setText("Relais : " + gaspa.getRelais().getNom());
             }
 
-            //(2) : Récupération des TextView de notre layout
+        }
+
+        @Override
+        public int getItemCount() {
+            return GaspaList.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public TextView mois;
+            public TextView  annee;
+            public TextView relais;
+
+            public TextView fe;
+            public TextView  fep;
+            public TextView fa06;
+            public TextView fa06p;
+            public TextView fa23;
+            public TextView fa23p;
+            public LinearLayout linearLayout;
 
 
-
-
-
-
-            //On retourne l'item créé.
-            return layoutItem;
+            public ViewHolder(View v){
+                super(v);
+                this.fe= ((TextView) v.findViewById(R.id.fe));
+                this.fep = ((TextView) v.findViewById(R.id.fep));
+                this.fa06= ((TextView) v.findViewById(R.id.fa06));
+                this.fa06p= ((TextView) v.findViewById(R.id.fa06p));
+                this.fa23= ((TextView) v.findViewById(R.id.fa23));
+                this.fa23p= ((TextView) v.findViewById(R.id.fa23p));
+                this.relais= ((TextView) v.findViewById(R.id.relais));
+                this.mois= ((TextView) v.findViewById(R.id.mois));
+                this.annee= ((TextView) v.findViewById(R.id.annee));
+                linearLayout = (LinearLayout) v.findViewById(R.id.linearlayout);
+            }
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity2.class);
-        //intent.putExtra("type", "ActivitéMobile");
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-
-
-    }
-
 }

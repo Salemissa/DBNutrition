@@ -347,7 +347,7 @@ public class UpdateDepistage extends AppCompatActivity {
 
     void  MoughataaPardefaut(){
         Localite localite=databaseManager.localitename(this.depistage.getLocalite().getLocalitename());
-        String Moug=localite.getCommune().getMoughata().getMoughataname(); //the value you want the position for
+        String Moug=localite.getCommune().getMoughataa().getMoughataname(); //the value you want the position for
         ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
         int MougPosition = MougSel.getPosition(Moug);
         //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();

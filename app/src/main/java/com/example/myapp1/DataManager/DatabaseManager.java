@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 
 public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "Sanitaire.db";
-    private static final int DATABASE_VERSION =4;
+    private static final int DATABASE_VERSION = 4;
 
     public DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -66,11 +66,9 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, SuviSousSurvillance.class);
             TableUtils.createTable(connectionSource, PriseenCharge.class);
             TableUtils.createTable(connectionSource, ApprocheCommunataire.class);
-            TableUtils.createTable(connectionSource,MedicamentIntrants.class);
+            TableUtils.createTable(connectionSource, MedicamentIntrants.class);
             TableUtils.createTable(connectionSource, Gaspa.class);
             TableUtils.createTable(connectionSource, Annee.class);
-
-
 
 
             Log.i("DATABASE", "onCreate invoked");
@@ -94,7 +92,7 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             TableUtils.dropTable(connectionSource, ApprocheCommunataire.class, true);
             TableUtils.dropTable(connectionSource, Test.class, true);
             TableUtils.dropTable(connectionSource, Medicament.class, true);
-           TableUtils.dropTable(connectionSource, Gaspa.class, true);
+            TableUtils.dropTable(connectionSource, Gaspa.class, true);
             TableUtils.dropTable(connectionSource, Annee.class, true);
 
             onCreate(database, connectionSource);
@@ -153,19 +151,19 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
     public Moughata Moughataname(String moughataname) {
-        Moughata moughata=null;
+        Moughata moughata = null;
         try {
             Dao<Moughata, Integer> dao = getDao(Moughata.class);
             List<Moughata> moughatas = dao.queryForEq("moughataname", moughataname);
-            if(!moughatas.isEmpty()){
-            moughata= moughatas.get(0);
+            if (!moughatas.isEmpty()) {
+                moughata = moughatas.get(0);
             }
         } catch (Exception exception) {
             Log.e("DATABASE", "Can't insert  into Database", exception);
             return null;
         }
 
-        return  moughata;
+        return moughata;
     }
 
 
@@ -194,12 +192,12 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
 
 
     public Commune communename(String communename) {
-        Commune commune=null;
+        Commune commune = null;
         try {
             Dao<Commune, Integer> dao = getDao(Commune.class);
             List<Commune> communes = dao.queryForEq("communename", communename);
-            if(!communes.isEmpty()){
-                commune=communes.get(0);
+            if (!communes.isEmpty()) {
+                commune = communes.get(0);
             }
 
         } catch (Exception exception) {
@@ -207,7 +205,7 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             return null;
         }
 
-        return  commune;
+        return commune;
     }
 
 
@@ -236,11 +234,11 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
 
 
     public Structure structurename(String structurename) {
-        Structure structure=null;
+        Structure structure = null;
         try {
             Dao<Structure, Integer> dao = getDao(Structure.class);
             List<Structure> structures = dao.queryForEq("structurename", structurename);
-            if(!structures.isEmpty()) {
+            if (!structures.isEmpty()) {
                 structure = structures.get(0);
             }
         } catch (Exception exception) {
@@ -248,7 +246,7 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             return null;
         }
 
-        return  structure;
+        return structure;
     }
 
 
@@ -280,9 +278,9 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         try {
             Dao<Localite, Integer> dao = getDao(Localite.class);
             List<Localite> localites = dao.queryForEq("localitename", localite);
-            if(!localite.isEmpty()){
-            return localites.get(0);}
-            else return null;
+            if (!localite.isEmpty()) {
+                return localites.get(0);
+            } else return null;
         } catch (Exception exception) {
             Log.e("DATABASE", "Can't insert  into Database", exception);
             return null;
@@ -390,26 +388,25 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
     public SuperViseur Login(String username, String password) {
-        SuperViseur user=null;
+        SuperViseur user = null;
         try {
             Dao<SuperViseur, Integer> dao = getDao(SuperViseur.class);
             QueryBuilder<SuperViseur, Integer> qb = dao.queryBuilder();
             qb.where().eq("username", username).and().eq("password", password);
             List<SuperViseur> res = qb.query();
-            if(res.isEmpty()){
-                user=null;
-            }
-            else {
-                user=res.get(0);
+            if (res.isEmpty()) {
+                user = null;
+            } else {
+                user = res.get(0);
             }
 
             Log.i("DATABASE", "insertUser invoked");
         } catch (Exception exception) {
-            user=null;
+            user = null;
             Log.e("DATABASE", "Can't insert user into Database", exception);
 
         }
-     return  user;
+        return user;
     }
 
     public List<SuperViseur> allSuperviseur() {
@@ -504,20 +501,20 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         }
 
     }
-        public boolean depistageByCodeImage(String rapportname){
-            try {
-                Dao<Depistage, Integer> dao = getDao(Depistage.class);
-                List<Depistage> depistage = dao.queryForEq("rapportname",rapportname);
-               if(depistage.isEmpty()){
-                   return false;
-               }
-               else{
-                   return  true;
-               }
-            } catch (Exception exception) {
-                Log.e("DATABASE", "Can't insert  into Database", exception);
+
+    public boolean depistageByCodeImage(String rapportname) {
+        try {
+            Dao<Depistage, Integer> dao = getDao(Depistage.class);
+            List<Depistage> depistage = dao.queryForEq("rapportname", rapportname);
+            if (depistage.isEmpty()) {
                 return false;
+            } else {
+                return true;
             }
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert  into Database", exception);
+            return false;
+        }
     }
 
     public void insersuviSousSurvillance(SuviSousSurvillance suviSousSurvillance) {
@@ -617,20 +614,19 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     public List<PriseenCharge> ListPrisEnCharge() {
         try {
             Dao<PriseenCharge, Integer> dao = getDao(PriseenCharge.class);
-            List<PriseenCharge>priseenCharges =dao.queryForAll();
+            List<PriseenCharge> priseenCharges = dao.queryForAll();
             return priseenCharges;
         } catch (Exception exception) {
             Log.e("PrisEnCharge", "Erroe PrisEnCharge creation", exception);
-         return null;
+            return null;
         }
     }
 
-    public  void supprimmerprise(PriseenCharge priseenCharge){
-        try{
+    public void supprimmerprise(PriseenCharge priseenCharge) {
+        try {
             Dao<PriseenCharge, Integer> dao = getDao(PriseenCharge.class);
             dao.delete(priseenCharge);
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
 
         }
     }
@@ -656,7 +652,6 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
 
-
     public List<ApprocheCommunataire> approcheCommunataireList() {
         try {
             Dao<ApprocheCommunataire, Integer> dao = getDao(ApprocheCommunataire.class);
@@ -671,12 +666,11 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
 
-    public  void supprimmerApproche(ApprocheCommunataire approcheCommunataire){
-        try{
+    public void supprimmerApproche(ApprocheCommunataire approcheCommunataire) {
+        try {
             Dao<ApprocheCommunataire, Integer> dao = getDao(ApprocheCommunataire.class);
             dao.delete(approcheCommunataire);
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
 
         }
     }
@@ -707,11 +701,10 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
 
 
     public List<Medicament> MedicamentsList() {
-        List<Medicament>medicament = null;
+        List<Medicament> medicament = null;
         try {
             Dao<Medicament, Integer> dao = getDao(Medicament.class);
             medicament = dao.queryForAll();
-
 
 
         } catch (Exception exception) {
@@ -723,13 +716,14 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
     public Medicament MedicamentByNom(String name) {
-        List<Medicament>medicament = null;
+        List<Medicament> medicament = null;
         try {
             Dao<Medicament, Integer> dao = getDao(Medicament.class);
             medicament = dao.queryForEq("name", name);
-   
-           if (medicament.size()==0){
-               return null;}
+
+            if (medicament.size() == 0) {
+                return null;
+            }
 
         } catch (Exception exception) {
 
@@ -753,10 +747,8 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
 
-
-
     public List<MedicamentIntrants> MedicamentIntrantsList() {
-        List<MedicamentIntrants>medicaments = null;
+        List<MedicamentIntrants> medicaments = null;
         try {
             Dao<MedicamentIntrants, Integer> dao = getDao(MedicamentIntrants.class);
             medicaments = dao.queryForAll();
@@ -770,19 +762,18 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         return medicaments;
     }
 
-    public  boolean DeleteMedicamentIntrants(MedicamentIntrants medicamentIntrants){
+    public boolean DeleteMedicamentIntrants(MedicamentIntrants medicamentIntrants) {
 
         try {
             Dao<MedicamentIntrants, Integer> dao = getDao(MedicamentIntrants.class);
-              dao.delete(medicamentIntrants);
+            dao.delete(medicamentIntrants);
 
-          return  true;
+            return true;
         } catch (Exception exception) {
 
             Log.e("DATABASE", "Can't Probleme ", exception);
             return false;
         }
-
 
 
     }
@@ -803,13 +794,13 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
 
 
     public Relais RelaisByCIN(String cin) {
-         Relais relai=null;
+        Relais relai = null;
         try {
             Dao<Relais, Integer> dao = getDao(Relais.class);
-            List<Relais> relais = dao.queryForEq("cin",cin);
+            List<Relais> relais = dao.queryForEq("cin", cin);
 
-            if(relais.size() !=0){
-                relai= relais.get(0);
+            if (relais.size() != 0) {
+                relai = relais.get(0);
             }
 
 
@@ -819,6 +810,22 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
 
         }
         return relai;
+    }
+
+
+    public List<Relais> ListRelais() {
+        List<Relais> relais = null;
+        try {
+            Dao<Relais, Integer> dao = getDao(Relais.class);
+            relais = dao.queryForAll();
+
+
+        } catch (Exception exception) {
+
+            Log.e("DATABASE", "Can't Probleme ", exception);
+
+        }
+        return relais;
     }
 
 
@@ -833,12 +840,13 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
             Log.e("DATABASE", "Can't insert Medicament into Database", exception);
         }
     }
+
     public List<Gaspa> ListGaspa() {
-        List<Gaspa> gaspaList=null;
+        List<Gaspa> gaspaList = null;
         try {
             Dao<Gaspa, Integer> dao = getDao(Gaspa.class);
 
-            gaspaList=dao.queryForAll();
+            gaspaList = dao.queryForAll();
 
             Log.i("DATABASE", "insert invoked");
         } catch (Exception exception) {
@@ -849,4 +857,16 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
 
+    public void insertAnimateur(Animateur animateur) {
+        try{
+        Dao<Animateur, Integer> dao = getDao(Animateur.class);
+           dao.createOrUpdate(animateur);
+
+        //long numRows = dao.queryBuilder().where().eq("name", "Joe Smith").countOf();
+
+        Log.i("DATABASE", "insert invoked");
+    } catch (Exception exception) {
+        Log.e("DATABASE", "Can't insert Medicament into Database", exception);
+    }
+    }
 }

@@ -430,7 +430,7 @@ public class UpdateApproche extends AppCompatActivity {
 
             if (communesel != null) {
 
-                Toast.makeText(this, communesel.getMoughata().getMoughataname(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, communesel.getMoughataa().getMoughataname(), Toast.LENGTH_LONG).show();
                 for (Localite localite : communesel.getLocalites()) {
 
                     localiteCommune.add(localite.getLocalitename().toString());
@@ -492,7 +492,7 @@ public class UpdateApproche extends AppCompatActivity {
         this.menage.setText(this.approchecommunataire.getMenages() + "");
         this.PaluC.setText(this.approchecommunataire.getPaluconfirme() + "");
         this.TestP.setText(this.approchecommunataire.getTestpalu()+"");
-        this.TR.setText(this.approchecommunataire.getTR() + "");
+        this.TR.setText(this.approchecommunataire.getTr() + "");
 
     }
 
@@ -515,7 +515,7 @@ public class UpdateApproche extends AppCompatActivity {
             this.approchecommunataire.setMenages(Integer.parseInt(menage.getText().toString()));
             this.approchecommunataire.setVaccin(Integer.parseInt(vaccin.getText().toString()));
             this.approchecommunataire.setVisite(Integer.parseInt(viste.getText().toString()));
-            this.approchecommunataire.setTR(Integer.parseInt(TR.getText().toString()));
+            this.approchecommunataire.setTr(Integer.parseInt(TR.getText().toString()));
             this.approchecommunataire.setDateCreation(date.getText().toString());
             this.approchecommunataire.setRapport(this.Rapport);
             //this.approchecommunataire.setDate(new Date());

@@ -36,7 +36,7 @@ public class ApprocheCommunataire {
     @DatabaseField
     private String date;
     @DatabaseField
-    private String DateCreation;
+    private String dateCreation;
 
     @DatabaseField
     private  int ncg;
@@ -46,7 +46,7 @@ public class ApprocheCommunataire {
     @DatabaseField
     private int paluconfirme;
     @DatabaseField
-    private  int TR;
+    private  int tr;
     @DatabaseField
     private int diarrhee;
     @DatabaseField
@@ -56,7 +56,7 @@ public class ApprocheCommunataire {
     @DatabaseField
     int syn;
     @DatabaseField
-    private String structurerapport;
+    private String rapportusb;
     public ApprocheCommunataire(){};
     public Long getId() {
         return id;
@@ -170,12 +170,12 @@ public class ApprocheCommunataire {
         this.paluconfirme = paluconfirme;
     }
 
-    public int getTR() {
-        return TR;
+    public int getTr() {
+        return tr;
     }
 
-    public void setTR(int TR) {
-        this.TR = TR;
+    public void setTr(int TR) {
+        this.tr = TR;
     }
 
     public int getDiarrhee() {
@@ -203,7 +203,7 @@ public class ApprocheCommunataire {
     }
 
     public String getDateCreation() {
-        return DateCreation;
+        return dateCreation;
     }
 
     public int getNcg() {
@@ -223,14 +223,14 @@ public class ApprocheCommunataire {
     }
 
     public void setDateCreation(String dateCreation) {
-        DateCreation = dateCreation;
+        dateCreation = dateCreation;
     }
 
-    public String getStructurerapport() {
-        return structurerapport;
+    public String getRapportusb() {
+        return rapportusb;
     }
 
-    public void setStructurerapport(String structurerapport) {
-        this.structurerapport = structurerapport;
+    public void setRapportusb(String rapportusb) {
+        this.rapportusb = rapportusb;
     }
 }

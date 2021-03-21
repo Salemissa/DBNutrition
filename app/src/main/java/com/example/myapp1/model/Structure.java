@@ -13,7 +13,8 @@ public class Structure {
     private Long id;
     @DatabaseField
     private String structurename;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true,columnName = "id_commune")
+    @JsonProperty("commune")
     private Commune commune;
 
     @ForeignCollectionField(eager=false)

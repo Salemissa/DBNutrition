@@ -59,6 +59,10 @@
         android:id="@+id/logout"
         android:name="com.example.myapp1.MainActivity"
         tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/intervenant"
+        android:name="com.example.myapp1.Intervenant"
+        tools:layout="@layout/activity_main" />
 
 
 </navigation>
