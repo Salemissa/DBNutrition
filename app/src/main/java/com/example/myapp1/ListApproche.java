@@ -41,6 +41,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ public class ListApproche extends AppCompatActivity {
     private View syn;
     List<ApprocheCommunataire> approcheCommunataires;
     private ProgressDialog progressDoalog;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,8 @@ public class ListApproche extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         list = findViewById(R.id.list);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd");
+        progressBar=findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         progressDoalog = new ProgressDialog(ListApproche.this);
         progressDoalog.setMessage("Loading....");
         syn=findViewById(R.id.syn);
@@ -180,7 +184,7 @@ public class ListApproche extends AppCompatActivity {
 
         if (!ListSyn.isEmpty()) {
             List<ApprocheCommunataire> syn=new ArrayList<ApprocheCommunataire>();
-            makeText(this,"Entre", LENGTH_LONG).show();
+
             ApprocheCommunataire approcheCommunatairesyn=new ApprocheCommunataire();
             for(ApprocheCommunataire approcheCommunataire:ListSyn) {
                 approcheCommunatairesyn = approcheCommunataire;
@@ -192,7 +196,7 @@ public class ListApproche extends AppCompatActivity {
                 approcheCommunatairesyn.setRapportusb("");
                 if(approcheCommunataire.getRapport() !=null) {
                     rapport = Base64.encodeToString(approcheCommunataire.getRapport(), Base64.DEFAULT);
-                    Toast.makeText(getApplication(),rapport,Toast.LENGTH_SHORT).show();
+
                    approcheCommunataire.setRapport(null);
 
                     approcheCommunatairesyn.setRapportusb(rapport);
@@ -204,7 +208,8 @@ public class ListApproche extends AppCompatActivity {
 
             }
             try {
-                progressDoalog.show();
+                progressBar.setVisibility(View.VISIBLE);
+
                 SynApprocheList(syn);
 
             } catch (Exception e) {
@@ -217,7 +222,7 @@ public class ListApproche extends AppCompatActivity {
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("info");
-            alertDialog.setMessage("List Vide");
+            alertDialog.setMessage("Rien a synchroniser maintenant");
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -338,13 +343,13 @@ public class ListApproche extends AppCompatActivity {
     private boolean showalert(final ApprocheCommunataire approcheCommunataire,final int pos) {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Confirm ");
+        alertDialog.setTitle("Confirmation");
         alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+
                 Supprimer(approcheCommunataire,pos);
 
                 supp =true;
@@ -355,7 +360,7 @@ public class ListApproche extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -427,14 +432,16 @@ public class ListApproche extends AppCompatActivity {
                         }
                     });
 
-                    alertDialog.show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
 
                 }else{
                     Log.i("REPONSE", response.errorBody().toString());
                     //progressBar.setVisibility(View.INVISIBLE);
                     //progressBar.setVisibility(View.GONE);
-                    progressDoalog.dismiss();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -444,7 +451,8 @@ public class ListApproche extends AppCompatActivity {
                 Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 //progressBar.setVisibility(View.INVISIBLE);
                 //progressBar.setVisibility(View.GONE);
-                progressDoalog.dismiss();
+                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
         });
 

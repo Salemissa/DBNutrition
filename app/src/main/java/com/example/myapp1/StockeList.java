@@ -64,7 +64,6 @@ public class StockeList extends AppCompatActivity {
         setContentView(R.layout.activity_stocke_list);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd");
         list = findViewById(R.id.list);
-
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
         databaseManager = new DatabaseManager(this);
@@ -163,6 +162,8 @@ public class StockeList extends AppCompatActivity {
             try {
                 //progressBar.setVisibility(View.VISIBLE);
                 //DepistageCalls.addDepistage(this, syn);
+                progressBar.setVisibility(View.VISIBLE);
+
                 this.SynStockeList(syn);
 
             } catch (Exception e) {
@@ -175,7 +176,7 @@ public class StockeList extends AppCompatActivity {
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("info");
-            alertDialog.setMessage("List Vide");
+            alertDialog.setMessage("Rien a synchroniser maintenant");
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -220,7 +221,9 @@ public class StockeList extends AppCompatActivity {
                         }
                     });
 
-                    alertDialog.show();
+                   // alertDialog.show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
 
                 }else{
@@ -247,13 +250,13 @@ public class StockeList extends AppCompatActivity {
     private boolean showalert(final MedicamentIntrants medicamentIntrants ,int pos) {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Confirm ");
+        alertDialog.setTitle("Confirmation");
         alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+
                 Supprimer(medicamentIntrants,pos);
 
                 supp =true;
@@ -264,7 +267,7 @@ public class StockeList extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
 
             }
         });

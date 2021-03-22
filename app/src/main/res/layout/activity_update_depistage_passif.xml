@@ -44,6 +44,7 @@
         android:layout_marginStart="212dp"
         android:layout_marginLeft="212dp"
         android:layout_marginTop="-66dp"
+        android:textColor="#FFFF"
         android:background="@color/colorPrimary"
         android:text="Modfier" />
 

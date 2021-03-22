@@ -28,6 +28,7 @@ import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class Activite_Mobile extends Fragment {
     Spinner spinneranne ;
     Spinner spinnermoughata  ;
     Spinner spinnercommune ;
-    Spinner spinnerlocalite ;
+   SearchableSpinner spinnerlocalite ;
     Spinner spinnerage ;
     String  type="passif";
 
@@ -120,6 +121,7 @@ public class Activite_Mobile extends Fragment {
         this.spinnermoughata = this.v.findViewById(R.id.moghata);
         this.spinnercommune = this.v.findViewById(R.id.commune);
         this.spinnerlocalite = this.v.findViewById(R.id.localite);
+        this.spinnerlocalite.setTitle("Selection");
         this.spinnerage= this.v.findViewById(R.id.age);
         this.rougeF= (EditText) this.v.findViewById(R.id.RougeF);
         this.jauneF= (EditText) this.v.findViewById(R.id.JauneF);

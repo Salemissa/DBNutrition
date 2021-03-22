@@ -89,13 +89,13 @@ public class DepistagePassifList extends AppCompatActivity {
         databaseManager = new DatabaseManager(this);
         this.arrayList=new ArrayList<>();
          this.type="DepistagePassif";
+        progressBar=findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
          this.depistagePassif =databaseManager.DepistageByType(this.type);
         fab = findViewById(R.id.fab);
 
         progressDoalog = new ProgressDialog(DepistagePassifList.this);
         progressDoalog.setMessage("Loading....");
-        progressBar=findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -203,8 +203,6 @@ public class DepistagePassifList extends AppCompatActivity {
                                                int pos, long id) {
                     // TODO Auto-generated method stub
                     Depistage clickedItem= (Depistage) list.getItemAtPosition(pos);
-                   Toast.makeText(getApplicationContext(),pos+"++"+id, LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(),clickedItem.getOdemeF()+"", LENGTH_LONG).show();
 
 
 
@@ -237,7 +235,6 @@ public class DepistagePassifList extends AppCompatActivity {
 
         if (!ListSyn.isEmpty()) {
             List<Depistage> syn=new ArrayList<Depistage>();
-             makeText(this,"Entre", LENGTH_LONG).show();
             Depistage depi=new Depistage();
             for(Depistage depistage:ListSyn) {
                 depi = depistage;
@@ -249,7 +246,7 @@ public class DepistagePassifList extends AppCompatActivity {
                 depi.setStructurerapport("");
                 if(depistage.getRapport() !=null) {
                     rapport = Base64.encodeToString(depistage.getRapport(), Base64.DEFAULT);
-                    Toast.makeText(getApplication(),rapport,Toast.LENGTH_SHORT).show();
+
                     depi.setRapport(null);
 
                     depi.setStructurerapport(rapport);
@@ -268,7 +265,7 @@ public class DepistagePassifList extends AppCompatActivity {
             }
                 try {
                     progressBar.setVisibility(View.VISIBLE);
-                    progressDoalog.show();
+
                     SynList(syn);
 
 
@@ -282,7 +279,7 @@ public class DepistagePassifList extends AppCompatActivity {
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("info");
-            alertDialog.setMessage("List Vide");
+            alertDialog.setMessage("Rien a synchroniser maintenant");
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -334,6 +331,8 @@ public class DepistagePassifList extends AppCompatActivity {
                     });
 
                     // alertDialog.show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
 
                 }else{
@@ -352,7 +351,7 @@ public class DepistagePassifList extends AppCompatActivity {
                 Log.e("ERROR ", t.getCause().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);
-                progressDoalog.dismiss();
+
             }
         });
 
@@ -362,13 +361,13 @@ public class DepistagePassifList extends AppCompatActivity {
     private boolean showalert(final Depistage depistagePassif,int pos) {
          this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Confirm ");
+        alertDialog.setTitle("Confirmation ");
         alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+
                 Supprimer(depistagePassif,pos);
 
                supp =true;
@@ -379,18 +378,11 @@ public class DepistagePassifList extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
 
             }
         });
-        alertDialog.setNeutralButton( "Cancel", new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"NOl",Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
         alertDialog.show();
 

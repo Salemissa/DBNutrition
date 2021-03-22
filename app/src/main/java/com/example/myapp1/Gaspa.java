@@ -349,6 +349,7 @@ public class Gaspa extends Fragment {
             gaspa.setFa23r(Integer.parseInt(FA23R.getText().toString()));
             gaspa.setFa23p(Integer.parseInt(FA23P.getText().toString()));
             gaspa.setRelais(relais);
+
             try {
                 databaseManager.insertGaspa(gaspa);
                 Intent intent = new Intent(getActivity(), ListGaspa.class);

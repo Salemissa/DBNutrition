@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -42,6 +43,8 @@ public class ListGaspa extends AppCompatActivity {
     private View fab;
     private View list;
      private Button syn;
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,8 @@ public class ListGaspa extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = findViewById(R.id.button);
         fab = findViewById(R.id.fab);
+        progressBar=findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         //list = findViewById(R.id.list);
         syn=findViewById(R.id.syn);
         databaseManager = new DatabaseManager(this);
@@ -109,14 +114,14 @@ public class ListGaspa extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull GaspaAdapter.ViewHolder holder, int position) {
             final Gaspa gaspa= GaspaList.get(position);
-            holder.fe.setText("FE Réf :"+gaspa.getFe());
-            holder.fep.setText("FE Présentes"+gaspa.getFep());
-            holder.fa06.setText("FA 0-6 Réf"+gaspa.getFa06r());
-            holder.fa06p.setText("FA 0-6 Présentes"+gaspa.getFa06p());
-            holder.fa23.setText("FA 6-23 Réf"+gaspa.getFa23r());
-            holder.fa23p.setText("Fa 6-23 Présentes"+gaspa.getFa23p());
-            holder.mois.setText("Mois "+"janvier");
-            holder.annee.setText("Annee"+"2021");
+            holder.fe.setText("FE Réf :  "+gaspa.getFe());
+            holder.fep.setText("FE Présentes:  "+gaspa.getFep());
+            holder.fa06.setText("FA 0-6 Réf:  "+gaspa.getFa06r());
+            holder.fa06p.setText("FA 0-6 Présentes: "+gaspa.getFa06p());
+            holder.fa23.setText("FA 6-23 Réf : "+gaspa.getFa23r());
+            holder.fa23p.setText("Fa 6-23 Présentes : "+gaspa.getFa23p());
+            holder.mois.setText("Mois:  "+"janvier: ");
+            holder.annee.setText("Annee: "+"2021");
             if(gaspa.getRelais() !=null) {
                 holder.relais.setText("Relais : " + gaspa.getRelais().getNom());
             }

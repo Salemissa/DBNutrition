@@ -45,7 +45,15 @@
             android:id="@+id/l1">
 
         </LinearLayout>
-
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="151dp"
+            android:layout_height="104dp"
+            android:indeterminate="true"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true" />
         <include
             android:id="@+id/gaspalist"
             layout="@layout/content_list_gaspa"

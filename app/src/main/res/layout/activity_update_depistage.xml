@@ -41,6 +41,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="-104dp"
         android:background="@color/colorPrimary"
+        android:textColor="#FFFF"
         android:gravity="center"
         android:text="Modfier" />
 

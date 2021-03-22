@@ -38,6 +38,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,7 @@ public class ListSuivisous extends AppCompatActivity {
     private AlertDialog alertDialog;
     private Button syn;
     private List<SuviSousSurvillance> suviSousSurvillances;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,8 @@ public class ListSuivisous extends AppCompatActivity {
         this.add= findViewById(R.id.add);
         progressDoalog = new ProgressDialog(ListSuivisous.this);
         progressDoalog.setMessage("Loading....");
+        progressBar=findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,8 +194,9 @@ public class ListSuivisous extends AppCompatActivity {
                                             int pos, long id) {
                  // TODO Auto-generated method stub
                  SuviSousSurvillance clickedItem = (SuviSousSurvillance) list.getItemAtPosition(pos);
-                 Toast.makeText(getApplicationContext(), pos + "++" + id, LENGTH_LONG).show();
-                 // Toast.makeText(getApplicationContext(), clickedItem.getOdemeF() + "", LENGTH_LONG).show();
+
+
+
 
 
                  showalert(clickedItem,pos);
@@ -227,8 +232,8 @@ public class ListSuivisous extends AppCompatActivity {
                 syn.add(suviSousSurvillanceSyn);
             }
             try {
-                //progressBar.setVisibility(View.VISIBLE);
-                progressDoalog.show();
+                progressBar.setVisibility(View.VISIBLE);
+                //progressDoalog.show();
                 //DepistageCalls.addDepistage(this, syn);
                 this.SynSuiviList(syn);
 
@@ -242,7 +247,7 @@ public class ListSuivisous extends AppCompatActivity {
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("info");
-            alertDialog.setMessage("List Vide");
+            alertDialog.setMessage("Rien a synchroniser maintenant");
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -361,13 +366,13 @@ public class ListSuivisous extends AppCompatActivity {
     private boolean showalert(final SuviSousSurvillance suviSousSurvillance,final int pos) {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Confirm ");
+        alertDialog.setTitle("Confirmation ");
         alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+
                 Supprimer(suviSousSurvillance,pos);
 
                 supp =true;
@@ -378,7 +383,7 @@ public class ListSuivisous extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -433,14 +438,18 @@ public class ListSuivisous extends AppCompatActivity {
                         }
                     });
 
-                    alertDialog.show();
+                    //alertDialog.show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
 
                 }else{
                     Log.i("REPONSE", response.errorBody().toString());
                     //progressBar.setVisibility(View.INVISIBLE);
                     //progressBar.setVisibility(View.GONE);
-                    progressDoalog.dismiss();
+                    //progressDoalog.dismiss();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -448,9 +457,9 @@ public class ListSuivisous extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<SuviSousSurvillance>> call, Throwable t) {
                  Log.e("ERROR ", t.getMessage().toString()+"Probleme");
-                //progressBar.setVisibility(View.INVISIBLE);
-                //progressBar.setVisibility(View.GONE);
-                progressDoalog.dismiss();
+                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
+               // progressDoalog.dismiss();
             }
         });
 

@@ -77,7 +77,6 @@ public class ActivtiteMobileList extends AppCompatActivity  {
         this.arrayList = new ArrayList<>();
         // this.type = "ActivitéMobile";
         //this.add= findViewById(R.id.add);
-       
         String formattedDate = sdf.format(new Date());
         TextView title=findViewById(R.id.title);
         this.view =findViewById(R.id.button);
@@ -240,7 +239,6 @@ public class ActivtiteMobileList extends AppCompatActivity  {
         }
         if (!ListSyn.isEmpty()) {
             List<Depistage> syn=new ArrayList<Depistage>();
-            makeText(this,"Entre", LENGTH_LONG).show();
             Depistage depi=new Depistage();
             for(Depistage depistage:ListSyn) {
                 depi = depistage;
@@ -282,7 +280,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
             }
             try {
                 progressBar.setVisibility(View.VISIBLE);
-                progressDoalog.show();
+                //progressDoalog.show();
                 //DepistageCalls.addDepistage(this, syn);
                 SynList(syn);
 
@@ -296,7 +294,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("info");
-            alertDialog.setMessage("List Vide");
+            alertDialog.setMessage("Rien a synchroniser maintenant");
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -346,7 +344,8 @@ public class ActivtiteMobileList extends AppCompatActivity  {
                     });
 
                    // alertDialog.show();
-
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
                 }else{
                    // Log.e("Errure", response.errorBody().string());
@@ -354,7 +353,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
                    // Toast.makeText(getApplication(),"" +response.errorBody(), LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
-                    progressDoalog.dismiss();
+
                 }
 
             }
@@ -364,7 +363,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
                 Log.e("ERROR ", t.getCause().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);
-                progressDoalog.dismiss();
+
             }
         });
 
@@ -467,7 +466,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
     private boolean showalert(final Depistage depistagePassif) {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Confirm ");
+        alertDialog.setTitle("Confirmation ");
         alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {

@@ -165,7 +165,7 @@ public class ListPrisenCharge extends AppCompatActivity {
                                            int pos, long id) {
                 // TODO Auto-generated method stub
                 PriseenCharge clickedItem = (PriseenCharge) list.getItemAtPosition(pos);
-                Toast.makeText(getApplicationContext(), pos + "++" + id, LENGTH_LONG).show();
+
                // Toast.makeText(getApplicationContext(), clickedItem.getOdemeF() + "", LENGTH_LONG).show();
 
 
@@ -201,8 +201,8 @@ public class ListPrisenCharge extends AppCompatActivity {
                  syn.add(p);
                  //Toast.makeText(this,p.getLocalite().getCommune().getId()+"++++", Toast.LENGTH_SHORT).show();;
                  try {
-                     //progressBar.setVisibility(View.VISIBLE);
-                     this.progressDoalog.show();
+                     progressBar.setVisibility(View.VISIBLE);
+
                      //DepistageCalls.addDepistage(this, syn);
                      this.SynPrisList(syn);
                  } catch (Exception e) {
@@ -216,7 +216,7 @@ public class ListPrisenCharge extends AppCompatActivity {
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("info");
-            alertDialog.setMessage("List Vide");
+            alertDialog.setMessage("Rien a synchroniser maintenant");
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -262,7 +262,9 @@ public class ListPrisenCharge extends AppCompatActivity {
                         }
                     });
 
-                    alertDialog.show();
+                   // alertDialog.show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
 
                 }else{
@@ -270,6 +272,8 @@ public class ListPrisenCharge extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
                     progressDoalog.dismiss();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -279,7 +283,7 @@ public class ListPrisenCharge extends AppCompatActivity {
                 Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);
-                progressDoalog.dismiss();
+                //progressDoalog.dismiss();
             }
         });
 
@@ -404,13 +408,13 @@ public class ListPrisenCharge extends AppCompatActivity {
     private boolean showalert(final PriseenCharge prisencharge,final int pos) {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Confirm ");
+        alertDialog.setTitle("Confirmation ");
         alertDialog.setMessage("Etes Vous sur de supprimer");
         // alertDialog.setIcon(R.drawable.delete);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"ok",Toast.LENGTH_SHORT).show();
+
                 Supprimer(prisencharge,pos);
 
                 supp =true;
@@ -421,7 +425,7 @@ public class ListPrisenCharge extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplication(),"NO",Toast.LENGTH_SHORT).show();
+
 
             }
         });
