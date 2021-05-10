@@ -1,11 +1,20 @@
 package com.example.myapp1;
 
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,11 +33,22 @@ import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Medicament;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
+import com.example.myapp1.model.Test;
+import com.example.myapp1.syn.Session;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.makeText;
+import static com.example.myapp1.R.string.MsgRed;
+import static com.example.myapp1.R.string.ajout;
+import static com.example.myapp1.R.string.messageSupp;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,10 +63,12 @@ public class MedicamentIntrants extends Fragment {
     Spinner spinnercommune;
     Spinner spinnerstructer;
     Spinner spinnerMedicament;
+    ImageView rapport;
+    byte[] Rapport;
     Structure structure;
     EditText StockeI,Qr,Qp,Qu;
     String moi, anne;
-    com.example.myapp1.model.MedicamentIntrants medicamentIntrants=new  com.example.myapp1.model.MedicamentIntrants() ;
+    Intent camera_intent = null;
     Medicament medicament;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,6 +81,9 @@ public class MedicamentIntrants extends Fragment {
     private SimpleDateFormat sdf;
     private DatabaseManager databaseManager;
     private Button Ajouter;
+    private ArrayList<String> medicaments;
+    private Session session;
+    EditText date;
 
     public MedicamentIntrants() {
         // Required empty public constructor
@@ -114,9 +140,85 @@ public class MedicamentIntrants extends Fragment {
         this.Qr=this.v.findViewById(R.id.QR);
         this.Qu=this.v.findViewById(R.id.QU);
         this.Qp=this.v.findViewById(R.id.QP);
+        rapport = (ImageView) this.v.findViewById(R.id.imageRaport);
+        this.date=this.v.findViewById(R.id.Date);
         this.Ajouter = (Button) this.v.findViewById(R.id.Ajouter);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        this.session = new Session(getContext());
 
+
+        TextWatcher tw = new TextWatcher() {
+            private String current = "";
+            private String ddmmyyyy = "DDMMYYYY";
+            private Calendar cal = Calendar.getInstance();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().equals(current)) {
+                    String clean = s.toString().replaceAll("[^\\d.]|\\.", "");
+                    String cleanC = current.replaceAll("[^\\d.]|\\.", "");
+
+                    int cl = clean.length();
+                    int sel = cl;
+                    for (int i = 2; i <= cl && i < 6; i += 2) {
+                        sel++;
+                    }
+                    //Fix for pressing delete next to a forward slash
+                    if (clean.equals(cleanC)) sel--;
+
+                    if (clean.length() < 8){
+                        clean = clean + ddmmyyyy.substring(clean.length());
+                    }else{
+                        //This part makes sure that when we finish entering numbers
+                        //the date is correct, fixing it otherwise
+                        int day  = Integer.parseInt(clean.substring(0,2));
+                        int mon  = Integer.parseInt(clean.substring(2,4));
+                        int year = Integer.parseInt(clean.substring(4,8));
+
+                        mon = mon < 1 ? 1 : mon > 12 ? 12 : mon;
+                        cal.set(Calendar.MONTH, mon-1);
+                        year = (year<1900)?1900:(year>2100)?2100:year;
+                        cal.set(Calendar.YEAR, year);
+                        // ^ first set year for the line below to work correctly
+                        //with leap years - otherwise, date e.g. 29/02/2012
+                        //would be automatically corrected to 28/02/2012
+
+                        day = (day > cal.getActualMaximum(Calendar.DATE))? cal.getActualMaximum(Calendar.DATE):day;
+                        clean = String.format("%02d%02d%02d",day, mon, year);
+                    }
+
+                    clean = String.format("%s/%s/%s", clean.substring(0, 2),
+                            clean.substring(2, 4),
+                            clean.substring(4, 8));
+
+                    sel = sel < 0 ? 0 : sel;
+                    current = clean;
+                    date.setText(current);
+                    date.setSelection(sel < current.length() ? sel : current.length());
+                }
+            }
+
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+
+        rapport.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Cammera", Toast.LENGTH_SHORT).show();
+                camera_intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                try {
+                    startActivityForResult(camera_intent, 100);
+                } catch (ActivityNotFoundException e) {
+                    makeText(getActivity(), "error ", Toast.LENGTH_SHORT);
+                }
+            }
+        });
+
+        date.addTextChangedListener(tw);
 
         this.Ajouter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +234,7 @@ public class MedicamentIntrants extends Fragment {
         String[] ages = donnes.ages;
 
         final List<String> moughata = new ArrayList<String>();
-        final  List<String> medicaments=new ArrayList<String>();
+         medicaments=new ArrayList<String>();
         moughata.add("");
         medicaments.add("");
         List<Moughata> ListMoughata = databaseManager.ListMoughata();
@@ -146,7 +248,7 @@ public class MedicamentIntrants extends Fragment {
         List<Medicament> ListMedicament = databaseManager.MedicamentsList();
         if (ListMedicament != null) {
             for (Medicament medicament : ListMedicament) {
-                medicaments.add(medicament.getName());
+                medicaments.add(medicament.getNom());
                 //Toast.makeText(getActivity(), moug.getMoughataname(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -226,8 +328,9 @@ public class MedicamentIntrants extends Fragment {
                 if(position==0){
 
                 }
-
-                medicament=databaseManager.MedicamentByNom(item);
+               else {
+                    medicament = databaseManager.MedicamentByNom(item);
+                }
 
             }
 
@@ -324,32 +427,71 @@ public class MedicamentIntrants extends Fragment {
     }
 
     private void AjouterMedicamentIntrants() {
-       if(!this.VerficationChampe()) {
-           medicamentIntrants.setDate(sdf.format(new Date()));
-           medicamentIntrants.setMois(moi);
-           medicamentIntrants.setAnnee(anne);
-           medicamentIntrants.setStockinit(Integer.parseInt(StockeI.getText().toString()));
-           medicamentIntrants.setQuantiteperdue(Integer.parseInt(Qp.getText().toString()));
-           medicamentIntrants.setQuantiteutilisee(Integer.parseInt(Qu.getText().toString()));
-           medicamentIntrants.setRecu(Integer.parseInt(Qr.getText().toString()));
-           medicamentIntrants.setStructure(structure);
+       if(this.VerficationChampe()) {}
+             else {
+               if (databaseManager.MedicamentEnrg(moi, anne, medicament, structure) != null) {
+                   Toast.makeText(getActivity(), MsgRed,Toast.LENGTH_LONG).show();
+               } else {
+                   com.example.myapp1.model.MedicamentIntrants medicamentIntrants = new com.example.myapp1.model.MedicamentIntrants();
+                   medicamentIntrants.setDate(sdf.format(new Date()));
+                   medicamentIntrants.setMois(moi);
+                   medicamentIntrants.setAnnee(anne);
+                   medicamentIntrants.setStockinit(Integer.parseInt(StockeI.getText().toString()));
+                   medicamentIntrants.setQuantiteperdue(Integer.parseInt(Qp.getText().toString()));
+                   medicamentIntrants.setQuantiteutilisee(Integer.parseInt(Qu.getText().toString()));
+                   medicamentIntrants.setRecu(Integer.parseInt(Qr.getText().toString()));
+                   medicamentIntrants.setStructure(structure);
+                   medicamentIntrants.setDate(sdf.format(new Date()));
+                   medicamentIntrants.setCodeSup(session.getCodeSup());
+                   medicamentIntrants.setRapport(this.Rapport);
+                   medicamentIntrants.setDateRapport(date.getText().toString());
+                   medicamentIntrants.setCodeTel(Build.SERIAL);
+                   medicamentIntrants.setMedicament(medicament);
+                   databaseManager.insertMedicamentIntrants(medicamentIntrants);
+                   Toast.makeText(getActivity(), ajout, LENGTH_LONG).show();
+
+                   try {
+
+                       AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                       alertDialog.setTitle("Confirmation");
+                       alertDialog.setMessage("Voulez-vous ajouter un nouveau médicament ?");
+                       // alertDialog.setIcon(R.drawable.delete);
+                       alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               Qu.getText().clear();
+                               Qp.getText().clear();
+                               Qr.getText().clear();
+                               rapport.setVisibility(View.INVISIBLE);
+                               //rapport.setImageBitmap(null);
+                               Rapport=null;
+                               StockeI.getText().clear();
+                               spinnerMedicament.setSelection(0);
+                               //medicaments.remove(spinnerMedicament.getSelectedItem())
 
 
-           medicamentIntrants.setMedicament(medicament);
+                           }
+                       });
+                       alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
 
-           try {
-               databaseManager.insertMedicamentIntrants(medicamentIntrants);
-               Intent intent = new Intent(getActivity(), StockeList.class);
-               Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
-               startActivity(intent);
-               this.onDestroyView();
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
 
-           } catch (Exception e){
-               Toast.makeText(getActivity(), e.getMessage()+"", Toast.LENGTH_LONG).show();
-           }
+                               Intent intent = new Intent(getActivity(), StockeList.class);
+                               startActivity(intent);
+                               onDestroyView();
+                           }
+                       });
+
+                       alertDialog.show();
 
 
+                   } catch (Exception e) {
+                       Toast.makeText(getActivity(), e.getMessage() + "", Toast.LENGTH_LONG).show();
+                   }
 
+
+               }
        }
     }
 
@@ -373,6 +515,18 @@ public class MedicamentIntrants extends Fragment {
             error = true;
             Qu.setError("invalid!");
         }
+        if (!Qu.getText().toString().trim().isEmpty() && !Qr.getText().toString().trim().isEmpty() && !StockeI.getText().toString().trim().isEmpty() && !Qp.getText().toString().trim().isEmpty() ) {
+            int qu=Integer.parseInt(Qu.getText().toString());
+            int qr=Integer.parseInt(Qr.getText().toString());
+            int qp=Integer.parseInt(Qp.getText().toString());
+            int Stocke=Integer.parseInt(StockeI.getText().toString());
+            if(qu+qp >qr+Stocke) {
+                error = true;
+                Toast.makeText(getActivity(),"Verifier les données entres" , LENGTH_LONG).show();
+
+            }
+        }
+
         if (anne.isEmpty()) {
             error = true;
             TextView errorText= ((TextView)spinneranne.getSelectedView());
@@ -388,7 +542,7 @@ public class MedicamentIntrants extends Fragment {
             errorText.setText("Ce champ est obligatire");
         }
 
-        if (medicament==null) {
+        if (spinnerMedicament.getSelectedItemPosition()==0) {
             error = true;
             TextView errorText= ((TextView)spinnerMedicament.getSelectedView());
             errorText.setError("");
@@ -420,5 +574,30 @@ public class MedicamentIntrants extends Fragment {
 
 
         return error;
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            Bitmap image = (Bitmap) data.getExtras().get("data");
+            rapport.setImageBitmap(image);
+
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            this.Rapport=byteArray;
+            //image.recycle();
+            rapport.setImageBitmap(image);
+            Test test = new Test();
+            test.setImageBytes(byteArray);
+        } else {
+            getActivity().getFragmentManager().beginTransaction();
+            //rapport.setImageURI(Uri.parse("/drawable/add_a_photo"));
+
+        }
     }
 }

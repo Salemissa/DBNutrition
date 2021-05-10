@@ -9,29 +9,29 @@ public class Medicament {
     @DatabaseField(generatedId = true)
     private Long id;
     @DatabaseField
-    private String name;
+    private String nom;
     @ForeignCollectionField(eager=false)
     private ForeignCollection<MedicamentIntrants> medicamentIntrants;
 
 
     public Medicament(){}
     public  Medicament(String name){
-        this.name=name;
+        this.nom=name;
     }
     public Long getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public ForeignCollection<MedicamentIntrants> getMedicamentIntrants() {
@@ -40,5 +40,10 @@ public class Medicament {
 
     public void setMedicamentIntrants(ForeignCollection<MedicamentIntrants> medicamentIntrants) {
         this.medicamentIntrants = medicamentIntrants;
+    }
+
+    @Override
+    public String toString() {
+        return this.nom;
     }
 }

@@ -11,7 +11,7 @@
         android:id="@+id/topView"
         android:layout_width="wrap_content"
         android:layout_height="85dp"
-        android:background="#FFFF33"
+        android:background="#EFE61D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,64 +25,83 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topView" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:orientation="horizontal"
+        android:weightSum="7"
+        app:layout_constraintTop_toTopOf="@+id/topView">
+
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="78dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="16dp"
-        android:background="@mipmap/amamilogo"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:paddingTop="20dp"
+        android:layout_height="match_parent"
+        android:background="@mipmap/amamilogo1"
         android:contentDescription="mcmc mnm"
-        app:layout_constraintHorizontal_bias="0.439"
-        app:layout_constraintLeft_toLeftOf="parent"
-
         app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/imageView77"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            />
+        <ImageView
+            android:id="@+id/imageView78"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            />
+
+
+
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="78dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:background="@mipmap/rim"
+        android:layout_marginRight="20dp"
         android:contentDescription="mcmc mnm"
-        app:layout_constraintHorizontal_bias="0.439"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+       />
 
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="78dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="16dp"
-        android:background="@mipmap/ukaidlogo"
-        android:contentDescription="mcmc mnm"
-        app:layout_constraintEnd_toStartOf="@id/imageView9"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@mipmap/ukaid"
+            android:contentDescription="mcmc mnm"
+            />
 
     <ImageView
         android:id="@+id/imageView9"
-        android:layout_width="78dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="16dp"
-        android:background="@mipmap/eurlogo"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@mipmap/eur"
         android:contentDescription="mcmc mnm"
-        app:layout_constraintEnd_toStartOf="@id/imageView10"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
     <ImageView
         android:id="@+id/imageView10"
-        android:layout_width="78dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="16dp"
-        android:background="@mipmap/uniceflogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@mipmap/unicef"
+        />
 
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="199dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="60dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view5">
@@ -94,9 +113,9 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:layout_marginBottom="15dp"
-            android:text="REPONSE A L'URGENSE NUTRITIONNELLE AU HODH EL-GHARBI"
-            android:textColor="#2196F3"
-            android:textColorHighlight="#FFFFFF"
+            android:text="REPONSE A L'URGENCE NUTRITIONNELLE AU HODH EL-GHARBI"
+            android:textColor="#000000"
+            android:textStyle="bold"
             android:textSize="25sp" />
 
         <TextView
@@ -106,9 +125,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="15dp"
             android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="#000000"
             android:text="الاستجابة للحالات الاستعجالية للتغذية في الحوض الغربي"
-            android:textColor="#2196F3"
-            android:textColorHighlight="#2196F3"
+
+
             android:textSize="30sp" />
 
     </LinearLayout>
@@ -121,6 +142,11 @@
         android:focusableInTouchMode="true"
         android:nextFocusDown="@id/editPassword"
         android:nextClusterForward="@id/editPassword"
+        android:maxLines="1"
+        android:inputType="text"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:nextFocusForward="@+id/editPassword"
         android:layout_marginTop="300dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/round_border"
@@ -162,9 +188,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/round_bg"
+        android:backgroundTint="#EFE61D"
         android:rotationX="8"
         android:text="Connecter"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

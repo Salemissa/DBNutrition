@@ -3,6 +3,7 @@ package com.example.myapp1.pcim;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,7 @@ import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
+import com.example.myapp1.syn.Session;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,6 +74,8 @@ public class Compagne_DP extends Fragment {
 
     private EditText rougeF,jauneF,vertF,odemeF,rougeG,jauneG,vertG,odemeG;
     private SimpleDateFormat sdf;
+    private Session session;
+    private String commune;
 
 
     public Compagne_DP() {
@@ -134,7 +138,7 @@ public class Compagne_DP extends Fragment {
         this.odemeG=(EditText) this.v.findViewById(R.id.odemeG);
 
         this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
+        this.session = new Session(getContext());
         this.Ajouter =(Button) this.v.findViewById(R.id.Ajouter);
 
 
@@ -247,6 +251,7 @@ public class Compagne_DP extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
+                commune=item;
                 CommuneLocalite(item);
             }
 
@@ -263,7 +268,11 @@ public class Compagne_DP extends Fragment {
                 String item = parent.getItemAtPosition(position).toString();
                 localite=null;
                 if(!item.isEmpty()) {
-                    localite = databaseManager.localitename(item);
+                    for(Localite loc:databaseManager.localitename(item)) {
+                        if(loc.getCommune().getCommunename().equals(commune)) {
+                            localite = loc;
+                        }
+                    }
                 }
             }
 
@@ -335,6 +344,8 @@ public class Compagne_DP extends Fragment {
             depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
             depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
             depistage.setDate(this.sdf.format(new Date()));
+            depistage.setCodeSup(session.getCodeSup());
+            depistage.setCodeTel(Build.SERIAL);
             depistage.setType("CampagneDepistage");
 
             try {
@@ -366,12 +377,22 @@ public class Compagne_DP extends Fragment {
 
         if (rougeG.getText().toString().isEmpty()) {
             error = true;
+            rougeG.setBackgroundColor(Color.WHITE);
             rougeG.setError("invalid!");
+        }
+        else{
+            rougeG.setBackgroundColor(Color.RED);
         }
         if (rougeF.getText().toString().isEmpty()) {
             error = true;
+            rougeF.setBackgroundColor(Color.WHITE);
             rougeF.setError("invalid!");
+
         }
+        else{
+            rougeF.setBackgroundColor(Color.RED);
+        }
+
         if (vertG.getText().toString().isEmpty()) {
             error = true;
             vertG.setError("invalid!");

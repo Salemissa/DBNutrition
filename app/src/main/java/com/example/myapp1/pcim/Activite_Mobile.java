@@ -1,11 +1,19 @@
 package com.example.myapp1.pcim;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +36,15 @@ import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
+import com.example.myapp1.syn.Session;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.example.myapp1.R.string.MsgRed;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,13 +54,13 @@ import java.util.List;
 public class Activite_Mobile extends Fragment {
     View v;
 
-    Spinner spinnermois ;
-    Spinner spinneranne ;
-    Spinner spinnermoughata  ;
-    Spinner spinnercommune ;
-   SearchableSpinner spinnerlocalite ;
-    Spinner spinnerage ;
-    String  type="passif";
+    Spinner spinnermois;
+    Spinner spinneranne;
+    Spinner spinnermoughata;
+    Spinner spinnercommune;
+    Spinner spinnerlocalite;
+    Spinner spinnerage;
+    String type = "passif";
 
     String moi;
     String anne;
@@ -68,9 +79,10 @@ public class Activite_Mobile extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private EditText rougeF,jauneF,vertF,odemeF,rougeG,jauneG,vertG,odemeG;
+    private EditText rougeF, jauneF, vertF, odemeF, rougeG, jauneG, vertG, odemeG;
     private SimpleDateFormat sdf;
-
+    Session session;
+    private String commune;
 
     public Activite_Mobile() {
         // Required empty public constructor
@@ -121,19 +133,19 @@ public class Activite_Mobile extends Fragment {
         this.spinnermoughata = this.v.findViewById(R.id.moghata);
         this.spinnercommune = this.v.findViewById(R.id.commune);
         this.spinnerlocalite = this.v.findViewById(R.id.localite);
-        this.spinnerlocalite.setTitle("Selection");
-        this.spinnerage= this.v.findViewById(R.id.age);
-        this.rougeF= (EditText) this.v.findViewById(R.id.RougeF);
-        this.jauneF= (EditText) this.v.findViewById(R.id.JauneF);
-        this.vertF= (EditText) this.v.findViewById(R.id.VertF);
-        this.odemeF=(EditText) this.v.findViewById(R.id.odemeF);
-        this.rougeG= (EditText) this.v.findViewById(R.id.RougeG);
-        this.jauneG= (EditText) this.v.findViewById(R.id.JauneG);
-        this.vertG= (EditText) this.v.findViewById(R.id.VertG);
-        this.odemeG=(EditText) this.v.findViewById(R.id.odemeG);
+        //this.spinnerlocalite.setTitle("Selection");
+        this.spinnerage = this.v.findViewById(R.id.age);
+        this.rougeF = (EditText) this.v.findViewById(R.id.RougeF);
+        this.jauneF = (EditText) this.v.findViewById(R.id.JauneF);
+        this.vertF = (EditText) this.v.findViewById(R.id.VertF);
+        this.odemeF = (EditText) this.v.findViewById(R.id.odemeF);
+        this.rougeG = (EditText) this.v.findViewById(R.id.RougeG);
+        this.jauneG = (EditText) this.v.findViewById(R.id.JauneG);
+        this.vertG = (EditText) this.v.findViewById(R.id.VertG);
+        this.odemeG = (EditText) this.v.findViewById(R.id.odemeG);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
-        this.Ajouter =(Button) this.v.findViewById(R.id.Ajouter);
+        this.session = new Session(getContext());
+        this.Ajouter = (Button) this.v.findViewById(R.id.Ajouter);
 
 
         this.Ajouter.setOnClickListener(new View.OnClickListener() {
@@ -145,17 +157,17 @@ public class Activite_Mobile extends Fragment {
 
         });
 
-        Donnes donnes=new Donnes();
+        Donnes donnes = new Donnes();
         final String[] annee = donnes.annee;
         String[] mois = donnes.mois;
-        String[] ages=donnes.ages;
+        String[] ages = donnes.ages;
 
-        final List<String> moughata  = new ArrayList<String>();
+        final List<String> moughata = new ArrayList<String>();
 
-        List<Moughata> ListMoughata=databaseManager.ListMoughata();
-         moughata.add("");
-        if(ListMoughata!=null){
-            for( Moughata moug : ListMoughata ) {
+        List<Moughata> ListMoughata = databaseManager.ListMoughata();
+        moughata.add("");
+        if (ListMoughata != null) {
+            for (Moughata moug : ListMoughata) {
                 moughata.add(moug.getMoughataname());
                 //Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
             }
@@ -176,7 +188,7 @@ public class Activite_Mobile extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                moi=parent.getItemAtPosition(position).toString();
+                moi = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -186,12 +198,11 @@ public class Activite_Mobile extends Fragment {
         });
 
 
-
         spinneranne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                anne=parent.getItemAtPosition(position).toString();
+                anne = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -205,7 +216,7 @@ public class Activite_Mobile extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                age=parent.getItemAtPosition(position).toString();
+                age = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -233,12 +244,11 @@ public class Activite_Mobile extends Fragment {
         });
 
 
-
-
         spinnercommune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
+                commune=item;
                 CommuneLocalite(item);
             }
 
@@ -253,8 +263,13 @@ public class Activite_Mobile extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-
-                localite = databaseManager.localitename(item);
+                if(!item.isEmpty()) {
+                    for (Localite loc : databaseManager.localitename(item)) {
+                        if (loc.getCommune().getCommunename().equals(commune)) {
+                            localite = loc;
+                        }
+                    }
+                }
             }
 
             @Override
@@ -267,12 +282,12 @@ public class Activite_Mobile extends Fragment {
 
 
     void MoughataComune(String moughata) {
-        Moughata moughataname =null;
-        if(!moughata.isEmpty()){
-            moughataname=databaseManager.Moughataname(moughata);
+        Moughata moughataname = null;
+        if (!moughata.isEmpty()) {
+            moughataname = databaseManager.Moughataname(moughata);
         }
         List<String> communesM = new ArrayList<String>();
-                      communesM.add("");
+        communesM.add("");
         if (moughataname != null) {
             for (Commune commune : moughataname.getCommunes()) {
 
@@ -303,41 +318,52 @@ public class Activite_Mobile extends Fragment {
 
         }
 
+       //ArrayAdapter<Localite> localiteadapter = new ArrayAdapter<Localite>(this.getActivity(),simple_spinner_item, localiesCommune);
         ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, localiesCommune);
         this.spinnerlocalite.setAdapter(structureadapter);
         structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
 
-    void AjouterDepistage(){
-        if(VerficationChampe()){}
+    void AjouterDepistage() {
+        if (VerficationChampe()) { }
         else {
-            this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Depistage depistage = new Depistage();
-            depistage.setAnnee(anne);
-            depistage.setMois(moi);
-            depistage.setAge(age);
-            depistage.setLocalite(localite);
-            depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
-            depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
-            depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
-            depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
-            depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
-            depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
-            depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
-            depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
-            depistage.setDate(this.sdf.format(new Date()));
-            depistage.setType("ActivitéMobile");
+            if (databaseManager.ActiviteEnrg(moi, anne, type,age, localite) != null) {
+                 Toast.makeText(getActivity(), MsgRed,Toast.LENGTH_LONG).show();
+            } else {
+                this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                Depistage depistage = new Depistage();
+                depistage.setAnnee(anne);
+                depistage.setMois(moi);
+                depistage.setAge(age);
+                depistage.setLocalite(localite);
+                depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
+                depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
+                depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
+                depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+                depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
+                depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
+                depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
+                depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
+                depistage.setDate(this.sdf.format(new Date()));
+                depistage.setCodeSup(session.getCodeSup());
+                depistage.setCodeTel(Build.SERIAL);
+                //TelephonyManager tManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+                String serialNumber = Build.SERIAL;
 
-            try {
-                databaseManager.inserDepistage(depistage);
-                Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity(), ActivtiteMobileList.class);
-                intent.putExtra("type", "ActivitéMobile");
-                startActivity(intent);
-                this.onDestroy();
-            } catch (Exception e) {
-                Toast.makeText(getActivity(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "code :" + serialNumber, Toast.LENGTH_LONG).show();
+                depistage.setType("ActivitéMobile");
+
+                try {
+                    databaseManager.inserDepistage(depistage);
+                    Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getActivity(), ActivtiteMobileList.class);
+                    intent.putExtra("type", "ActivitéMobile");
+                    startActivity(intent);
+                    this.onDestroy();
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -354,15 +380,25 @@ public class Activite_Mobile extends Fragment {
             error = true;
             jauneF.setError("invalid!");
         }
-
         if (rougeG.getText().toString().isEmpty()) {
             error = true;
+            rougeG.setBackgroundColor(Color.WHITE);
             rougeG.setError("invalid!");
+        }
+        else{
+            rougeG.setBackgroundColor(Color.RED);
         }
         if (rougeF.getText().toString().isEmpty()) {
             error = true;
+            rougeF.setBackgroundColor(Color.WHITE);
             rougeF.setError("invalid!");
+
         }
+        else{
+            rougeF.setBackgroundColor(Color.RED);
+        }
+
+
         if (vertG.getText().toString().isEmpty()) {
             error = true;
             vertG.setError("invalid!");

@@ -11,6 +11,7 @@
         android:background="@drawable/card"
         android:id="@+id/card"
         app:cardElevation="2dp"
+        app:cardBackgroundColor="#F5F5F5"
         app:cardCornerRadius="5dp"
         app:contentPadding="10dp"
         >
@@ -30,7 +31,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:weightSum="4"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="@dimen/pading"
             android:orientation="horizontal">
 
@@ -39,7 +39,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
-
+                android:layout_marginLeft="12dp"
                 android:text="Localité"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
@@ -48,6 +48,7 @@
                 android:id="@+id/localite"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:layout_marginLeft="-22dp"
                 android:layout_height="match_parent"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
@@ -78,7 +79,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Fille MAS "
+                android:text="@string/f_mas"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -89,7 +90,8 @@
                 android:layout_marginLeft="30dp"
                 android:layout_weight="1"
                 android:background="#FF0000"
-
+                android:textSize="@dimen/label"
+                android:textStyle="bold"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4" />
@@ -101,7 +103,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Garcon MAS "
+                android:text="@string/g_mas"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -114,8 +116,10 @@
                 android:background="#FF0000"
                 android:gravity="center"
                 android:inputType="number"
+                android:textSize="@dimen/label"
+                android:textStyle="bold"
                 android:maxLength="4"
-                android:textSize="10pt" />
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -135,7 +139,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Fille MAM"
+                android:text="@string/f_mam"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -149,7 +153,8 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
-                android:textSize="@dimen/label" />
+                android:textSize="@dimen/label"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/textView19"
@@ -158,7 +163,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Garcon MAM"
+                android:text="@string/g_mam"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -172,7 +177,8 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
-                android:textSize="10pt" />
+                android:textStyle="bold"
+                android:textSize="@dimen/label" />
         </LinearLayout>
 
         <LinearLayout
@@ -192,7 +198,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Fille SAINT"
+                android:text="@string/f_bp"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -205,8 +211,8 @@
                 android:background="#40FF00"
                 android:gravity="center"
                 android:inputType="number"
-                android:maxLength="4"
-                android:textSize="10pt" />
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView56"
@@ -215,7 +221,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Garcon SAINT"
+                android:text="@string/g_bp"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -229,7 +235,8 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
-                android:textSize="10pt" />
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
         </LinearLayout>
 
 
@@ -249,7 +256,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text=" Fille Oedeme  "
+                android:text="@string/f_oedeme"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -263,6 +270,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
+                android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
             <TextView
@@ -271,7 +279,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Garcon Oedeme"
+                android:text="@string/g_oedeme"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -285,7 +293,9 @@
                 android:inputType="number"
                 android:maxLength="4"
                 android:gravity="center"
+
                 android:layout_gravity="center"
+                android:textSize="@dimen/label"
                 android:textStyle="bold" />
         </LinearLayout>
 

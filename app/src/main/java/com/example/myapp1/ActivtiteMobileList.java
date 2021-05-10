@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.Localite;
+import com.example.myapp1.model.MedicamentIntrants;
 import com.example.myapp1.model.PriseenCharge;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.pcim.Activite_Mobile;
@@ -48,6 +50,7 @@ import retrofit2.Response;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
+import static com.example.myapp1.R.string.ProblemeConnexion;
 import static com.example.myapp1.R.string.messageSupp;
 
 public class ActivtiteMobileList extends AppCompatActivity  {
@@ -101,7 +104,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(ActivtiteMobileList.this);
                 alertDialog.setTitle("Confirm ");
-                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                alertDialog.setMessage(getString(R.string.MsgSyn));
                 // alertDialog.setIcon(R.drawable.delete);
                 alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
                     @Override
@@ -141,7 +144,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
                 title.setText("Activité mobile");
             }
             else{
-               title.setText("Compagne de depistage");
+               title.setText(getString(R.string.compagne));
             }
 
         }
@@ -152,7 +155,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
             //Toast.makeText(this,"medicament non trouve ",Toast.LENGTH_LONG).show();
 
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
+            alertDialog.setTitle("information");
             alertDialog.setMessage("List est indispansable");
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -195,7 +198,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
 
                 //Intent intent = new Intent(DepistagePassifList.this, Donnee_DP.class);
 
-                intent.putExtra("id",clickedItem.getId().intValue());
+                intent.putExtra("id",clickedItem.getId().longValue());
                 intent.putExtra("type",clickedItem.getType());
                 startActivity(intent);
                 //Toast.makeText(DepistagePassifList.this,""+clickedItem.getId(), LENGTH_LONG).show();
@@ -210,9 +213,6 @@ public class ActivtiteMobileList extends AppCompatActivity  {
                                            int pos, long id) {
                 // TODO Auto-generated method stub
                 Depistage clickedItem = (Depistage) list.getItemAtPosition(pos);
-
-
-
                 boolean res = showalert(clickedItem);
                 if (res) {
                     arrayList.remove(pos);
@@ -228,12 +228,13 @@ public class ActivtiteMobileList extends AppCompatActivity  {
         this.adapter = new DepistageActiveList(this, arrayList);
         ListView list = (ListView) findViewById(R.id.list);
         list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     void synDepistage(){
         List<Depistage> ListSyn=new ArrayList<Depistage>();
         for(Depistage depistage:databaseManager.DepistageByType(type)) {
-            if(depistage.getSyn()==0){
+            if(depistage.getSyn()!=1){
                 ListSyn.add(depistage);
             }
         }
@@ -242,7 +243,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
             Depistage depi=new Depistage();
             for(Depistage depistage:ListSyn) {
                 depi = depistage;
-                depi.setId(0L);
+
               //  Structure structure = new Structure();
                // structure.setId(depi.getStructure().getId());
                 //structure.setStructurename(depi.getStructure().getStructurename());
@@ -293,8 +294,8 @@ public class ActivtiteMobileList extends AppCompatActivity  {
         }
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
-            alertDialog.setMessage("Rien a synchroniser maintenant");
+            alertDialog.setTitle(getString(R.string.info));
+            alertDialog.setMessage(getString(R.string.Riensyn));
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -322,37 +323,36 @@ public class ActivtiteMobileList extends AppCompatActivity  {
             public void onResponse(Call<List<Depistage>> call, Response<List<Depistage>> response) {
                 if (response.isSuccessful()) {
                     progressDoalog.dismiss();
-                    AlertDialog alertDialog = new AlertDialog.Builder(ActivtiteMobileList.this).create();
-                    alertDialog.setTitle("info");
-                    alertDialog.setMessage("Synchronisé avec succés");
                     Toast.makeText(getApplication(), R.string.messageSyn, LENGTH_LONG).show();
 
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            for (Depistage depistage : syn) {
-                                if (depistage.getSyn() == 0 ||  depistage.getSyn() == 2) {
-                                    depistage.setSyn(1);
-                                    databaseManager.updatedepistage(depistage);
-                                }
-                            }
+
+                    for (Depistage depistage : response.body()) {
+                        if(depistage.getSyn()==0){
+                            databaseManager.updatedepistage(depistage);
+                        }
+                    }
+
+                    for (Depistage depistage : databaseManager.DepistageByType(type)) {
+                        if(depistage.getSyn()==0 || depistage.getSyn()==2){
+                            depistage.setSyn(1);
+                            databaseManager.updatedepistage(depistage);
+                        }
+                    }
                             depistageActive= databaseManager.DepistageByType(type);
                             arrayList=depistageActive;
                             adapter.notifyDataSetChanged();
 
-                        }
-                    });
 
-                   // alertDialog.show();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
 
                 }else{
                    // Log.e("Errure", response.errorBody().string());
-                     // Toast.makeText(getApplication(),"Body" +response.errorBody().toString(), LENGTH_LONG).show();
+
                    // Toast.makeText(getApplication(),"" +response.errorBody(), LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplication(), R.string.ProblemServeur, LENGTH_LONG).show();
 
                 }
 
@@ -363,6 +363,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
                 Log.e("ERROR ", t.getCause().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplication(), ProblemeConnexion, LENGTH_LONG).show();
 
             }
         });
@@ -443,11 +444,12 @@ public class ActivtiteMobileList extends AppCompatActivity  {
 
             JauneF.setText("MAM F : " + depistageActives.get(position).getJauneF());
             JauneG.setText("MAM G : " + depistageActives.get(position).getJauneG());
-            VertF.setText("SAINT F : " + depistageActives.get(position).getVertF());
-            VertG.setText("SAINT G : " + depistageActives.get(position).getVertG());
+            VertF.setText("F BP : " + depistageActives.get(position).getVertF());
+            VertG.setText("G BP: " + depistageActives.get(position).getVertG());
             OdemeF.setText("Odeme F : " + depistageActives.get(position).getOdemeF());
             OdemeG.setText("Odeme G : " + depistageActives.get(position).getOdemeG());
             date.setText("Date :" + depistageActives.get(position).getDate());
+
 
 
             // Rapport.setImageBitmap();
@@ -467,9 +469,9 @@ public class ActivtiteMobileList extends AppCompatActivity  {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirmation ");
-        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
+        alertDialog.setMessage(R.string.ConfirSupp);
         // alertDialog.setIcon(R.drawable.delete);
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -479,7 +481,7 @@ public class ActivtiteMobileList extends AppCompatActivity  {
 
             }
         });
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

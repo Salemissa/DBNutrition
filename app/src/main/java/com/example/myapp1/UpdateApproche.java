@@ -1,9 +1,13 @@
 package com.example.myapp1;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,6 +17,7 @@ import com.example.myapp1.model.ApprocheCommunataire;
 import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
+import com.example.myapp1.model.PriseenCharge;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.USB;
 
@@ -29,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -45,12 +51,14 @@ public class UpdateApproche extends AppCompatActivity {
     private String[] Anne;
     private String[] mois;
     ImageView rapport;
+    byte[] Rapport;
     Spinner spinnermois ;
     Spinner spinneranne ;
     Spinner spinnermoughata  ;
     Spinner spinnercommune ;
     Spinner spinnerlocalite ;
     Spinner spinnerusb ;
+    EditText NCGG,TestPG,TRG,PaluCG,diarrheG,vaccinG,FA;
     USB usb;
     private ArrayAdapter moisadapter, anneeadapter, moughatadapter, ageadapter, communadapter, localiteadapter,usbadapter;
 
@@ -59,18 +67,20 @@ public class UpdateApproche extends AppCompatActivity {
     Localite localite;
     Button Ajouter;
 
-    EditText PBR,PBG,viste,menage,FE,FES,NCG,TestP,TR,PaluC,diarrhe,vaccin;
+    EditText PBR,PBG,viste,menage,FE,FES,NCG,TestP,TR,PaluC,diarrhe,vaccin,PBRG,PBV,PBJG,PBVG;
     EditText date;
-    byte[] Rapport;
+
     Intent camera_intent = null;
     private DatabaseManager databaseManager;
     private String[] ages;
-    private int id;
+    private long id;
     private ApprocheCommunataire approchecommunataire;
     private Button Modfier;
     List<String>  communeList=null;
     List<String>  localiteeList=null;
+    List<String>  usbList=null;
     private SimpleDateFormat sdf;
+    private String commune;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +95,12 @@ public class UpdateApproche extends AppCompatActivity {
         this.spinnercommune = this.findViewById(R.id.commune);
         this.spinnerlocalite = this.findViewById(R.id.localite);
         this.spinnerusb = this.findViewById(R.id.usb);
-        this.PBR = this.findViewById(R.id.PbRouge);
-        this.PBG = this.findViewById(R.id.pbjaune);
+        this.PBR=this.findViewById(R.id.PbRouge);
+        this.PBG=this.findViewById(R.id.pbjaune);
+        this.PBV=this.findViewById(R.id.pbvert);
+        this.PBRG=this.findViewById(R.id.PbRougeg);
+        this.PBJG=this.findViewById(R.id.pbjauneg);
+        this.PBVG=this.findViewById(R.id.pbvertg);
         this.viste = this.findViewById(R.id.visite);
         this.menage = this.findViewById(R.id.menage);
         this.FE = this.findViewById(R.id.FE);
@@ -98,14 +112,53 @@ public class UpdateApproche extends AppCompatActivity {
         this.PaluC = this.findViewById(R.id.palucon);
         this.vaccin = this.findViewById(R.id.vaccin);
         this.diarrhe = this.findViewById(R.id.Dirrhee);
+
+        this.NCGG=this.findViewById(R.id.NCGG);
+        this.TestPG=this.findViewById(R.id.TestpaulG);
+        this.TRG=this.findViewById(R.id.TRG);
+        this.PaluCG=this.findViewById(R.id.paluconG);
+        this.vaccinG=this.findViewById(R.id.vaccinG);
+        this.diarrheG=this.findViewById(R.id.DirrheeG);
+        this.FA=this.findViewById(R.id.FA);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd");
         rapport = (ImageView) this.findViewById(R.id.imageRaport);
         this.Modfier = this.findViewById(R.id.add);
         this.Modfier.setText("Modfier");
+
+
+
         this.Modfier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Modfier();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(UpdateApproche.this);
+                alertDialog.setTitle("Confirmation ");
+                alertDialog.setMessage(string.ConfirModf);
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Modfier();
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(UpdateApproche.this, ListApproche.class);
+                        startActivity(intent);
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
+
+
+
             }
         }  );
 
@@ -178,7 +231,7 @@ public class UpdateApproche extends AppCompatActivity {
         this.ages=donnes.ages;
         Intent intent = getIntent();
         if (intent != null) {
-            this.id = intent.getIntExtra("id", 0);
+            this.id = intent.getLongExtra("id", 0);
             this.approchecommunataire= this.databaseManager.ApprocheById(this.id);
 
             //Toast.makeText(this,this.depistage.getAnnee(),Toast.LENGTH_LONG).show();
@@ -188,12 +241,35 @@ public class UpdateApproche extends AppCompatActivity {
         final List<String> moughata  = new ArrayList<String>();
 
         List<Moughata> ListMoughata=databaseManager.ListMoughata();
+         moughata.add("");
         if(ListMoughata!=null){
             for( Moughata moug : ListMoughata ) {
                 moughata.add(moug.getMoughataname());
                 // Toast.makeText(getActivity(),moug.getMoughataname(),Toast.LENGTH_SHORT).show();
             }
         }
+        this.communeList  = new ArrayList<String>();
+        communeList .add("");
+
+        this.localiteeList  = new ArrayList<String>();
+        this.localiteeList.add("");
+
+
+
+        this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,communeList);
+        this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnercommune.setAdapter(this.communadapter);
+
+
+        this.localiteadapter= new ArrayAdapter(this, android.R.layout.simple_spinner_item,localiteeList);
+        this.localiteadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerlocalite.setAdapter(this.localiteadapter);
+        this.usbList  = new ArrayList<String>();
+        this.usbList.add("");
+
+        this.usbadapter= new ArrayAdapter(this, android.R.layout.simple_spinner_item,usbList);
+        this.usbadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerusb.setAdapter(this.usbadapter);
 
 
 
@@ -227,9 +303,6 @@ public class UpdateApproche extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
                 moi=parent.getItemAtPosition(position).toString();
-
-
-
 
 
             }
@@ -269,6 +342,7 @@ public class UpdateApproche extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
                 MoughataComune(item);
+
             }
 
             @Override
@@ -284,7 +358,9 @@ public class UpdateApproche extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
+                commune=item;
                 CommuneLocalite(item);
+
 
             }
 
@@ -382,84 +458,106 @@ public class UpdateApproche extends AppCompatActivity {
     }
 
 
-    public  void setImageViewWithByteArray() {
-/*
-        List<Test> users=databaseManager.ListTest();
-        if(users!=null) {
-            for (Test user : users) {
 
-                Toast.makeText(this.getActivity(), "OK", Toast.LENGTH_LONG).show();
-                if(user.getImageBytes() !=null){
-                    Toast.makeText(this.getActivity(), "image not null "+user.getImageBytes().length, Toast.LENGTH_LONG).show();
-                 Bitmap bitmap = BitmapFactory.decodeByteArray(user.getImageBytes(), 0, user.getImageBytes().length);
-              if(bitmap!=null){
-               this.rapport.setImageBitmap(bitmap);
-              }
-
-               // rapport.setImageBitmap(Bitmap.createScaledBitmap(bitmap, rapport.getWidth(),
-                    //    rapport.getHeight(), false));
-
-
-                }
-            }
-        }
-        else{
-            Toast.makeText(this.getActivity(),"Non",Toast.LENGTH_SHORT).show();
-        }
-        */
-
-    }
 
     void MoughataComune(String moughata) {
-
-        Moughata moughataname = databaseManager.Moughataname(moughata);
-        List<String> communesM = new ArrayList<String>();
+        Moughata  moughataname=null;
+        if(moughata.equals("")){
+            communeList.clear();
+            communeList.add("");
+        }
+        else {
+            moughataname = databaseManager.Moughataname(moughata);
+        }
 
         if (moughataname != null) {
-            for (Commune commune : moughataname.getCommunes()) {
-
-                communesM.add(commune.getCommunename().toString());
-            }
-            this.communadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, communesM);
-            this.spinnercommune.setAdapter(this.communadapter);
-            this.communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        }
-        }
-
-        void CommuneLocalite(String commune) {
-            Commune communesel = databaseManager.communename(commune);
-            List<String> localiteCommune = new ArrayList<String>();
-
-            if (communesel != null) {
-
-
-                for (Localite localite : communesel.getLocalites()) {
-
-                    localiteCommune.add(localite.getLocalitename().toString());
+            this.communadapter.clear();
+            this.communeList.clear();
+            this.communeList.add(" ");
+            if (moughataname != null) {
+                boolean trouv=false;
+                for (Commune commune : moughataname.getCommunes()) {
+                    for(Localite localite:commune.getLocalites()) {
+                        if(localite.getUsb().size()!=0) {
+                            trouv=true;
+                        }
+                        if(trouv) {
+                            communeList.add(commune.getCommunename().toString());
+                            break;
+                        }
+                    }
                 }
-
-                this.localiteadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, localiteCommune);
-                this.spinnerlocalite.setAdapter(localiteadapter);
-                this.localiteadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             }
+
+
+
         }
+
+
+
+
+        this.communadapter.notifyDataSetChanged();
+
+
+
+    }
+    void CommuneLocalite(String commune) {
+        Commune communesel=null;
+        if(commune.equals("")){
+            this.localiteadapter.clear();
+            this.localiteeList.clear();
+            this.localiteeList.add("");
+        }
+        else{
+            communesel=databaseManager.communename(commune);
+        }
+
+
+        if(communesel !=null){
+            this.localiteadapter.clear();
+            this.localiteeList.clear();
+            localiteeList.add("");
+            for( Localite localite:communesel.getLocalites() ) {
+                if(localite.getUsb().size()!=0) {
+                    this.localiteeList.add(localite.getLocalitename().toString());
+                }
+            }
+
+
+
+        }
+
+        this.localiteadapter.notifyDataSetChanged();
+        //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+    }
             void LocaliteUsb(String loc) {
-                Localite localite = databaseManager.localitename(loc);
+                    localite=null;
+                 if(!loc.isEmpty()) {
+                     for (Localite loca : databaseManager.localitename(loc)) {
+                         if (loca.getCommune().getCommunename().equals(this.commune)) {
+                             localite = loca;
+                         }
+                     }
+                 } else{
+                     usbList.clear();
+                     usbList.add("");
+                 }
                 List<String> localieusb = new ArrayList<String>();
 
-                if (localite != null) {
-                    for (USB usb :localite.getUsb()) {
-
-                        localieusb.add(localite.getLocalitename().toString());
+                if (localite!=null) {
+                    for (USB usb : localite.getUsb()) {
+                        usbList.clear();
+                        usbList.add(usb.getUsbname());
                     }
-
-
+                }
+                else{
+                    usbList.clear();
+                    usbList.add("");
                 }
 
-                ArrayAdapter usbadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, localieusb);
-                this.spinnerusb.setAdapter(usbadapter);
-                usbadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                this.usbadapter.notifyDataSetChanged();
             }
 
 
@@ -485,18 +583,97 @@ public class UpdateApproche extends AppCompatActivity {
         this.spinneranne.setSelection(annePosition);
         this.PBR.setText(this.approchecommunataire.getBprouge()+"");
         this.PBG.setText(this.approchecommunataire.getBpJaune()+"");
+        this.PBRG.setText(this.approchecommunataire.getBprougeG()+"");
+        this.PBJG.setText(this.approchecommunataire.getBpJauneG()+"");
+        this.PBV.setText(this.approchecommunataire.getBpvert()+"");
+        this.PBVG.setText(this.approchecommunataire.getBpvertG()+"");
         this.viste.setText(this.approchecommunataire.getVisite()+"");
-        this.vaccin.setText(this.approchecommunataire.getVaccin()+"");
         this.FE.setText(this.approchecommunataire.getFammeEnc() + "");
         this.FES.setText(this.approchecommunataire.getFammeEncSuvi() + "");
+        this.date.setText(this.approchecommunataire.getDateCreation() + "");
         this.diarrhe.setText(this.approchecommunataire.getDiarrhee() + "");
         this.NCG.setText(this.approchecommunataire.getncg() + "");
-        this.date.setText(this.approchecommunataire.getDateCreation() + "");
         this.menage.setText(this.approchecommunataire.getMenages() + "");
         this.PaluC.setText(this.approchecommunataire.getPaluconfirme() + "");
         this.TestP.setText(this.approchecommunataire.getTestpalu()+"");
+        this.vaccin.setText(this.approchecommunataire.getVaccin()+"");
         this.TR.setText(this.approchecommunataire.getTr() + "");
 
+        this.diarrheG.setText(this.approchecommunataire.getDiarrheeG() + "");
+        this.NCGG.setText(this.approchecommunataire.getNcgG() + "");
+        this.PaluCG.setText(this.approchecommunataire.getPaluconfirmeG() + "");
+        this.TestPG.setText(this.approchecommunataire.getTestpaluG()+"");
+        this.vaccinG.setText(this.approchecommunataire.getVaccinG()+"");
+        this.TRG.setText(this.approchecommunataire.getTrG() + "");
+        this.FA.setText(this.approchecommunataire.getFa() + "");
+        this.Rapport();
+        this.MoughataaPardefaut();
+
+
+    }
+
+    void  MoughataaPardefaut(){
+            Toast.makeText(this,"-----------",Toast.LENGTH_LONG).show();
+        String Moug=approchecommunataire.getUsb().getLocalite().getCommune().getMoughataa().getMoughataname(); //the value you want the position for
+        ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
+        int MougPosition = MougSel.getPosition(Moug);
+        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
+        this.spinnermoughata.setSelection(MougPosition);
+        this.MoughataComune(Moug);
+        communePardefaut();
+        this.moughatadapter.notifyDataSetChanged();
+    }
+
+    private void communePardefaut() {
+        String commune=this.approchecommunataire.getUsb().getLocalite().getCommune().getCommunename(); //the value you want the position for
+        int StrPosition = ((ArrayAdapter) this.spinnercommune.getAdapter()).getPosition(commune);
+        this.CommuneLocalite(commune);
+        this.spinnercommune.setSelection(StrPosition);
+        this.communadapter.notifyDataSetChanged();
+
+        this.LocalitePardefaut();
+    }
+
+
+
+
+
+    private void LocalitePardefaut() {
+
+        String str=this.approchecommunataire.getUsb().getLocalite().getLocalitename(); //the value you want the position for
+        ArrayAdapter StrSel = (ArrayAdapter) this.spinnerlocalite.getAdapter();
+        int StrPosition = StrSel.getPosition(str);
+
+        //Toast.makeText(this,this.depistage.getStructure().getStructurename()+"1"+this.depistage.getStructure().getCommune().getMoughata().toString()+"11",Toast.LENGTH_LONG).show();
+        this.spinnerlocalite.setSelection(StrPosition);
+        this.localiteadapter.notifyDataSetChanged();
+        this.LocaliteUsb(str);
+        this.UsbPardefaut();
+    }
+
+    private void UsbPardefaut() {
+
+        String str=this.approchecommunataire.getUsb().getUsbname();  //the value you want the position for
+        ArrayAdapter StrSel = (ArrayAdapter) this.spinnerusb.getAdapter();
+        int StrPosition = StrSel.getPosition(str);
+        this.spinnerusb.setSelection(StrPosition);
+        this.usbadapter.notifyDataSetChanged();
+    }
+
+    private void Rapport() {
+        if(this.approchecommunataire.getRapport() !=null){
+            Bitmap bitmap = BitmapFactory.decodeByteArray(this.approchecommunataire.getRapport(), 0, this.approchecommunataire.getRapport().length);
+            if(bitmap!=null){
+                rapport.setImageBitmap(bitmap);
+            }
+
+            if(this.Rapport !=null) {
+                Bitmap bitmap2 = BitmapFactory.decodeByteArray(this.Rapport, 0, this.Rapport.length);
+                if (bitmap2 != null) {
+                    rapport.setImageBitmap(bitmap2);
+                }
+            }
+        }
     }
 
 
@@ -509,6 +686,10 @@ public class UpdateApproche extends AppCompatActivity {
             this.approchecommunataire.setUsb(usb);
             this.approchecommunataire.setBprouge(Integer.parseInt(PBR.getText().toString()));
             this.approchecommunataire.setBpJaune(Integer.parseInt(PBG.getText().toString() + ""));
+            this.approchecommunataire.setBprougeG(Integer.parseInt(PBRG.getText().toString()));
+            this.approchecommunataire.setBpJauneG(Integer.parseInt(PBJG.getText().toString() + ""));
+            this.approchecommunataire.setBpvert(Integer.parseInt(PBV.getText().toString() + ""));
+            this.approchecommunataire.setBpvertG(Integer.parseInt(PBVG.getText().toString() + ""));
             this.approchecommunataire.setNCG(Integer.parseInt(NCG.getText().toString()));
             this.approchecommunataire.setTestpalu(Integer.parseInt(TestP.getText().toString()));
             this.approchecommunataire.setPaluconfirme(Integer.parseInt(PaluC.getText().toString()));
@@ -519,8 +700,19 @@ public class UpdateApproche extends AppCompatActivity {
             this.approchecommunataire.setVaccin(Integer.parseInt(vaccin.getText().toString()));
             this.approchecommunataire.setVisite(Integer.parseInt(viste.getText().toString()));
             this.approchecommunataire.setTr(Integer.parseInt(TR.getText().toString()));
+            this.approchecommunataire.setVaccinG(Integer.parseInt(vaccinG.getText().toString()));
+            approchecommunataire.setNcgG(Integer.parseInt(NCGG.getText().toString()));
+            approchecommunataire.setTestpaluG(Integer.parseInt(TestPG.getText().toString()));
+            approchecommunataire.setPaluconfirmeG(Integer.parseInt(PaluCG.getText().toString()));
+            approchecommunataire.setDiarrheeG(Integer.parseInt(diarrheG.getText().toString()));
+            approchecommunataire.setTrG(Integer.parseInt(TRG.getText().toString()));
+            approchecommunataire.setFa(Integer.parseInt(FA.getText().toString()));
             this.approchecommunataire.setDateCreation(date.getText().toString());
-            this.approchecommunataire.setRapport(this.Rapport);
+            this.approchecommunataire.setSyn(2);
+            if (this.Rapport != null) {
+                this.approchecommunataire.setRapport(this.Rapport);
+
+            }
             //this.approchecommunataire.setDate(new Date());
             try {
                 databaseManager.inserApprocheCommunataire(this.approchecommunataire);
@@ -538,13 +730,43 @@ public class UpdateApproche extends AppCompatActivity {
         boolean error = false;
         if (PBR.getText().toString().trim().isEmpty()) {
             error = true;
+            PBR.setBackgroundColor(Color.WHITE);
             PBR.setError("invalid!");
         }
+        else{
+            PBR.setBackgroundColor(Color.RED);
+        }
+
 
         if (PBG.getText().toString().trim().isEmpty()) {
             error = true;
             PBG.setError("invalid!");
         }
+
+        if (PBRG.getText().toString().trim().isEmpty()) {
+            error = true;
+            PBRG.setBackgroundColor(Color.WHITE);
+            PBRG.setError("invalid!");
+        }
+        else{
+            PBRG.setBackgroundColor(Color.RED);
+        }
+
+        if (PBJG.getText().toString().trim().isEmpty()) {
+            error = true;
+            PBJG.setError("invalid!");
+        }
+        if (PBV.getText().toString().trim().isEmpty()) {
+            error = true;
+            PBV.setError("invalid!");
+        }
+
+
+        if (PBVG.getText().toString().trim().isEmpty()) {
+            error = true;
+            PBVG.setError("invalid!");
+        }
+
 
         if (viste.getText().toString().isEmpty()) {
             error = true;
@@ -592,6 +814,83 @@ public class UpdateApproche extends AppCompatActivity {
         if(NCG.getText().toString().isEmpty()) {
             error = true;
             NCG.setError("invalid!");
+        }
+
+        if (TRG.getText().toString().isEmpty()) {
+            error = true;
+            TRG.setError("invalid!");
+        }
+
+        if (PaluCG.getText().toString().isEmpty()) {
+            error = true;
+            PaluCG.setError("invalid!");
+        }
+        if (TestPG.getText().toString().isEmpty()) {
+            error = true;
+            TestPG.setError("invalid!");
+        }
+        if (diarrheG.getText().toString().isEmpty()) {
+            error = true;
+            diarrheG.setError("invalid!");
+        }
+
+        if (vaccinG.getText().toString().isEmpty()) {
+            error = true;
+            vaccinG.setError("invalid!");
+        }
+        if(NCGG.getText().toString().isEmpty()) {
+            error = true;
+            NCGG.setError("invalid!");
+        }
+
+        if(FA.getText().toString().isEmpty()) {
+            error = true;
+            FA.setError("invalid!");
+        }
+
+        if (usb==null) {
+            error = true;
+            TextView errorText= ((TextView) spinnerusb.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED); //just to highlight that this is an error
+            errorText.setText("Ce champ est obliatire");
+        }
+
+        if (anne.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinneranne.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (moi.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnermois.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+        if (spinnerlocalite.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnerlocalite.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnercommune.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnercommune.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (spinnermoughata.getSelectedItemPosition()==0) {
+            error = true;
+            TextView errorText= ((TextView)spinnermoughata.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
         }
 
         return error;

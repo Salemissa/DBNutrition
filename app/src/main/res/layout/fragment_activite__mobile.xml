@@ -12,12 +12,11 @@
         android:background="@drawable/card"
         android:id="@+id/card"
         app:cardElevation="2dp"
+        app:cardBackgroundColor="#F5F5F5"
         app:cardCornerRadius="5dp"
         app:contentPadding="10dp"
        >
-
-
-            <include
+        <include
                 android:id="@+id/header_VIEW"
                 layout="@layout/localite"
                 android:layout_width="match_parent"
@@ -41,7 +40,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="12dp"
                     android:text="Localité"
                     android:textSize="@dimen/label"
                     android:textStyle="bold" />
@@ -50,6 +49,7 @@
                     android:id="@+id/localite"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:layout_marginLeft="-22dp"
                     android:layout_height="match_parent"
                     android:spinnerMode="dropdown" />
             </LinearLayout>
@@ -88,11 +88,8 @@
         android:layout_width="match_parent"
         android:layout_height="304dp"
         android:layout_below="@id/lyoutage"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="19dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -111,7 +108,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Fille MAS "
+                android:text="@string/f_mas"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -122,9 +119,13 @@
                 android:layout_marginLeft="30dp"
                 android:layout_weight="1"
                 android:background="#FF0000"
-
                 android:gravity="center"
                 android:inputType="number"
+                android:textSize="@dimen/label"
+                android:focusableInTouchMode="true"
+                android:nextFocusRight="@id/RougeG"
+                android:maxLines="1"
+                android:textStyle="bold"
                 android:maxLength="4" />
 
             <TextView
@@ -134,7 +135,10 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Garcon MAS "
+                android:text="@string/g_mas"
+                android:nextFocusRight="@id/editPassword"
+                android:nextClusterForward="@id/editPassword"
+                android:maxLines="1"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -148,7 +152,12 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
-                android:textSize="10pt" />
+                android:textSize="@dimen/label"
+                android:focusableInTouchMode="true"
+                android:nextFocusDown="@id/JauneF"
+                android:nextClusterForward="@id/JauneF"
+                android:maxLines="1"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -168,7 +177,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Fille MAM"
+                android:text="@string/f_mam"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -182,7 +191,12 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
-                android:textSize="@dimen/label" />
+                android:textSize="@dimen/label"
+                android:focusableInTouchMode="true"
+                android:nextFocusRight="@id/JauneG"
+                android:nextClusterForward="@id/JauneG"
+                android:maxLines="1"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView19"
@@ -191,7 +205,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Garcon MAM"
+                android:text="@string/g_mam"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -205,7 +219,11 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
-                android:textSize="10pt" />
+                android:textSize="@dimen/label"
+                android:nextFocusDown="@id/VertF"
+                android:nextClusterForward="@id/VertF"
+                android:maxLines="1"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -225,7 +243,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Fille SAINT"
+                android:text="@string/f_bp"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -239,7 +257,11 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
-                android:textSize="10pt" />
+                android:textSize="@dimen/label"
+                android:nextFocusRight="@id/VertG"
+                android:nextClusterForward="@id/VertG"
+                android:maxLines="1"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView56"
@@ -248,7 +270,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Garcon SAINT"
+                android:text="@string/g_bp"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -262,7 +284,10 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
-                android:textSize="10pt" />
+                android:textSize="@dimen/label"
+                android:nextClusterForward="@id/odemeF"
+                android:maxLines="1"
+                android:textStyle="bold" />
         </LinearLayout>
 
 
@@ -282,8 +307,10 @@
                 android:layout_marginLeft="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text=" Fille Oedeme  "
+                android:text="@string/f_oedeme"
                 android:textSize="@dimen/label"
+                android:nextClusterForward="@id/VertG"
+                android:maxLines="1"
                 android:textStyle="bold" />
 
             <EditText
@@ -296,6 +323,9 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:nextClusterForward="@id/odemeG"
+                android:maxLines="1"
                 android:textStyle="bold" />
 
             <TextView
@@ -304,7 +334,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Garcon Oedeme"
+                android:text="@string/g_oedeme"
                 android:textSize="@dimen/label"
                 android:textStyle="bold" />
 
@@ -318,6 +348,7 @@
                 android:inputType="number"
                 android:maxLength="4"
                 android:gravity="center"
+                android:textSize="@dimen/label"
                 android:layout_gravity="center"
                 android:textStyle="bold" />
         </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.myapp1;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -23,10 +24,14 @@ import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Relais;
+import com.example.myapp1.syn.Session;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.example.myapp1.R.string.MsgRed;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,12 +54,15 @@ public class Gaspa extends Fragment {
     Spinner spinnerrelais;
     Spinner spinnermois, spinneranne;
     Relais relais;
-    EditText FE,FEP,FA06R,FAO6P,FA23R,FA23P;
+    EditText FE,FEP,FA06R,FAO6P,FA23R,FA23P,nbrgaspa;
     DatabaseManager databaseManager;
     private  String moi,anne;
     private SimpleDateFormat sdf;
     View view;
     private Button Ajouter;
+    private Session session;
+    private String commune;
+    private Localite localite;
 
 
     public Gaspa() {
@@ -112,7 +120,10 @@ public class Gaspa extends Fragment {
         this.FAO6P=(EditText) this.view.findViewById(R.id.fa06p);
         this.FA23R= (EditText) this.view.findViewById(R.id.fa23);
         this.FA23P= (EditText) this.view.findViewById(R.id.fa23p);
+        this.nbrgaspa= (EditText) this.view.findViewById(R.id.nbrgaspa);
         this.Ajouter = (Button) this.view.findViewById(R.id.Ajouter);
+        this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        this.session = new Session(getContext());
         Donnes donnes=new Donnes();
         final String[] annee = donnes.annee;
         String[] mois = donnes.mois;
@@ -221,6 +232,7 @@ public class Gaspa extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
+                commune=item;
                 CommuneLocalite(item);
             }
 
@@ -235,9 +247,14 @@ public class Gaspa extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
+
                 LocaliteRelais(item);
                 if(!item.isEmpty()) {
-
+                    for (Localite loc : databaseManager.localitename(item)) {
+                        if (loc.getCommune().getCommunename().equals(commune)) {
+                            localite = loc;
+                        }
+                    }
                 }
             }
 
@@ -251,7 +268,16 @@ public class Gaspa extends Fragment {
         spinnerrelais.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                relais = (Relais) parent.getSelectedItem();
+
+                String item = (String) parent.getSelectedItem();
+
+                if(!item.isEmpty() && localite!=null) {
+                    for (Relais rel : localite.getRelais()) {
+                        if (rel.getNom().equals(item)) {
+                            relais= rel;
+                        }
+                    }
+                }
 
 
             }
@@ -276,8 +302,17 @@ public class Gaspa extends Fragment {
         List<String> communesM = new ArrayList<String>();
         communesM.add("");
         if (moughataname != null) {
+            boolean trouv=false;
             for (Commune commune : moughataname.getCommunes()) {
-                communesM.add(commune.getCommunename().toString());
+                for(Localite localite:commune.getLocalites()) {
+                    if(localite.getRelais().size()!=0) {
+                        trouv=true;
+                    }
+                    if(trouv) {
+                        communesM.add(commune.getCommunename().toString());
+                        break;
+                    }
+                }
             }
         }
 
@@ -295,17 +330,15 @@ public class Gaspa extends Fragment {
         }
         List<String> localiesCommune = new ArrayList<String>();
         localiesCommune.add("");
+                if (communesel != null) {
+                    for (Localite localite : communesel.getLocalites()) {
+                        if(localite.getRelais().size() !=0) {
+                            localiesCommune.add(localite.getLocalitename().toString());
+                        }
+                    }
 
-        if (communesel != null) {
-            for (Localite localite : communesel.getLocalites()) {
 
-                if(localite.getUsb()!=null) {
-                    localiesCommune.add(localite.getLocalitename().toString());
                 }
-            }
-
-
-        }
 
         ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, localiesCommune);
         this.spinnerlocalite.setAdapter(structureadapter);
@@ -316,22 +349,26 @@ public class Gaspa extends Fragment {
     void LocaliteRelais(String localite) {
         Localite localitee= null;
         if(!localite.isEmpty()){
-           localitee = databaseManager.localitename(localite);
+            for(Localite loc:databaseManager.localitename(localite)) {
+                if (loc.getCommune().getCommunename().equals(commune)) {
+                    localitee = loc;
+                }
+            }
         }
-        List<Relais> RelaisLocalite = new ArrayList<Relais>();
+        List<String> RelaisLocalite = new ArrayList<String>();
         List<String> Relais = new ArrayList<String>();
         Relais.add("");
-        RelaisLocalite.add(new Relais());
+        RelaisLocalite.add("");
 
         if (localitee != null) {
             for (Relais relais : localitee.getRelais()) {
                     //Relais.add(relais.s)
-                RelaisLocalite.add(relais);
+                RelaisLocalite.add(relais.getNom());
             }
 
 
         }
-        ArrayAdapter<Relais> adapter = new ArrayAdapter<Relais>(this.getActivity(), android.R.layout.simple_spinner_item, RelaisLocalite);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, RelaisLocalite);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
       //  ArrayAdapter relaisadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, RelaisLocalite);
         this.spinnerrelais.setAdapter(adapter);
@@ -339,30 +376,41 @@ public class Gaspa extends Fragment {
     }
 
     private void AjouterGaspa() {
-        if(!VerficationChampe()){
+        if(VerficationChampe()){}
 
-            com.example.myapp1.model.Gaspa gaspa= new com.example.myapp1.model.Gaspa();
-            gaspa.setFe(Integer.parseInt(FE.getText().toString()));
-            gaspa.setFep(Integer.parseInt(FEP.getText().toString()));
-            gaspa.setFa06p(Integer.parseInt(FAO6P.getText().toString()));
-            gaspa.setFa06r(Integer.parseInt(FA06R.getText().toString()));
-            gaspa.setFa23r(Integer.parseInt(FA23R.getText().toString()));
-            gaspa.setFa23p(Integer.parseInt(FA23P.getText().toString()));
-            gaspa.setRelais(relais);
+        else {
+            if (databaseManager.GaspaEnrg(moi, anne, relais) != null) {
+                Toast.makeText(getActivity(), MsgRed,Toast.LENGTH_LONG).show();
+            } else {
 
-            try {
-                databaseManager.insertGaspa(gaspa);
-                Intent intent = new Intent(getActivity(), ListGaspa.class);
-                Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
-                startActivity(intent);
-                this.onDestroyView();
+                com.example.myapp1.model.Gaspa gaspa = new com.example.myapp1.model.Gaspa();
+                gaspa.setFe(Integer.parseInt(FE.getText().toString()));
+                gaspa.setFep(Integer.parseInt(FEP.getText().toString()));
+                gaspa.setFa06p(Integer.parseInt(FAO6P.getText().toString()));
+                gaspa.setFa06r(Integer.parseInt(FA06R.getText().toString()));
+                gaspa.setFa23r(Integer.parseInt(FA23R.getText().toString()));
+                gaspa.setFa23p(Integer.parseInt(FA23P.getText().toString()));
+                gaspa.setNbrgaspa(Integer.parseInt(nbrgaspa.getText().toString()));
+                gaspa.setMois(moi);
+                gaspa.setAnnee(anne);
+                gaspa.setRelais(relais);
+                gaspa.setDate(sdf.format(new Date()));
+                gaspa.setCodeSup(session.getCodeSup());
+                gaspa.setCodeTel(Build.SERIAL);
+
+                try {
+                    databaseManager.insertGaspa(gaspa);
+                    Intent intent = new Intent(getActivity(), ListGaspa.class);
+                    Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
+                    startActivity(intent);
+                    this.onDestroyView();
 
 
-            } catch (Exception e){
+                } catch (Exception e) {
+
+                }
 
             }
-
-
         }
     }
 
@@ -399,6 +447,56 @@ public class Gaspa extends Fragment {
         if (FA23P.getText().toString().isEmpty()) {
             error = true;
             FA23P.setError("invalid!");
+        }
+        if (nbrgaspa.getText().toString().isEmpty()) {
+            error = true;
+            nbrgaspa.setError("invalid!");
+        }
+
+        if (!FE.getText().toString().isEmpty()) {
+            if(Integer.parseInt(FE.getText().toString())>75) {
+                error = true;
+                FE.setError("invalid!");
+            }
+        }
+        if (!FEP.getText().toString().isEmpty() && !FE.getText().toString().isEmpty()) {
+
+            if(Integer.parseInt(FEP.getText().toString())>Integer.parseInt(FE.getText().toString())) {
+                error = true;
+                FEP.setError("invalid!");
+            }
+        }
+        if (!FA06R.getText().toString().isEmpty()) {
+            if(Integer.parseInt(FA06R.getText().toString())>75) {
+                error = true;
+                FA06R.setError("invalid!");
+            }
+
+        }
+
+
+        if (!FAO6P.getText().toString().isEmpty() && !FA06R.getText().toString().isEmpty() ) {
+            if(Integer.parseInt(FAO6P.getText().toString())>Integer.parseInt(FA06R.getText().toString())) {
+                error = true;
+                FAO6P.setError("invalid!");
+            }
+
+        }
+        if (!FA23R.getText().toString().isEmpty()) {
+            if(Integer.parseInt(FA23R.getText().toString())>75) {
+                error = true;
+                FA23R.setError("invalid!");
+            }
+
+
+        }
+
+
+        if (!FA23P.getText().toString().isEmpty() &&  !FA23R.getText().toString().isEmpty()) {
+            if(Integer.parseInt(FA23P.getText().toString())>Integer.parseInt(FA23R.getText().toString())) {
+                error = true;
+                FA23P.setError("invalid!");
+            }
         }
 
 

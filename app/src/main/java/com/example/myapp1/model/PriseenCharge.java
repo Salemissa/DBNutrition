@@ -10,6 +10,13 @@ public class PriseenCharge {
     @DatabaseField(generatedId = true)
     @JsonProperty("id")
     private Long id;
+
+    @DatabaseField
+    private Long idu;
+    @DatabaseField
+    private  String mois;
+    @DatabaseField
+    private String annee;
     @DatabaseField
     @JsonProperty("age")
     private Integer age;
@@ -51,7 +58,9 @@ public class PriseenCharge {
     @JsonProperty("pb")
     private Integer pb;
 
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true,maxForeignAutoRefreshLevel = 5)
     @JsonProperty("localite")
     private Localite localite;
     @DatabaseField
@@ -59,10 +68,31 @@ public class PriseenCharge {
     private String date;
     @DatabaseField
     int syn ;
+    @DatabaseField
+    private String codeSup;
+    @DatabaseField
+    private String codeTel;
     public PriseenCharge (){};
+
 
     public Long getId() {
         return id;
+    }
+
+    public String getMois() {
+        return mois;
+    }
+
+    public void setMois(String mois) {
+        this.mois = mois;
+    }
+
+    public String getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(String annee) {
+        this.annee = annee;
     }
 
     public void setId(Long id) {
@@ -71,6 +101,14 @@ public class PriseenCharge {
 
     public int getAge() {
         return age;
+    }
+
+    public Long getIdu() {
+        return idu;
+    }
+
+    public void setIdu(Long idu) {
+        this.idu = idu;
     }
 
     public void setAge(int age) {
@@ -155,6 +193,22 @@ public class PriseenCharge {
 
     public void setPb(int pb) {
         this.pb = pb;
+    }
+
+    public String getCodeSup() {
+        return codeSup;
+    }
+
+    public void setCodeSup(String codeSup) {
+        this.codeSup = codeSup;
+    }
+
+    public String getCodeTel() {
+        return codeTel;
+    }
+
+    public void setCodeTel(String codeTel) {
+        this.codeTel = codeTel;
     }
 
     public Localite getLocalite() {

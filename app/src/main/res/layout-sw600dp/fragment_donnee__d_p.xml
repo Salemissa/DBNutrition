@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".pcim.Donnee_DP">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/card"
+        android:background="@drawable/card"
+        app:cardBackgroundColor="#F5F5F5"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="5dp"
+        app:contentPadding="10dp"
+        >
+    <include
+        android:id="@+id/header_VIEW"
+        layout="@layout/structurelayout"
+        android:layout_width="match_parent"
+        android:layout_height="91dp"
+        android:textStyle="bold" />
+
+</androidx.cardview.widget.CardView>
+    <LinearLayout
+        android:id="@+id/lyoutage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/card"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="107dp"
+            android:layout_height="match_parent"
+            android:text="Age"
+            android:textSize="@dimen/label"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/age"
+            android:layout_width="159dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/colore"
+        android:layout_width="match_parent"
+        android:layout_height="485dp"
+        android:layout_below="@+id/card"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        android:weightSum="8">
+
+        <LinearLayout
+            android:id="@+id/lyoutpb"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewmas"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/pbmere_mas_f"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/pbmasF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FF0000"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView33"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/pbmere_mas_g"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/pbmasG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FF0000"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyoutpb2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewmasG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/pbmere_mam_f"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/pbmamF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FFFF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/pbmere_mam_g"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/pbmamG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FFFF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyoutrouge"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/f_mas"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/RougeF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:background="#FF0000"
+                android:textSize="@dimen/label"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/g_mas"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/RougeG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FF0000"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyoutjaune"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewJ"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/f_mam"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/JauneF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:background="#FFFF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="@dimen/label"
+                android:text="@string/g_mam"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/JauneG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FFFF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyoutvert"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewV"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/f_bp"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/VertF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:background="#40FF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView56"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/g_bp"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/VertG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#40FF00"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lyoutimage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewOdeme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/f_oedeme"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/odemeF"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#BBBB"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/g_oedeme"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/odemeG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#BBBB"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyoutzscore"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginTop="40dp"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textViewzscore"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/zs_mas_f"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/zscore"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FFF8DC"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/zs_mas_g"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/zscoreG"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FFF8DC"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lyoutzscore2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/zs_mam_f"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/zscore2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FFF8DC"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/zs_mam_g"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/zscore2G"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#FFF8DC"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/Ajouter"
+        android:layout_width="142dp"
+        android:layout_height="68dp"
+        android:layout_above="@+id/imageRaport"
+        android:layout_below="@+id/colore"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="53dp"
+        android:layout_marginEnd="207dp"
+        android:layout_marginRight="207dp"
+        android:layout_marginBottom="-115dp"
+        android:background="@color/colorPrimary"
+        android:text="Ajouter"
+        android:textColor="#FFFF" />
+
+    <ImageView
+        android:id="@+id/imageRaport"
+        android:layout_width="108dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/colore"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginRight="18dp"
+        android:src="@drawable/add_a_photo" />
+
+
+</RelativeLayout>

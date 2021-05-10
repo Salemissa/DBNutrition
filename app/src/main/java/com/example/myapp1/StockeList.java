@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.myapp1.DataManager.DatabaseManager;
@@ -22,12 +24,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -87,7 +91,7 @@ public class StockeList extends AppCompatActivity {
             {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(StockeList.this);
                 alertDialog.setTitle("Confirm ");
-                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                alertDialog.setMessage(getString(R.string.MsgSyn));
                 // alertDialog.setIcon(R.drawable.delete);
                 alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
                     @Override
@@ -109,6 +113,21 @@ public class StockeList extends AppCompatActivity {
             }
         });
 
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MedicamentIntrants clickedItem= (MedicamentIntrants) list.getItemAtPosition(position);
+                Intent intent= new Intent( StockeList.this, UpdateStock.class);
+
+                //Intent intent = new Intent(DepistagePassifList.this, Donnee_DP.class);
+
+                intent.putExtra("id",clickedItem.getId().longValue());
+                startActivity(intent);
+                //Toast.makeText(DepistagePassifList.this,""+clickedItem.getId(), LENGTH_LONG).show();
+                //startActivityForResult(intent,"");
+                //recherce(clickedItem.getCode());
+            }
+        });
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
@@ -138,7 +157,7 @@ public class StockeList extends AppCompatActivity {
         List<MedicamentIntrants> Listsyn=new ArrayList<MedicamentIntrants>();
 
         for(MedicamentIntrants medicamentIntrants:databaseManager.MedicamentIntrantsList()){
-            if(medicamentIntrants.getSyn()==0){
+            if(medicamentIntrants.getSyn()==0 || medicamentIntrants.getSyn()==2){
                 Listsyn.add(medicamentIntrants);
             }
         }
@@ -147,10 +166,33 @@ public class StockeList extends AppCompatActivity {
             MedicamentIntrants medicamentSyn=new MedicamentIntrants();
             for(MedicamentIntrants medicamentIntrants:Listsyn) {
                 medicamentSyn =medicamentIntrants;
-                medicamentSyn.setId(0L);
+
                 Structure structure = new Structure();
                 structure.setId(medicamentIntrants.getStructure().getId());
                 structure.setStructurename(medicamentIntrants.getStructure().getStructurename());
+                String date="";//approcheCommunataire.getDateCreation().replaceAll("/","-");
+                String mots[] = medicamentIntrants.getDateRapport().split("/");
+
+                for (int i = mots.length-1; i >= 0; i--) {
+                    if(i==0) {
+                        date = date + mots[i] ;
+                    }
+                    else{
+                        date = date + mots[i] + "-";
+                    }
+
+                }
+//
+                String rapport="";
+                medicamentSyn.setRapportIntrant(null);
+                if(medicamentIntrants.getRapport() !=null) {
+                    rapport = Base64.encodeToString(medicamentIntrants.getRapport(), Base64.DEFAULT);
+
+                    medicamentSyn.setRapport(null);
+
+                    medicamentSyn.setRapportIntrant(rapport);
+                }
+                medicamentSyn.setDateRapport(date);
                 medicamentSyn.setStructure(structure);
 
                 Medicament medicament = new Medicament();
@@ -175,8 +217,8 @@ public class StockeList extends AppCompatActivity {
         }
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
-            alertDialog.setMessage("Rien a synchroniser maintenant");
+            alertDialog.setTitle(getString(R.string.info));
+            alertDialog.setMessage(getString(R.string.Riensyn));
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -203,33 +245,38 @@ public class StockeList extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                     AlertDialog alertDialog = new AlertDialog.Builder(StockeList.this).create();
-                    alertDialog.setTitle("info");
-                    alertDialog.setMessage("Les données ont été synchronisées");
+                    alertDialog.setTitle(getString(R.string.info));
+                    alertDialog.setMessage("Synchronisé avec succés");
+                    Toast.makeText(getApplication(), R.string.messageSyn, LENGTH_LONG).show();
 
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            for (MedicamentIntrants medicamentIntrants : arrayList) {
-                                if (medicamentIntrants.getSyn() == 0 || medicamentIntrants.getSyn() == 2) {
-                                    medicamentIntrants.setSyn(1);
-                                    //databaseManager.upda(priseenCharge);
-                                }
+                            for (MedicamentIntrants medicamentIntrants : response.body()) {
+                                    if(medicamentIntrants.getSyn()==0){
+                                    databaseManager.updatedemedicamentIntrants(medicamentIntrants);
+                                    }
                             }
+
+                    for (MedicamentIntrants medicamentIntrants : databaseManager.MedicamentIntrantsList()) {
+                        if(medicamentIntrants.getSyn()==0 || medicamentIntrants.getSyn()==2){
+                            medicamentIntrants.setSyn(1);
+                            databaseManager.updatedemedicamentIntrants(medicamentIntrants);
+                        }
+                    }
+
                             arrayList= databaseManager.MedicamentIntrantsList();
                             adapter.notifyDataSetChanged();
 
-                        }
-                    });
 
-                   // alertDialog.show();
+
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
+
 
 
                 }else{
                     Log.i("REPONSE", response.errorBody().toString());
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplication(), R.string.ProblemServeur, LENGTH_LONG).show();
                     //progressDoalog.dismiss();
                 }
 
@@ -240,6 +287,7 @@ public class StockeList extends AppCompatActivity {
                 Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplication(), R.string.ProblemeConnexion, LENGTH_LONG).show();
                 //progressDoalog.dismiss();
             }
         });
@@ -251,9 +299,9 @@ public class StockeList extends AppCompatActivity {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirmation");
-        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
+        alertDialog.setMessage(R.string.ConfirSupp);
         // alertDialog.setIcon(R.drawable.delete);
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -263,7 +311,7 @@ public class StockeList extends AppCompatActivity {
 
             }
         });
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -346,6 +394,7 @@ public class StockeList extends AppCompatActivity {
             }
 
             //(2) : Récupération des TextView de notre layout
+            ImageView Rapport=(ImageView) layoutItem.findViewById(R.id.imageRaport);;
             TextView mois= (TextView)layoutItem.findViewById(R.id.mois);
             TextView annee= (TextView)layoutItem.findViewById(R.id.annee);
             // TextView Moughata = (TextView) layoutItem.findViewById(R.id.moughata);
@@ -365,10 +414,21 @@ public class StockeList extends AppCompatActivity {
             }
 
             if(medicamentIntrants.get(position).getMedicament() !=null){
-                medicament.setText("Medicament : "+medicamentIntrants.get(position).getMedicament().getName());
+                medicament.setText("Medicament : "+medicamentIntrants.get(position).getMedicament().getNom());
 
             }else{
                 medicament.setText("Medicament : ");
+            }
+
+            if(medicamentIntrants.get(position).getRapport() !=null){
+                //Toast.makeText(getApplicationContext(),"Postion"+position, LENGTH_LONG).show();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(medicamentIntrants.get(position).getRapport(), 0, medicamentIntrants.get(position).getRapport().length);
+                if(bitmap!=null){
+                    Rapport.setImageBitmap(bitmap);
+                }
+            }
+            else{
+                Rapport.setImageBitmap(null);
             }
 
 

@@ -12,6 +12,7 @@
         android:background="@drawable/card"
         android:id="@+id/card"
         app:cardCornerRadius="5dp"
+        app:cardBackgroundColor="#F5F5F5"
         app:cardElevation="3dp"
         app:contentPadding="10dp"
         >
@@ -29,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_below="@id/card"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="40dp"
         android:orientation="horizontal">
 
         <TextView
@@ -37,11 +38,14 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
+            android:layout_gravity="center"
             android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:textAlignment="textStart"
             android:text="Age"
             android:textSize="@dimen/label"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="RtlCompat" />
 
         <Spinner
             android:id="@+id/age"
@@ -54,7 +58,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="ss debut"
             android:textSize="@dimen/label"
@@ -66,6 +69,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
 
@@ -73,7 +77,6 @@
             android:id="@+id/textView9"
             android:layout_width="95dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
             android:gravity="center"
             android:text="venant"
             android:textSize="@dimen/label"
@@ -85,6 +88,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
     </LinearLayout>
@@ -103,11 +107,13 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
             android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:textAlignment="textStart"
             android:text="NCG"
             android:textSize="@dimen/label"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="RtlCompat" />
 
         <EditText
             android:id="@+id/NCG"
@@ -116,6 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
             android:ems="10"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
 
@@ -136,6 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
 
@@ -146,7 +154,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:gravity="center"
-            android:text="Rea"
+            android:text="Read"
             android:textSize="@dimen/label"
             android:textStyle="bold" />
 
@@ -156,7 +164,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
     </LinearLayout>
@@ -176,11 +184,13 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
             android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:textAlignment="textStart"
             android:text="Gueris"
             android:textSize="@dimen/label"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="RtlCompat" />
 
         <EditText
             android:id="@+id/Gueris"
@@ -189,6 +199,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
             android:ems="10"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
 
@@ -211,6 +222,7 @@
             android:layout_height="56dp"
             android:layout_gravity="center"
             android:ems="10"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
 
@@ -231,6 +243,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
     </LinearLayout>
@@ -241,10 +254,7 @@
         android:layout_height="56dp"
         android:layout_below="@id/sort1"
         android:layout_marginTop="35dp"
-
         android:orientation="horizontal">
-
-
         <TextView
             android:id="@+id/textView30"
             android:layout_width="0dp"
@@ -263,6 +273,28 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
             android:ems="10"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="4" />
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="Autre"
+            android:textSize="@dimen/label"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/autre"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:ems="10"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
 
@@ -284,6 +316,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
 
@@ -294,7 +327,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:text="Trans CRENAS"
+            android:text="Transf CRENAS"
             android:textSize="@dimen/label"
             android:textStyle="bold" />
 
@@ -305,6 +338,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="4" />
     </LinearLayout>

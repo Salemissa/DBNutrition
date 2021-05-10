@@ -10,7 +10,7 @@
                 android:id="@+id/nav_home"
                 android:icon="@drawable/home"
 
-                android:title="@string/menu_home" />
+                android:title="Menu" />
         </group>
 
     </item>
@@ -19,15 +19,15 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/dp"
-                    android:icon="@drawable/passif"
+                    android:icon="@drawable/ic_ddp"
                     android:title="@string/passif" />
                 <item
                     android:id="@+id/sss"
-                    android:icon="@drawable/mobile"
+                    android:icon="@drawable/ic_suivi_sous_surveillance"
                     android:title="@string/suivi_sous_surveillance" />
                 <item
                     android:id="@+id/apc"
-                    android:icon="@drawable/mobile"
+                    android:icon="@drawable/ic_pec_com"
                     android:title="@string/approche" />
 
             </group>
@@ -38,16 +38,16 @@
             <group android:checkableBehavior="single">
              <item
                     android:id="@+id/cdd"
-                    android:icon="@drawable/prise"
+                    android:icon="@drawable/ic_campagne"
                     android:title="@string/compagne" />
 
                 <item
                     android:id="@+id/pen"
-                    android:icon="@drawable/mobile2"
+                    android:icon="@drawable/ic_pec"
                     android:title="@string/prise" />
                 <item
                     android:id="@+id/acm"
-                    android:icon="@drawable/user"
+                    android:icon="@drawable/ic_activit__mobile"
                     android:title="@string/mobil" />
 
             </group>
@@ -59,7 +59,7 @@
             <group android:checkableBehavior="single">
             <item
                 android:id="@+id/gaspa"
-                android:icon="@drawable/intevenants"
+                android:icon="@drawable/ic_gestion_des_intervenants"
                 android:title="Suvi des GASPA" />
                 <item
                     android:id="@+id/intervenant"
@@ -73,7 +73,7 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/stock"
-                    android:icon="@drawable/stocke"
+                    android:icon="@drawable/ic_gestion_des_intrants"
                     android:title="Gestion des Intrants " />
             </group>
         </menu>

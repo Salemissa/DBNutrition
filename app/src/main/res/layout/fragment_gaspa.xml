@@ -12,15 +12,17 @@
         android:id="@+id/card"
         app:cardCornerRadius="5dp"
         app:cardElevation="3dp"
+        app:cardBackgroundColor="#F5F5F5"
         app:contentPadding="10dp"
         >
-    <include
-        android:id="@+id/header_VIEW"
-        layout="@layout/localite"
-        android:layout_width="match_parent"
-        android:layout_height="137dp"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+
+        <include
+            android:id="@+id/header_VIEW"
+            layout="@layout/localite"
+            android:layout_width="wrap_content"
+            android:layout_height="127dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,9 +30,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="@dimen/pading"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="90dp"
         android:orientation="horizontal"
         android:weightSum="4">
 
@@ -38,29 +40,32 @@
             android:id="@+id/textView33"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="Localité"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/label"
+            android:textStyle="bold"/>
 
         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/localite"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_marginLeft="-22dp"
+            android:layout_marginEnd="22dp"
             android:gravity="center_horizontal"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:layout_marginRight="22dp" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="Relais"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="@dimen/label"
+            android:textStyle="bold"
+             />
 
         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/relais"
@@ -73,11 +78,43 @@
     </LinearLayout>
     </androidx.cardview.widget.CardView>
     <LinearLayout
-        android:id="@+id/l1"
+        android:id="@+id/l0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/card"
         android:layout_marginTop="25dp"
+        android:weightSum="6"
+        android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_marginLeft="15dp"
+        android:layout_height="match_parent"
+        android:text="@string/nbr_gaspa"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/label"
+        android:textStyle="bold"
+         />
+
+    <EditText
+        android:id="@+id/nbrgaspa"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="6"
+        android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/l1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/l0"
+        android:layout_marginTop="30dp"
         android:weightSum="6"
         android:orientation="horizontal">
 
@@ -87,8 +124,11 @@
             android:layout_weight="2"
             android:layout_marginLeft="15dp"
             android:layout_height="match_parent"
-            android:text="FE Réf"
-            android:textSize="20sp"
+            android:text="@string/fe_enr"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/label"
+
             android:textStyle="bold" />
 
         <EditText
@@ -107,8 +147,12 @@
             android:layout_weight="2"
             android:layout_marginLeft="15dp"
             android:layout_height="match_parent"
-            android:text="FE Présentes"
-            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAlignment="inherit"
+
+            android:text="@string/fe_pres"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
@@ -139,8 +183,10 @@
             android:layout_weight="2"
             android:layout_marginLeft="15dp"
             android:layout_height="match_parent"
-            android:text="FA 0-6 Réf"
-            android:textSize="20sp"
+            android:text="@string/fa_0_6_enr"
+            android:textSize="@dimen/label"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
             android:textStyle="bold" />
 
         <EditText
@@ -159,8 +205,11 @@
             android:layout_weight="2"
             android:layout_marginLeft="15dp"
             android:layout_height="match_parent"
-            android:text="FA 0-6 Présentes"
-            android:textSize="20sp"
+            android:text="@string/fa_0_6_pres"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
@@ -191,8 +240,10 @@
             android:layout_weight="2"
             android:layout_marginLeft="15dp"
             android:layout_height="match_parent"
-            android:text="FA 0-23 Réf"
-            android:textSize="20sp"
+            android:text="@string/fa_6_23_enr"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
@@ -211,8 +262,11 @@
             android:layout_weight="2"
             android:layout_marginLeft="15dp"
             android:layout_height="match_parent"
-            android:text="FA 0-6 Présentes"
-            android:textSize="20sp"
+            android:text="@string/fa_6_23_pres"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/label"
             android:textStyle="bold" />
 
         <EditText
@@ -223,21 +277,34 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:inputType="number"
-            android:textSize="20sp"
+            android:textSize="@dimen/label"
             android:maxLength="6"
             android:textStyle="bold" />
     </LinearLayout>
 
     <Button
         android:id="@+id/Ajouter"
-        android:layout_width="138dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/l3"
+        android:layout_width="134dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/imageRaport"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp"
+        android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
         android:text="Ajouter"
         android:textColor="#FFF" />
+
+    <ImageView
+        android:id="@+id/imageRaport"
+        android:layout_width="108dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/l3"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/add_a_photo" />
 
 
 </RelativeLayout>

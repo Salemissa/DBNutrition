@@ -1,5 +1,7 @@
 package com.example.myapp1;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -30,6 +32,10 @@ import java.util.List;
 public class UpdatePrise extends AppCompatActivity {
     DatabaseManager databaseManager;
     private Button Ajouter;
+    private String[] Anne;
+    private String[] mois;
+    Spinner spinnermois;
+    Spinner spinneranne;
     Spinner spinnermoughata;
     Spinner spinnercommune;
     Spinner spinnerlocalite;
@@ -41,15 +47,19 @@ public class UpdatePrise extends AppCompatActivity {
     Spinner spinnerStatu,spinerpec,spinnerRef;
     Spinner spinnerOdeme;
     EditText PB,Age,contact,enfant,accompagnant,MAS;
-    String sexe,statu,odeme,pec,ref;
+    String sexe,statu,odeme,pec,ref, moi,anne;
     private Button Modfier;
     List<String>  communeList=null;
     List<String>  localiteeList=null;
+    private String commune;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_prise);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        this.spinnermois = this.findViewById(R.id.mois);
+        this.spinneranne = this.findViewById(R.id.annee);
         this.spinnermoughata = this.findViewById(R.id.moghata);
         this.spinnercommune = this.findViewById(R.id.commune);
         this.spinnerlocalite = this.findViewById(R.id.localite);
@@ -71,15 +81,44 @@ public class UpdatePrise extends AppCompatActivity {
         this.Ajouter.setVisibility(View.GONE);
 
         this.Modfier =(Button) this.findViewById(R.id.Modfier);
+
         this.Modfier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ModfierPrise();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(UpdatePrise.this);
+                alertDialog.setTitle("Confirmation ");
+                alertDialog.setMessage(R.string.ConfirModf);
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ModfierPrise();
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(UpdatePrise.this, ListPrisenCharge.class);
+                        startActivity(intent);
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
+
             }
 
 
         });
         Donnes donnes=new Donnes();
+        this.Anne = donnes.annee;
+        this.mois = donnes.mois;
         final String[] Sexe= donnes.Sexe;
         String[] Status = donnes.Statu;
         String[] Odemes=donnes.Odeme;
@@ -208,6 +247,43 @@ public class UpdatePrise extends AppCompatActivity {
             }
         });
 
+        this.moisadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, mois);
+        this.moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinnermois.setAdapter(this.moisadapter);
+
+        this.spinnermois.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                moi = parent.getItemAtPosition(position).toString();
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+        this.anneeadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, Anne);
+        this.anneeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinneranne.setAdapter(this.anneeadapter);
+
+        this.spinneranne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                anne = parent.getItemAtPosition(position).toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
 
         this.moughatadapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, moughata);
         this.moughatadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -228,6 +304,7 @@ public class UpdatePrise extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
+                commune=item;
                 CommuneLocalite(item);
             }
 
@@ -242,7 +319,11 @@ public class UpdatePrise extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                localite = databaseManager.localitename(item);
+                for(Localite loc:databaseManager.localitename(item)) {
+                    if(loc.getCommune().getCommunename().equals(commune)) {
+                        localite = loc;
+                    }
+                }
 
             }
 
@@ -275,17 +356,9 @@ public class UpdatePrise extends AppCompatActivity {
             for (Commune commune : moughataname.getCommunes()) {
                 this.communeList.add(commune.getCommunename().toString());
             }
-
-
-
         }
-
-
-
-
+        this.moughatadapter.notifyDataSetChanged();
         this.communadapter.notifyDataSetChanged();
-
-
     }
     void CommuneLocalite(String commune) {
         Commune communesel=null;
@@ -335,6 +408,16 @@ public class UpdatePrise extends AppCompatActivity {
         this.enfant.setText(priseencharge.getEnfant());
         this.accompagnant.setText(priseencharge.getNomaccompagnant());
         this.MAS.setText(priseencharge.getMas()+"");
+        String mois = this.priseencharge.getMois(); //the value you want the position for
+        ArrayAdapter myAdap = (ArrayAdapter) this.spinnermois.getAdapter();
+        int moisPosition = myAdap.getPosition(mois);
+        //Toast.makeText(this,this.depistage.getStructure().getCommune().getMoughata().getMoughataname()+"00",Toast.LENGTH_LONG).show();
+        this.spinnermois.setSelection(moisPosition);
+        String annee = this.priseencharge.getAnnee(); //the value you want the position for
+        ArrayAdapter anneSel = (ArrayAdapter) this.spinneranne.getAdapter();
+        int annePosition = anneSel.getPosition(annee);
+        //Toast.makeText(this,this.depistage.getStructure().getCommune().getCommunename()+"11",Toast.LENGTH_LONG).show();
+        this.spinneranne.setSelection(annePosition);
         String sexe=this.priseencharge.getSexe(); //the value you want the position for
         ArrayAdapter sexeSel = (ArrayAdapter) this.spinnersexe.getAdapter();
         int agePosition = sexeSel.getPosition(sexe);
@@ -364,7 +447,7 @@ public class UpdatePrise extends AppCompatActivity {
     }
 
     void  MoughataaPardefaut(){
-        Localite localite=databaseManager.localitename(this.priseencharge.getLocalite().getLocalitename());
+        Localite localite=this.priseencharge.getLocalite();
         String Moug=localite.getCommune().getMoughataa().getMoughataname(); //the value you want the position for
         ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
         int MougPosition = MougSel.getPosition(Moug);
@@ -398,6 +481,8 @@ public class UpdatePrise extends AppCompatActivity {
 
     private void ModfierPrise() {
         if(!VerficationChampe()) {
+            priseencharge.setMois(moi);
+            priseencharge.setAnnee(anne);
             priseencharge.setAge(Integer.parseInt(Age.getText().toString()));
             priseencharge.setContact(contact.getText().toString());
             priseencharge.setNomaccompagnant(accompagnant.getText().toString());
@@ -409,6 +494,7 @@ public class UpdatePrise extends AppCompatActivity {
             priseencharge.setEnfant(enfant.getText().toString());
             priseencharge.setMas(MAS.getText().toString());
             priseencharge.setPb(Integer.parseInt(PB.getText().toString()));
+            priseencharge.setSyn(2);
             //priseencharge.setDate(new Date());
             try {
                 databaseManager.updatePrise(priseencharge);
@@ -450,7 +536,20 @@ public class UpdatePrise extends AppCompatActivity {
             accompagnant.setError("invalid!");
         }
 
-
+        if (anne.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinneranne.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+        if (moi.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnermois.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
         if (localite==null) {
             error = true;
             TextView errorText= ((TextView)spinnerlocalite.getSelectedView());

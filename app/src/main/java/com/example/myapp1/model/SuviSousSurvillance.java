@@ -11,6 +11,8 @@ public class SuviSousSurvillance {
     @DatabaseField(generatedId = true)
     private Long id;
     @DatabaseField
+    private Long idu;
+    @DatabaseField
     private  String mois;
     @DatabaseField
     private String annee;
@@ -37,6 +39,8 @@ public class SuviSousSurvillance {
     @DatabaseField
     private int nonRep;
     @DatabaseField
+    private int autrecas;
+    @DatabaseField
     private int refCRENI;
     @DatabaseField
     private int transCRENAS;
@@ -45,6 +49,11 @@ public class SuviSousSurvillance {
 
     @DatabaseField
     private int syn;
+
+    @DatabaseField
+    private String codeSup;
+    @DatabaseField
+    private String codeTel;
 
     public SuviSousSurvillance (){};
 
@@ -76,6 +85,14 @@ public class SuviSousSurvillance {
         return age;
     }
 
+    public int getAutrecas() {
+        return autrecas;
+    }
+
+    public void setAutrecas(int autrecas) {
+        this.autrecas = autrecas;
+    }
+
     public void setAge(String age) {
         this.age = age;
     }
@@ -98,6 +115,14 @@ public class SuviSousSurvillance {
 
     public int getNCG() {
         return ncg;
+    }
+
+    public Long getIdu() {
+        return idu;
+    }
+
+    public void setIdu(Long idu) {
+        this.idu = idu;
     }
 
     public void setNCG(int NCG) {
@@ -212,5 +237,19 @@ public class SuviSousSurvillance {
         this.syn = syn;
     }
 
+    public String getCodeSup() {
+        return codeSup;
+    }
 
+    public void setCodeSup(String codeSup) {
+        this.codeSup = codeSup;
+    }
+
+    public String getCodeTel() {
+        return codeTel;
+    }
+
+    public void setCodeTel(String codeTel) {
+        this.codeTel = codeTel;
+    }
 }

@@ -79,7 +79,7 @@ public class Intervenant extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             final Relais relais = Relais.get(position);
             holder.Nom.setText("Nom: "+relais.getNom());
-            holder.tel.setText("Téléphone"+relais.getTelephone());
+            holder.tel.setText("Téléphone"+relais.getTel());
             holder.sexe.setText("Sexe : "+relais.getSexe());
             if(relais.getLocalite() !=null) {
                 holder.localite.setText("Localit : " + relais.getLocalite().getLocalitename());
@@ -94,7 +94,8 @@ public class Intervenant extends AppCompatActivity {
                 @Override
                 public boolean onLongClick(View view) {
 
-                    removeAt(position);
+                    //removeAt(position);
+
                     return true;
                 }
             });

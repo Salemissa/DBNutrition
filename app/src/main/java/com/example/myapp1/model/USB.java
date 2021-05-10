@@ -48,4 +48,9 @@ public class USB {
     public void setApprocheCommunataires(ForeignCollection<ApprocheCommunataire> approcheCommunataires) {
         this.approcheCommunataires = approcheCommunataires;
     }
+
+    @Override
+    public String toString() {
+        return this.usbname;
+    }
 }

@@ -1,9 +1,13 @@
 package com.example.myapp1.pcim;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,10 +26,12 @@ import com.example.myapp1.DataManager.Donnes;
 import com.example.myapp1.DepistagePassifList;
 import com.example.myapp1.ListPrisenCharge;
 import com.example.myapp1.R;
+import com.example.myapp1.StockeList;
 import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Localite;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.PriseenCharge;
+import com.example.myapp1.syn.Session;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,13 +60,19 @@ public class Prise_en_Charge extends Fragment {
     Spinner spinnermoughata  ;
     Spinner spinnercommune ;
     Spinner spinnerlocalite ;
+    Spinner spinnermois ;
+    Spinner spinneranne ;
     Localite localite;
     EditText PB,Age,contact,enfant,accompagnant,MAS;
     private View v;
+    String moi;
+    String anne;
     Button Ajouter;
     DatabaseManager databaseManager;
     String sexe,statu,odeme,pec,ref;
     private SimpleDateFormat sdf;
+    private Session session;
+    private String commune;
 
     public Prise_en_Charge() {
         // Required empty public constructor
@@ -93,6 +105,7 @@ public class Prise_en_Charge extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,7 +116,10 @@ public class Prise_en_Charge extends Fragment {
         return v;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     private void onViewCreated() {
+        this.spinnermois = this.v.findViewById(R.id.mois);
+        this.spinneranne = this.v.findViewById(R.id.annee);
         this.spinnersexe = this.v.findViewById(R.id.sexe);
         this.spinnerOdeme = this.v.findViewById(R.id.OdemeChoix);
         this.spinnerStatu = this.v.findViewById(R.id.Staut);
@@ -116,9 +132,11 @@ public class Prise_en_Charge extends Fragment {
         this.spinerpec=this.v.findViewById(R.id.PEC);
         this.contact=this.v.findViewById(R.id.contact);
         this.enfant=this.v.findViewById(R.id.enfant);
+        this.MAS=(EditText)this.v.findViewById(R.id.MAS);
+        MAS.setVisibility(View.INVISIBLE);
        this.accompagnant=this.v.findViewById(R.id.accompagnat);
-       this.MAS=this.v.findViewById(R.id.MAS);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        this.session = new Session(getContext());
 
 
         this.Ajouter =(Button) this.v.findViewById(R.id.Ajouter);
@@ -134,6 +152,8 @@ public class Prise_en_Charge extends Fragment {
         });
 
         Donnes donnes=new Donnes();
+        final String[] annee = donnes.annee;
+        String[] mois = donnes.mois;
         final String[] Sexe= donnes.Sexe;
         String[] Status = donnes.Statu;
         String[] Odemes=donnes.Odeme;
@@ -152,15 +172,44 @@ public class Prise_en_Charge extends Fragment {
 
 
 
+        ArrayAdapter moisadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, mois);
+        moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnermois.setAdapter(moisadapter);
 
-//        this.Ajouter.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                AjouterDepistage();
-//            }
-//
-//
-//        });
+        spinnermois.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                moi=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+
+        spinneranne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                anne=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+
+
+        ArrayAdapter anneeadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, annee);
+        anneeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinneranne.setAdapter(anneeadapter);
 
         ArrayAdapter sexeadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item,Sexe);
         sexeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -209,6 +258,24 @@ public class Prise_en_Charge extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
                 odeme = parent.getItemAtPosition(position).toString();
+
+                if(odeme.equals("Oui")){
+                    MAS.setVisibility(View.VISIBLE);
+                }
+
+                else{
+                    if(!PB.getText().toString().isEmpty()){
+                        if(Integer.parseInt(PB.getText().toString())<115){
+                            MAS.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            MAS.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                    else{
+                        MAS.setVisibility(View.INVISIBLE);
+                    }
+                }
             }
 
             @Override
@@ -276,6 +343,7 @@ public class Prise_en_Charge extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
+                commune=item;
                 CommuneLocalite(item);
             }
 
@@ -290,7 +358,13 @@ public class Prise_en_Charge extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                localite = databaseManager.localitename(item);
+                if(!item.isEmpty()) {
+                    for (Localite loc : databaseManager.localitename(item)) {
+                        if (loc.getCommune().getCommunename().equals(commune)) {
+                            localite = loc;
+                        }
+                    }
+                }
             }
 
             @Override
@@ -320,6 +394,8 @@ public class Prise_en_Charge extends Fragment {
         this.spinnercommune.setAdapter(communadapter);
         communadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+
+
     }
 
 
@@ -340,6 +416,8 @@ public class Prise_en_Charge extends Fragment {
         ArrayAdapter structureadapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item, localiesCommune);
         this.spinnerlocalite.setAdapter(structureadapter);
         structureadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
     }
 
 
@@ -347,6 +425,8 @@ public class Prise_en_Charge extends Fragment {
           if(this.VerficationChampe()){}
           else {
               PriseenCharge priseenCharge = new PriseenCharge();
+              priseenCharge.setAnnee(anne);
+              priseenCharge.setMois(moi);
               priseenCharge.setAge(Integer.parseInt(Age.getText() + ""));
               priseenCharge.setContact(contact.getText().toString());
               priseenCharge.setNomaccompagnant(accompagnant.getText().toString());
@@ -361,12 +441,58 @@ public class Prise_en_Charge extends Fragment {
               priseenCharge.setPb(Integer.parseInt(PB.getText().toString()));
               priseenCharge.setDate(sdf.format(new Date()));
               priseenCharge.setSyn(0);
+              priseenCharge.setCodeSup(session.getCodeSup());
+              priseenCharge.setCodeTel(Build.SERIAL);
               try {
-                  databaseManager.inserPrisEnCharge(priseenCharge);
+                  try {
+                      databaseManager.inserPrisEnCharge(priseenCharge);
+                      Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
+                  }
+                  catch (Exception e){
+                      Toast.makeText(getActivity(),"Probleme ", Toast.LENGTH_LONG).show();
+                  }
 
-                  Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
-                  Intent intent = new Intent(getActivity(), ListPrisenCharge.class);
-                  startActivity(intent);
+
+                  AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                  alertDialog.setTitle("Confirmation");
+                  alertDialog.setMessage("Voulez-vous ajouter un nouveau enfant ?");
+                  // alertDialog.setIcon(R.drawable.delete);
+                  alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                          enfant.getText().clear();
+                          accompagnant.getText().clear();
+                          contact.getText().clear();
+                          Age.getText().clear();
+                          PB.getText().clear();
+                          MAS.getText().clear();
+
+                          spinnerlocalite.setSelection(0);
+                          spinnerOdeme.setSelection(0);
+                          spinerpec.setSelection(0);
+                          spinnerRef.setSelection(0);
+                          spinnerStatu.setSelection(0);
+                          spinnersexe.setSelection(0);
+
+
+
+                          //medicaments.remove(spinnerMedicament.getSelectedItem())
+
+
+                      }
+                  });
+                  alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+
+                          Intent intent = new Intent(getActivity(), ListPrisenCharge.class);
+                          startActivity(intent);
+                      }
+                  });
+
+                  alertDialog.show();
+
               } catch (Exception e) {
                   Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
               }
@@ -383,7 +509,12 @@ public class Prise_en_Charge extends Fragment {
             error = true;
             Age.setError("invalid!");
         }
-
+        if (!Age.getText().toString().trim().isEmpty()) {
+            if (Integer.parseInt(Age.getText().toString()) > 59 || Integer.parseInt(Age.getText().toString()) < 6) {
+                error = true;
+                Age.setError("invalid!");
+            }
+        }
         if (PB.getText().toString().isEmpty()) {
             error = true;
             PB.setError("invalid!");
@@ -392,15 +523,36 @@ public class Prise_en_Charge extends Fragment {
             error = true;
             contact.setError("invalid!");
         }
-        if (MAS.getText().toString().isEmpty()) {
-            error = true;
-            MAS.setError("invalid!");
+
+        if (MAS.getVisibility() == View.VISIBLE && MAS.getText().toString().isEmpty()) {
+                error = true;
+                MAS.setError("invalid!");
+
         }
 
         if (accompagnant.getText().toString().isEmpty()) {
             error = true;
             accompagnant.setError("invalid!");
         }
+
+        if (anne.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinneranne.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+
+        if (moi.isEmpty()) {
+            error = true;
+            TextView errorText= ((TextView)spinnermois.getSelectedView());
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Ce champ est obligatire");
+        }
+
+
 
 
         if (localite==null) {

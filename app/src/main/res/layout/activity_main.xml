@@ -11,7 +11,7 @@
         android:id="@+id/topView"
         android:layout_width="wrap_content"
         android:layout_height="85dp"
-        android:background="#FFFF33"
+        android:background="#EFE61D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -93,7 +93,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:layout_marginBottom="15dp"
-            android:text="REPONSE A L'URGENSE NUTRITIONNELLE AU HODH EL-GHARBI"
+            android:text="REPONSE A L'URGENCE NUTRITIONNELLE AU HODH EL-GHARBI"
             android:textColor="#2196F3"
             android:textColorHighlight="#FFFFFF"
             android:textSize="25sp" />
@@ -116,7 +116,11 @@
         android:id="@+id/editTextTextPersonName2"
         android:layout_width="277dp"
         android:layout_height="53dp"
-
+        android:maxLines="1"
+        android:inputType="text"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:nextFocusForward="@+id/editPassword"
         android:layout_marginTop="40dp"
         android:background="@drawable/round_border"
         android:drawableStart="@drawable/user"

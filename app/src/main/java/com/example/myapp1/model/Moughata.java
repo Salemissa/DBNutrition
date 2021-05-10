@@ -58,11 +58,11 @@ public class Moughata {
         this.communes = communes;
     }
 
+
+
     @Override
     public String toString() {
-        return "Moughata{" +
-                "moughataname='" + moughataname + '\'' +
-                '}';
+        return this.moughataname;
     }
 
 }

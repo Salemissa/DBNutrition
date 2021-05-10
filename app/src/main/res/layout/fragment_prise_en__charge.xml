@@ -9,92 +9,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/card"
+        app:cardBackgroundColor="#F5F5F5"
         android:id="@+id/card"
-       app:cardElevation="2dp"
-        app:cardCornerRadius="5dp"
-        app:contentPadding="10dp"
+
         >
 
-        <LinearLayout
+
+        <include
+            android:id="@+id/header_VIEW"
+            layout="@layout/localite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="2">
+            android:layout_marginTop="12dp"
+            android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="2dp"
-                android:layout_marginLeft="2dp"
+        <LinearLayout
+            android:id="@+id/loc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:weightSum="4"
+            android:layout_marginTop="@dimen/pading"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView33"
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="4">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="12dp"
+                android:text="Localité"
+                android:textSize="@dimen/label"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:text="Moughata"
-                    android:textSize="@dimen/label"
-                    android:textStyle="bold" />
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/moghata"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:spinnerMode="dropdown" />
-
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:text="Commune"
-                    android:textSize="@dimen/label"
-                    android:textStyle="bold" />
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/commune"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="0dp"
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/localite"
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="2dp"
-                android:weightSum="4"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView33"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="Localité"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                    android:id="@+id/localite"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="20dp"
-
-                    android:gravity="center_horizontal"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
+                android:layout_marginLeft="-22dp"
+                android:layout_height="match_parent"
+                android:spinnerMode="dropdown" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -103,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/card"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:weightSum="5">
 
         <TextView
@@ -167,6 +123,9 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="2"
             android:gravity="center"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:nextFocusForward="@id/age"
             android:inputType="textPersonName"
             android:textStyle="bold">
 
@@ -179,6 +138,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:inputType="number"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:nextFocusForward="@id/PB"
             android:maxLength="4"
             android:textStyle="bold">
 
@@ -206,7 +168,9 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
+            android:maxLines="1"
             android:gravity="center"
+            android:nextFocusForward="@id/MAS"
             android:inputType="number"
             android:maxLength="4"
             android:textStyle="bold">
@@ -214,14 +178,140 @@
         </EditText>
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line1"
+        android:layout_marginTop="50dp"
+        android:weightSum="5">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="Odeme"
+            android:textStyle="bold">
+
+        </TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Statut"
+            android:textStyle="bold">
+
+        </TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="Numero MAS"
+            android:textStyle="bold">
+
+        </TextView>
+
+
+
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="PEC"
+            android:textStyle="bold">
+
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/line5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line4"
+
+        android:weightSum="5">
+        <Spinner
+            android:id="@+id/OdemeChoix"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textStyle="bold">
+
+        </Spinner>
+        <Spinner
+            android:id="@+id/Staut"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textStyle="bold">
+        </Spinner>
+        <EditText
+            android:id="@+id/MAS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:nextFocusForward="@+id/accompagnat"
+            android:textAlignment="center"
+            android:maxLength="20"
+            android:textStyle="bold">
+        </EditText>
+
+
+        <Spinner
+            android:id="@+id/PEC"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+
+            android:textAlignment="center"
+            android:textStyle="bold">
+        </Spinner>
+
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/line2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line1"
-         android:layout_marginTop="30dp"
+        android:layout_below="@id/line5"
+        android:layout_marginTop="50dp"
         android:weightSum="6">
-
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Réferé"
+            android:textStyle="bold">
+        </TextView>
 
         <TextView
             android:layout_width="0dp"
@@ -244,23 +334,29 @@
             android:text="TEL"
             android:textStyle="bold">
         </TextView>
-        <TextView
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/line3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line2"
+
+        android:weightSum="6">
+        <Spinner
+            android:id="@+id/Ref"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Statut"
+            android:layout_gravity="center_horizontal"
+            android:text="sexe"
+            android:textAlignment="center"
             android:textStyle="bold">
-        </TextView>
-    </LinearLayout>
-        <LinearLayout
-            android:id="@+id/line3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/line2"
 
-            android:weightSum="6">
+        </Spinner>
+
 
         <EditText
             android:id="@+id/accompagnat"
@@ -284,136 +380,18 @@
             android:inputType="phone"
             android:textStyle="bold">
         </EditText>
-            <Spinner
-                android:id="@+id/Staut"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="sexe"
-                android:textStyle="bold">
-
-            </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/line4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/line3"
-        android:layout_marginTop="20dp"
-        android:weightSum="5">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="Numero MAS"
-            android:textStyle="bold">
-
-        </TextView>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Réferé"
-            android:textStyle="bold">
-
-        </TextView>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Odeme"
-            android:textStyle="bold">
-
-        </TextView>
-
-
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="PEC"
-            android:textStyle="bold">
-
-        </TextView>
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/line5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/line4"
-
-        android:weightSum="5">
-        <EditText
-            android:id="@+id/MAS"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:maxLength="10"
-            android:textStyle="bold">
-        </EditText>
-    <Spinner
-        android:id="@+id/Ref"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:textAlignment="center"
-
-        android:textStyle="bold">
-    </Spinner>
-        <Spinner
-            android:id="@+id/OdemeChoix"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textStyle="bold">
-
-        </Spinner>
-        <Spinner
-            android:id="@+id/PEC"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-
-            android:textAlignment="center"
-            android:textStyle="bold">
-        </Spinner>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/Ajouter"
-        android:layout_width="190dp"
-        android:layout_height="58dp"
-        android:layout_below="@+id/line4"
-       android:layout_centerHorizontal="true"
+        android:layout_width="156dp"
+        android:layout_height="61dp"
+        android:layout_below="@+id/line3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp"
         android:background="@color/colorPrimary"
-        android:textColor="#FFF"
-        android:layout_marginTop="81dp"
-        android:text="Ajouter" />
+        android:text="Ajouter"
+        android:textColor="#FFF" />
 
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package com.example.myapp1;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -48,7 +50,7 @@ public class updateSuivi extends AppCompatActivity {
     Structure structure;
     private Button Ajouter,Modfier;
     private ArrayAdapter moisadapter,anneeadapter,moughatadapter,ageadapter,communadapter,structureadapter;
-    EditText ssd,venant,ncg,ngf,read,Gueris,Desces,Abonde,NonRep,Ref,trans;
+    EditText ssd,venant,ncg,ngf,read,Gueris,Desces,Abonde,NonRep,Ref,trans,autre;
     private int id;
     List<String>  communeList=null;
     List<String>  StructureList=null;
@@ -74,6 +76,7 @@ public class updateSuivi extends AppCompatActivity {
         this.Abonde=this.findViewById(R.id.Abd);
         this.NonRep=this.findViewById(R.id.Non_rep);
         this.Ref=this.findViewById(R.id.Ref_Creni);
+        this.autre=this.findViewById(R.id.autre);
         this.trans=this.findViewById(R.id.Trans_Crenas);
         this.Modfier =(Button) this.findViewById(R.id.Modfier);
         this.Ajouter =(Button) this.findViewById(R.id.Ajouter);
@@ -86,7 +89,31 @@ public class updateSuivi extends AppCompatActivity {
         this.Modfier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ModfierDepistage();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(updateSuivi.this);
+                alertDialog.setTitle("Confirmation");
+                alertDialog.setMessage(R.string.ConfirModf);
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ModfierDepistage();
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(updateSuivi.this, ListSuivisous.class);
+                        startActivity(intent);
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
             }
 
 
@@ -273,6 +300,7 @@ public class updateSuivi extends AppCompatActivity {
         this.Abonde.setText(suviSousSurvillance.getAbonde()+"");;
         this.NonRep.setText(suviSousSurvillance.getNonRep()+"");;
         this.Ref.setText(suviSousSurvillance.getRefCRENI()+"");;
+        this.autre.setText(suviSousSurvillance.getAutrecas()+"");;
         this.trans.setText(suviSousSurvillance.getTransCRENAS()+"");;
         this.MoughataaPardefaut();
 
@@ -391,6 +419,8 @@ public class updateSuivi extends AppCompatActivity {
             this.suviSousSurvillance.setNonRep(Integer.parseInt(NonRep.getText().toString()));
             this.suviSousSurvillance.setRefCRENI(Integer.parseInt(Ref.getText().toString()));
             this.suviSousSurvillance.setTransCRENAS(Integer.parseInt(trans.getText().toString()));
+            this.suviSousSurvillance.setAutrecas(Integer.parseInt(autre.getText().toString()));
+            this.suviSousSurvillance.setSyn(2);
             //suviSousSurvillance.setDate(new Date());
             try {
                 databaseManager.updatesuviSousSurvillance(suviSousSurvillance);

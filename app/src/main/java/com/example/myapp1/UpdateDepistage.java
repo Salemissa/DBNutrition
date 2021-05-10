@@ -1,5 +1,7 @@
 package com.example.myapp1;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -32,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateDepistage extends AppCompatActivity {
-    int id;
+    long id;
     Depistage depistage;
     DatabaseManager databaseManager;
     private String type;
@@ -59,6 +61,7 @@ public class UpdateDepistage extends AppCompatActivity {
 
     List<String>  communeList=null;
     List<String>  localiteeList=null;
+    private String commune;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +96,39 @@ public class UpdateDepistage extends AppCompatActivity {
         this.Modfier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                   updatedepistage();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(UpdateDepistage.this);
+                alertDialog.setTitle("Confirmation ");
+                alertDialog.setMessage(R.string.ConfirModf);
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        updatedepistage();
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(UpdateDepistage.this, ActivtiteMobileList.class);
+                        startActivity(intent);
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
+
             }
         }  );
 
         if (intent != null) {
             this.ages = donnes.ages;
-            this.id = intent.getIntExtra("id", 0);
+            this.id = intent.getLongExtra("id", 0);
             this.type = intent.getStringExtra("type");
             this.depistage = this.databaseManager.depistageById(this.id);
 
@@ -117,7 +146,6 @@ public class UpdateDepistage extends AppCompatActivity {
         communeList .add("");
         this.localiteeList  = new ArrayList<String>();
         this.localiteeList.add("");
-
         List<Moughata> ListMoughata = databaseManager.ListMoughata();
         if (ListMoughata != null) {
             for (Moughata moug : ListMoughata) {
@@ -214,6 +242,7 @@ public class UpdateDepistage extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
+                commune=item;
                 CommuneLocalite(item);
             }
 
@@ -228,7 +257,13 @@ public class UpdateDepistage extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                localite = databaseManager.localitename(item);
+                if(!item.isEmpty()) {
+                    for (Localite loc : databaseManager.localitename(item)) {
+                        if (loc.getCommune().getCommunename().equals(commune)) {
+                            localite = loc;
+                        }
+                    }
+                }
 
             }
 
@@ -297,6 +332,16 @@ public class UpdateDepistage extends AppCompatActivity {
 
       this.localiteadapter.notifyDataSetChanged();
         //moisadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        /*if(!spinnerlocalite.getSelectedItem().toString().isEmpty()){
+        for(Localite loc:databaseManager.localitename(spinnerlocalite.getSelectedItem().toString())) {
+                if (loc.getCommune().getCommunename().equals(commune)) {
+                    localite = loc;
+                }
+            }
+        }
+
+         */
+
 
     }
 
@@ -348,7 +393,7 @@ public class UpdateDepistage extends AppCompatActivity {
 
 
     void  MoughataaPardefaut(){
-        Localite localite=databaseManager.localitename(this.depistage.getLocalite().getLocalitename());
+        Localite localite=this.depistage.getLocalite();
         String Moug=localite.getCommune().getMoughataa().getMoughataname(); //the value you want the position for
         ArrayAdapter MougSel = (ArrayAdapter) this.spinnermoughata.getAdapter();
         int MougPosition = MougSel.getPosition(Moug);
@@ -394,6 +439,7 @@ public class UpdateDepistage extends AppCompatActivity {
             depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
             depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
             depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+            depistage.setSyn(2);
             depistage.setLocalite(localite);
 
             try {

@@ -8,6 +8,14 @@ public class Gaspa {
     @DatabaseField(generatedId = true)
     private Long id;
     @DatabaseField
+    private Long idu;
+    @DatabaseField
+    private String mois;
+    @DatabaseField
+    private String annee;
+    @DatabaseField
+    private int nbrgaspa;
+    @DatabaseField
     private int fe;
     @DatabaseField
     private int fa06r;
@@ -19,8 +27,24 @@ public class Gaspa {
     private int fa06p;
     @DatabaseField
     private int fa23p;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @DatabaseField
+    private int syn;
+    @DatabaseField
+    private String date;
+    @DatabaseField
+    private String codeSup;
+    @DatabaseField
+    private String codeTel;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true,maxForeignAutoRefreshLevel = 5)
     private Relais relais;
+
+    public int getNbrgaspa() {
+        return nbrgaspa;
+    }
+
+    public void setNbrgaspa(int nbrgaspa) {
+        this.nbrgaspa = nbrgaspa;
+    }
 
     public Long getId() {
         return id;
@@ -86,5 +110,59 @@ public class Gaspa {
         this.relais = relais;
     }
 
+    public String getMois() {
+        return mois;
+    }
 
+    public void setMois(String mois) {
+        this.mois = mois;
+    }
+
+    public String getAnnee() {
+        return annee;
+    }
+
+    public Long getIdu() {
+        return idu;
+    }
+
+    public void setIdu(Long idu) {
+        this.idu = idu;
+    }
+
+    public void setAnnee(String annee) {
+        this.annee = annee;
+    }
+
+    public int getSyn() {
+        return syn;
+    }
+
+    public void setSyn(int syn) {
+        this.syn = syn;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getCodeSup() {
+        return codeSup;
+    }
+
+    public void setCodeSup(String codeSup) {
+        this.codeSup = codeSup;
+    }
+
+    public String getCodeTel() {
+        return codeTel;
+    }
+
+    public void setCodeTel(String codeTel) {
+        this.codeTel = codeTel;
+    }
 }

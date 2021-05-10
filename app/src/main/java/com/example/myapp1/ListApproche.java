@@ -56,6 +56,7 @@ import retrofit2.Response;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static com.example.myapp1.R.string.messageSupp;
+import static com.example.myapp1.R.string.messageSyn;
 
 public class ListApproche extends AppCompatActivity {
     private DatabaseManager databaseManager;
@@ -90,7 +91,7 @@ public class ListApproche extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(ListApproche.this);
                 alertDialog.setTitle("Confirm ");
-                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                alertDialog.setMessage(getString(R.string.MsgSyn));
                 // alertDialog.setIcon(R.drawable.delete);
                 alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
                     @Override
@@ -149,7 +150,7 @@ public class ListApproche extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ApprocheCommunataire clickedItem= (ApprocheCommunataire) list.getItemAtPosition(position);
                 Intent intent= new Intent( ListApproche.this, UpdateApproche.class);
-                intent.putExtra("id",clickedItem.getId().intValue());
+                intent.putExtra("id",clickedItem.getId().longValue());
                 startActivity(intent);
 
             }
@@ -177,7 +178,7 @@ public class ListApproche extends AppCompatActivity {
     private void synApproche() {
         List<ApprocheCommunataire> ListSyn=new ArrayList<ApprocheCommunataire>();
         for(ApprocheCommunataire  approcheCommunataire:databaseManager.approcheCommunataireList()) {
-            if(approcheCommunataire.getSyn()==0){
+            if(approcheCommunataire.getSyn() !=1){
                 ListSyn.add(approcheCommunataire);
             }
         }
@@ -187,13 +188,30 @@ public class ListApproche extends AppCompatActivity {
 
             ApprocheCommunataire approcheCommunatairesyn=new ApprocheCommunataire();
             for(ApprocheCommunataire approcheCommunataire:ListSyn) {
+
+
                 approcheCommunatairesyn = approcheCommunataire;
-                approcheCommunatairesyn.setId(0L);
+                String date="";//approcheCommunataire.getDateCreation().replaceAll("/","-");
+                String mots[] = approcheCommunataire.getDateCreation().split("/");
+
+                for (int i = mots.length-1; i >= 0; i--) {
+                    if(i==0) {
+                        date = date + mots[i] ;
+                    }
+                    else{
+                        date = date + mots[i] + "-";
+                    }
+
+                }
+//                StringBuilder strb = new StringBuilder(date);
+//                date = strb.reverse().toString();
+//                Toast.makeText(getApplication(),date, LENGTH_LONG).show();
+                approcheCommunataire.setDateCreation(date);
                 USB usb = new USB();
                 usb.setId(approcheCommunatairesyn.getUsb().getId());
                 usb.setUsbname(approcheCommunataire.getUsb().getUsbname());
                 String rapport="";
-                approcheCommunatairesyn.setRapportusb("");
+                approcheCommunatairesyn.setRapportusb(null);
                 if(approcheCommunataire.getRapport() !=null) {
                     rapport = Base64.encodeToString(approcheCommunataire.getRapport(), Base64.DEFAULT);
 
@@ -221,8 +239,8 @@ public class ListApproche extends AppCompatActivity {
         }
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
-            alertDialog.setMessage("Rien a synchroniser maintenant");
+            alertDialog.setTitle(getString(R.string.info));
+            alertDialog.setMessage(getString(R.string.Riensyn));
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -287,6 +305,9 @@ public class ListApproche extends AppCompatActivity {
                 if(bitmap!=null){
                     Rapport.setImageBitmap(bitmap);
                 }
+                else{
+                    Rapport.setImageBitmap(null);
+                }
             }
             TextView usb= (TextView)layoutItem.findViewById(R.id.unite);
             TextView Date= (TextView)layoutItem.findViewById(R.id.Date);
@@ -305,7 +326,9 @@ public class ListApproche extends AppCompatActivity {
             TextView date= (TextView)layoutItem.findViewById(R.id.date);
 
             usb.setText("USB  : "+approcheCommunataires.get(position).getUsb().getUsbname().toString());
+
             Date.setText("Date envoi : "+approcheCommunataires.get(position).getDateCreation());
+             //Toast.makeText(getApplicationContext(), "Date envoi : "+approcheCommunataires.get(position).getDateCreation().toString(), Toast.LENGTH_LONG).show();
             pbr.setText("BP MAS  : "+approcheCommunataires.get(position).getBprouge());
             pbj.setText("BP MAM : "+approcheCommunataires.get(position).getBpJaune());
             visite.setText("Visite  : "+approcheCommunataires.get(position).getVisite());
@@ -344,9 +367,9 @@ public class ListApproche extends AppCompatActivity {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirmation");
-        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
+        alertDialog.setMessage(R.string.ConfirSupp);
         // alertDialog.setIcon(R.drawable.delete);
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -356,7 +379,7 @@ public class ListApproche extends AppCompatActivity {
 
             }
         });
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -414,23 +437,27 @@ public class ListApproche extends AppCompatActivity {
                     progressDoalog.dismiss();
                     AlertDialog alertDialog = new AlertDialog.Builder(ListApproche.this).create();
                     alertDialog.setTitle("info");
-                    alertDialog.setMessage("Les données ont été synchronisées");
 
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            for (ApprocheCommunataire approcheCommunataire : approcheCommunataires) {
-                                if (approcheCommunataire.getSyn() == 0 || approcheCommunataire.getSyn() == 2) {
-                                    approcheCommunataire.setSyn(1);
-                                    databaseManager.UpdateApprocheCommunataire(approcheCommunataire);
-                                }
-                            }
+                    alertDialog.setMessage("Synchronisé avec succés");
+                    Toast.makeText(getApplication(), messageSyn, LENGTH_LONG).show();
+
+                    for (ApprocheCommunataire approcheCommunataire : response.body()) {
+                        if(approcheCommunataire.getSyn()==0){
+                            ApprocheCommunataire approcheCommunataire1=databaseManager.ApprocheById(approcheCommunataire.getId());
+                            approcheCommunataire1.setIdu(approcheCommunataire.getIdu());
+                            databaseManager.UpdateApprocheCommunataire(approcheCommunataire1);
+                        }
+                    }
+
+                    for (ApprocheCommunataire approcheCommunataire: databaseManager.approcheCommunataireList()) {
+                        if(approcheCommunataire.getSyn()==0 || approcheCommunataire.getSyn()==2){
+                            approcheCommunataire.setSyn(1);
+                            databaseManager.UpdateApprocheCommunataire(approcheCommunataire);
+                        }
+                    }
                             approcheCommunataires= databaseManager.approcheCommunataireList();
                             arrayList=approcheCommunataires;
                             adapter.notifyDataSetChanged();
-
-                        }
-                    });
 
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
@@ -442,6 +469,7 @@ public class ListApproche extends AppCompatActivity {
                     //progressBar.setVisibility(View.GONE);
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplication(), R.string.ProblemServeur, LENGTH_LONG).show();
                 }
 
             }
@@ -453,6 +481,7 @@ public class ListApproche extends AppCompatActivity {
                 //progressBar.setVisibility(View.GONE);
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplication(), R.string.ProblemeConnexion, LENGTH_LONG).show();
             }
         });
 

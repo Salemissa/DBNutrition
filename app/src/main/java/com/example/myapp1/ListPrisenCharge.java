@@ -78,7 +78,7 @@ public class ListPrisenCharge extends AppCompatActivity {
         list = findViewById(R.id.list);
         databaseManager = new DatabaseManager(this);
         this.arrayList = new ArrayList<>();
-         this.priseenCharges = databaseManager.ListPrisEnCharge();
+        priseenCharges = databaseManager.ListPrisEnCharge();
         //this.add= findViewById(R.id.add);
        progressDoalog = new ProgressDialog(ListPrisenCharge.this);
         progressDoalog.setMessage("Loading....");
@@ -96,15 +96,13 @@ public class ListPrisenCharge extends AppCompatActivity {
 
 
                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ListPrisenCharge.this);
-               alertDialog.setTitle("Confirm ");
-               alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+               alertDialog.setTitle("Confirmation");
+               alertDialog.setMessage(getString(R.string.MsgSyn));
                // alertDialog.setIcon(R.drawable.delete);
                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
                    @Override
                    public void onClick(DialogInterface dialog, int which) {
                        synPrise();
-
-
                    }
                });
                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
@@ -130,9 +128,9 @@ public class ListPrisenCharge extends AppCompatActivity {
             //Toast.makeText(this,"medicament non trouve ",Toast.LENGTH_LONG).show();
 
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
+            alertDialog.setTitle(getString(R.string.info));
             alertDialog.setMessage("List est indispansable");
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OUI", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //finish();
@@ -184,8 +182,8 @@ public class ListPrisenCharge extends AppCompatActivity {
 
     private void  synPrise() {
         List<PriseenCharge> Listsyn= new ArrayList<PriseenCharge>();
-           for(PriseenCharge priseenCharge:priseenCharges){
-               if(priseenCharge.getSyn()==0){
+           for(PriseenCharge priseenCharge:databaseManager.ListPrisEnCharge()){
+               if(priseenCharge.getSyn()==0 || priseenCharge.getSyn()==2){
                    Listsyn.add(priseenCharge);
                }
            }
@@ -212,11 +210,10 @@ public class ListPrisenCharge extends AppCompatActivity {
              }
 
         }
-
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
-            alertDialog.setMessage("Rien a synchroniser maintenant");
+            alertDialog.setTitle(getString(R.string.info));
+            alertDialog.setMessage(getString(R.string.Riensyn));
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -226,7 +223,10 @@ public class ListPrisenCharge extends AppCompatActivity {
             });
 
             alertDialog.show();
-    }
+
+        }
+
+
 }
 
     private void SynPrisList(List<PriseenCharge> syn) {
@@ -235,36 +235,36 @@ public class ListPrisenCharge extends AppCompatActivity {
         RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
 
         // 2.3 - Create the call on Github API
-        Call<List<PriseenCharge>> call =retrofitServices.createPrise(priseenCharges);
+        Call<List<PriseenCharge>> call =retrofitServices.createPrise(syn);
         // 2.4 - Start the call
         ((Call) call).enqueue(new Callback<List<PriseenCharge>>() {
             @Override
             public void onResponse(Call<List<PriseenCharge>> call, Response<List<PriseenCharge>> response) {
                 if (response.isSuccessful()) {
-                    progressDoalog.dismiss();
-                    AlertDialog alertDialog = new AlertDialog.Builder(ListPrisenCharge.this).create();
-                    alertDialog.setTitle("info");
-                    alertDialog.setMessage("Les données ont été synchronisées");
+                    Toast.makeText(getApplication(), R.string.messageSyn, LENGTH_LONG).show();
+                    for (PriseenCharge priseenCharge : response.body()) {
+                        Toast.makeText(getApplication(),"id:"+priseenCharge.getId(), Toast.LENGTH_LONG).show();
+                        if(priseenCharge.getSyn()==0){
+                            databaseManager.updatePrise(priseenCharge);
 
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            for (PriseenCharge priseenCharge : priseenCharges) {
-                                if (priseenCharge.getSyn() == 0 || priseenCharge.getSyn() == 2) {
-                                    priseenCharge.setSyn(1);
-                                    databaseManager.updatePrise(priseenCharge);
-                                }
-                            }
+                        }
+                    }
+
+                    for (PriseenCharge priseenCharge : databaseManager.ListPrisEnCharge()) {
+                        if(priseenCharge.getSyn()==0 || priseenCharge.getSyn()==2){
+                            priseenCharge.setSyn(1);
+                            databaseManager.updatePrise(priseenCharge);
+                        }
+                    }
                             priseenCharges= databaseManager.ListPrisEnCharge();
                             arrayList=priseenCharges;
                             adapter.notifyDataSetChanged();
 
-                        }
-                    });
 
-                   // alertDialog.show();
+
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
+                    //alertDialog.show();
 
 
                 }else{
@@ -274,6 +274,7 @@ public class ListPrisenCharge extends AppCompatActivity {
                     progressDoalog.dismiss();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplication(), R.string.ProblemServeur, LENGTH_LONG).show();
                 }
 
             }
@@ -284,6 +285,7 @@ public class ListPrisenCharge extends AppCompatActivity {
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);
                 //progressDoalog.dismiss();
+                Toast.makeText(getApplication(), R.string.ProblemeConnexion, LENGTH_LONG).show();
             }
         });
 
@@ -358,7 +360,7 @@ public class ListPrisenCharge extends AppCompatActivity {
             //(2) : Récupération des TextView de notre layout
             TextView localite= (TextView)layoutItem.findViewById(R.id.localite);
             TextView nom= (TextView)layoutItem.findViewById(R.id.nom);
-            TextView Sexe= (TextView)layoutItem.findViewById(R.id.sexe);
+
             TextView Age= (TextView)layoutItem.findViewById(R.id.age);
             TextView pb= (TextView)layoutItem.findViewById(R.id.PB);
             TextView odeme= (TextView)layoutItem.findViewById(R.id.odeme);
@@ -367,14 +369,15 @@ public class ListPrisenCharge extends AppCompatActivity {
             TextView PEC= (TextView)layoutItem.findViewById(R.id.PEC);
             TextView status= (TextView)layoutItem.findViewById(R.id.statut);
             TextView Ref= (TextView)layoutItem.findViewById(R.id.Ref);
-            TextView MAS= (TextView)layoutItem.findViewById(R.id.MAS);
+            TextView mois= (TextView)layoutItem.findViewById(R.id.mois);
+            TextView annee= (TextView)layoutItem.findViewById(R.id.annee);
             TextView date= (TextView)layoutItem.findViewById(R.id.date);
 
 
 
             localite.setText("Localité  : "+priseenCharges.get(position).getLocalite().getLocalitename().toString());
             nom.setText("Nom : "+priseenCharges.get(position).getEnfant());
-            Sexe.setText("SEXE : "+priseenCharges.get(position).getSexe());
+
             Age.setText("Age : "+priseenCharges.get(position).getAge());
             pb.setText("PB  : "+priseenCharges.get(position).getPb());
             odeme.setText("Odeme : "+priseenCharges.get(position).getOdeme());
@@ -382,8 +385,12 @@ public class ListPrisenCharge extends AppCompatActivity {
             contact.setText("Contact: "+priseenCharges.get(position).getContact());
             PEC.setText("PEC  : "+priseenCharges.get(position).getPec());
             status.setText("Status :"+priseenCharges.get(position).getStatut());
-            MAS.setText("Odeme : "+priseenCharges.get(position).getMas());
             Ref.setText("Réferé : "+priseenCharges.get(position).getRefere());
+
+            mois.setText("Mois :"+priseenCharges.get(position).getMois());
+            annee.setText("Année : "+priseenCharges.get(position).getAnnee());
+
+
             date.setText("Date : "+priseenCharges.get(position).getDate());
 
 
@@ -409,9 +416,9 @@ public class ListPrisenCharge extends AppCompatActivity {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirmation ");
-        alertDialog.setMessage("Etes Vous sur de supprimer");
+        alertDialog.setMessage(R.string.ConfirSupp);
         // alertDialog.setIcon(R.drawable.delete);
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -421,7 +428,7 @@ public class ListPrisenCharge extends AppCompatActivity {
 
             }
         });
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -7,7 +7,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -42,7 +44,7 @@ import static android.widget.Toast.makeText;
 
 public class UpdateDepistagePassif extends AppCompatActivity {
 
-    private int  id;
+    private long id;
     private Button Ajouter;
     private DatabaseManager databaseManager;
     private Depistage depistage;
@@ -59,7 +61,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
     Spinner spinnerage ;
     String  type="passif";
     //private EditText rouge,jaune,vert,odeme,zscore,zscore2;
-    private EditText rougeF,jauneF,vertF,odemeF, rougeG,jauneG,vertG,odemeG,zscore,zscore2;
+    private EditText rougeF,jauneF,vertF,odemeF, rougeG,jauneG,vertG,odemeG,zscore,zscore2,zscoreG,zscore2G,pbmasF,pbmamF,pbmasG,pbmamG;;
     String moi;
     String anne;
     String age;
@@ -98,6 +100,12 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         this.odemeG=(EditText) this.findViewById(R.id.odemeG);
         this.zscore=(EditText) this.findViewById(R.id.zscore);
         this.zscore2=(EditText) this.findViewById(R.id.zscore2);
+        this.zscoreG=(EditText) this.findViewById(R.id.zscoreG);
+        this.zscore2G=(EditText) this.findViewById(R.id.zscore2G);
+        this.pbmamF = (EditText) this.findViewById(R.id.pbmamF);
+        this.pbmamG = (EditText) this.findViewById(R.id.pbmamG);
+        this.pbmasF = (EditText) this.findViewById(R.id.pbmasF);
+        this.pbmasG = (EditText) this.findViewById(R.id.pbmasG);
         this.Modfier =(Button) this.findViewById(R.id.Modfier);
         this.Ajouter =(Button) this.findViewById(R.id.Ajouter);
         this.Ajouter.setVisibility(View.GONE);
@@ -111,7 +119,7 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         this.ages=donnes.ages;
         Intent intent = getIntent();
         if (intent != null) {
-           this.id = intent.getIntExtra("id", 0);
+           this.id = intent.getLongExtra("id", 0);
             this.depistage= this.databaseManager.depistageById(this.id);
 
             //Toast.makeText(this,this.depistage.getAnnee(),Toast.LENGTH_LONG).show();
@@ -120,8 +128,34 @@ public class UpdateDepistagePassif extends AppCompatActivity {
 
         this.Modfier.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                ModfierDepistage();
+            public void onClick(View view)
+            {
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(UpdateDepistagePassif.this);
+                alertDialog.setTitle("Confirm ");
+                alertDialog.setMessage(R.string.ConfirModf);
+                // alertDialog.setIcon(R.drawable.delete);
+                alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ModfierDepistage();
+
+                    }
+                });
+                alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(UpdateDepistagePassif.this, DepistagePassifList.class);
+                        startActivity(intent);
+
+                    }
+                });
+
+
+
+                alertDialog.show();
+
             }
 
 
@@ -467,6 +501,12 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         this.odemeG.setText(this.depistage.getOdemeG()+"");
         this.zscore.setText(this.depistage.getZscore()+"");
         this.zscore2.setText(this.depistage.getZscore2()+"");
+        this.zscoreG.setText(this.depistage.getZscoreG()+"");
+        this.zscore2G.setText(this.depistage.getZscore2G()+"");
+        this.pbmasF.setText(this.depistage.getPbmasF()+"");
+        this.pbmasG.setText(this.depistage.getPbmasG()+"");
+        this.pbmamG.setText(this.depistage.getPbmamG()+"");
+        this.pbmamF.setText(this.depistage.getPbmamF()+"");
         this.MoughataaPardefaut();
 
         this.Rapport();
@@ -503,6 +543,8 @@ public class UpdateDepistagePassif extends AppCompatActivity {
         //Toast.makeText(this,this.depistage.getStructure().getStructurename()+"1"+this.depistage.getStructure().getCommune().getMoughata().toString()+"11",Toast.LENGTH_LONG).show();
         this.spinnerstructer.setSelection(StrPosition);
         this.structureadapter.notifyDataSetChanged();
+        structure= databaseManager.structurename(spinnerstructer.getSelectedItem().toString());
+
 
     }
 
@@ -540,10 +582,16 @@ public class UpdateDepistagePassif extends AppCompatActivity {
             depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
             depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
             depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
+            depistage.setPbmamF(Integer.parseInt(pbmamF.getText().toString()));
+            depistage.setPbmamG(Integer.parseInt(pbmamG.getText().toString()));
+            depistage.setPbmasF(Integer.parseInt(pbmasF.getText().toString()));
+            depistage.setPbmasG(Integer.parseInt(pbmasG.getText().toString()));
+            depistage.setSyn(2);
             // depistage.setDate(new Date());
             if (this.Rapport != null) {
 
                 this.depistage.setRapport(this.Rapport);
+
             }
 
             try {
@@ -606,6 +654,43 @@ public class UpdateDepistagePassif extends AppCompatActivity {
             error = true;
             zscore2.setError("invalid!");
         }
+        if (zscoreG.getText().toString().isEmpty()) {
+            error = true;
+            zscoreG.setError("invalid!");
+        }
+        if (zscore2G.getText().toString().isEmpty()) {
+            error = true;
+            zscore2G.setError("invalid!");
+        }
+
+        if (pbmasG.getText().toString().isEmpty()) {
+            error = true;
+            pbmasG.setBackgroundColor(Color.WHITE);
+            pbmasG.setError("invalid!");
+        }
+        else{
+            pbmasG.setBackgroundColor(Color.RED);
+        }
+        if (pbmasF.getText().toString().isEmpty()) {
+            error = true;
+            pbmasF.setBackgroundColor(Color.WHITE);
+            pbmasF.setError("invalid!");
+        }
+        else{
+            pbmasF.setBackgroundColor(Color.RED);
+        }
+        if (pbmamF.getText().toString().isEmpty()) {
+            error = true;
+            pbmamF.setError("invalid!");
+
+        }
+
+        if (pbmamG.getText().toString().isEmpty()) {
+            error = true;
+            pbmamG.setError("invalid!");
+
+        }
+
         if (age.isEmpty()) {
             error = true;
             TextView errorText= ((TextView)spinnerage.getSelectedView());

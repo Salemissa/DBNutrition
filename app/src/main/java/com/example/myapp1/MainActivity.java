@@ -78,15 +78,7 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         super.onCreate(savedInstanceState);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         databaseManager = new DatabaseManager(this);
-        Moughata moughata = new Moughata("Koubeni");
-         Relais relais=new Relais();
-         relais.setNom("Oumar");
-         relais.setCin("2211334455");
-         //relais.setLocalite(databaseManager.localitename("Koubeni"));
-         relais.setTelephone("33224488");
 
-         //databaseManager.insertRealais(relais);
-        Medicament medicament=new Medicament("Micronutriments");
         //databaseManager.insertMedicament(medicament);
          session=new Session(getApplicationContext());
 
@@ -98,23 +90,13 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
          if(!jwt.equals("")){
              session.removejwt();
          }
-        //
-        //databaseManager.inserMoughata(moughata);
-        SuperViseur s = new SuperViseur();
-        s.setNom("Ismail");
-        s.setUsername("SUP1");
-        s.setPassword("1234");
-        databaseManager.inserSuperViseur(s);
-      if(databaseManager.MedicamentsList().size()==0) {
-          databaseManager.insertMedicament(new Medicament("Pumpy Nut"));
-          databaseManager.insertMedicament(new Medicament("Amoxiciline"));
-          databaseManager.insertMedicament(new Medicament("Micronutriments"));
-      }
+
 
         List<Moughata> Moughata = databaseManager.ListMoughata();
         if (Moughata.size()==0) {
-            Toast.makeText(this,"OK",Toast.LENGTH_LONG).show();
+
             AjouterMoughata();
+
         }
         //databaseManager.inserTest(s);
 
@@ -190,14 +172,7 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
 
 */
         setContent(); //recuperation du layout
-        ArrayList<String> arry=new ArrayList<>();
-        arry.add("1");
-        arry.add("2");
-        arry.add("3");
-        arry.add("14");
-        arry.add("12");
-        arry.add("1");
-        arry.add("1");
+
 
 
         // onViewCreated();
@@ -228,10 +203,11 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
                         //SynCommunes();
                         Intent intent4 = new Intent(MainActivity.this, MainActivity2.class);
                         session.setJwt("Token");
+                        session.setCodeSup(user.getUsername());
 
                         startActivity(intent4);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Commune" + 0, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Vérifiez votre login et mot de passe" , Toast.LENGTH_LONG).show();
                         //startActivity(intent4);
                     }
 
@@ -242,24 +218,7 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
                 //executeHttpRequestWithRetrofit();
                 //add();
                 //
-                List<Moughata> users = databaseManager.ListMoughata();
-                if (users != null) {
 
-
-                    // Toast.makeText(MainActivity.this,user.getLocalitename()+"=="+user.getId(),Toast.LENGTH_LONG).show();
-                    //   Toast.makeText(MainActivity.this,user.getId()+"",Toast.LENGTH_LONG).show();
-
-
-                    //alertView(etudient.toString());
-
-                    //
-                } else {
-
-                    Toast.makeText(MainActivity.this, "Charge les données", Toast.LENGTH_LONG).show();
-                    //executeHttpRequestWithRetrofit();
-
-                    //startActivity(intent4);
-                }
 
             }
 
@@ -355,24 +314,461 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
 
 
     void AjouterMoughata() {
-
-        Moughata moughata = new Moughata("Koubeni");
-        databaseManager.inserMoughata(moughata);
-
-        Moughata moughata2 = new Moughata("Tamchekett");
-        databaseManager.inserMoughata(moughata2);
-        Moughata moughata3 = new Moughata("Tintane");
-        databaseManager.inserMoughata(moughata3);
-      // AjouterCommune();
-
-        SynCommunes();
-       progressDoalog.setMessage("Loading Communne ....");
+        SynMoughataa();
+       progressDoalog.setMessage("Loading Moughataa ....");
        progressDoalog.show();
+    }
+
+
+
+
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void VerficationPermession() {
+        String[] permmesions = {
+                Manifest.permission.CAMERA
+        };
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+
+            requestPermissions(permmesions, 100);
+
+
+        }
+
+        onRequestPermissionsResult(100, permmesions, new int[]{0, -1});
+
 
     }
 
 
-    void AjouterCommune() {
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 100) {
+            if (grantResults[0] == 100) {
+
+
+            } else {
+              //VerficationPermession();
+            }
+        }
+
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+
+
+
+
+
+     @Override
+    protected void onRestart() {
+         super.onRestart();
+
+
+       //  this.finish();
+     }
+
+
+    public void SynMoughataa() {
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<Moughata>> call =retrofitServices.getMoughataas();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Moughata>>() {
+            private List<Moughata> moughatas;
+
+            @Override
+            public void onResponse(Call<List<Moughata>> call, Response<List<Moughata>> response) {
+
+                if(response.isSuccessful()){
+
+                    this.moughatas=response.body();
+                    for(Moughata moughata:moughatas){
+                        databaseManager.inserMoughata(moughata);
+                    }
+                    progressDoalog.dismiss();
+                    progressDoalog.setMessage("Loading");
+                    progressDoalog.show();
+                    SynCommunes();
+
+                }else{
+                    Log.i("ERROR Commune", response.errorBody().toString());
+                    Toast.makeText(getApplication(),R.string.ProblemServeur,Toast.LENGTH_LONG).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Moughata>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),R.string.ProblemeConnexion,Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+                finish();
+            }
+        });
+
+    }
+
+    public void SynCommunes(){
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<Commune>> call =retrofitServices.getCommunes();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Commune>>() {
+            private List<Commune> communes;
+
+            @Override
+            public void onResponse(Call<List<Commune>> call, Response<List<Commune>> response) {
+
+                if(response.isSuccessful()){
+
+                    this.communes=response.body();
+                    Toast.makeText(getApplication(),"Commune"+this.communes.size(),Toast.LENGTH_SHORT);
+                    for(Commune commune:communes){
+                        databaseManager.insercommune(commune);
+                    }
+                    progressDoalog.dismiss();
+                    progressDoalog.setMessage("Loading ");
+                    progressDoalog.show();
+                    SynStructure();
+
+                }else{
+                    Log.i("ERROR Commune", response.errorBody().toString());
+                    Toast.makeText(getApplication(),R.string.ProblemServeur,Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Commune>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),R.string.ProblemeConnexion,Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+
+
+    public void SynStructure(){
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<Structure>> call =retrofitServices.getStructures();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Structure>>() {
+            private List<Structure> structures;
+
+            @Override
+            public void onResponse(Call<List<Structure>> call, Response<List<Structure>> response) {
+
+                if(response.isSuccessful()){
+                    Log.i("OK", response.message());
+                    //Toast.makeText(getApplication(),"Structur"+structures.size(),Toast.LENGTH_SHORT).show();
+                    this.structures=response.body();
+                    for(Structure structure:structures){
+                        databaseManager.inserstructure(structure);
+                    }
+                    SynLocalite();
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    Toast.makeText(getApplication(),R.string.ProblemServeur,Toast.LENGTH_LONG).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Structure>> call, Throwable t) {
+                Log.e("ERROR ", t.getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),R.string.ProblemeConnexion,Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+
+    public void SynLocalite(){
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<Localite>> call =retrofitServices.getLocalites();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Localite>>() {
+            private List<Localite>localites;
+
+            @Override
+            public void onResponse(Call<List<Localite>> call, Response<List<Localite>> response) {
+
+                if(response.isSuccessful()){
+                    Log.i("OK", response.message());
+                    this.localites=response.body();
+                    for(Localite localite:localites){
+
+                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
+                        databaseManager.inserslocalite(localite);
+                    }
+
+                    progressDoalog.dismiss();
+                    SynUsb();
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    Toast.makeText(getApplication(),R.string.ProblemServeur,Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Localite>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage()+"Probleme Loca");
+                Toast.makeText(getApplication(),R.string.ProblemeConnexion,Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+
+    public void SynUsb(){
+        this.progressDoalog.setMessage("Loding");
+        this.progressDoalog.show();
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<USB>> call =retrofitServices.getUSBs();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<USB>>() {
+            private List<USB>usbs;
+
+            @Override
+            public void onResponse(Call<List<USB>> call, Response<List<USB>> response) {
+
+                if(response.isSuccessful()){
+                    Log.i("OK", response.message());
+                    this.usbs=response.body();
+                    for(USB usb:this.usbs){
+
+                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
+                        databaseManager.insersusb(usb);
+                    }
+
+                    progressDoalog.dismiss();
+                    SynSUP();
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
+                    progressDoalog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<USB>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),R.string.ProblemeConnexion,Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+    public void SynSUP(){
+        this.progressDoalog.setMessage("Loding");
+        this.progressDoalog.show();
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<SuperViseur>> call =retrofitServices.getSuperViseur();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<SuperViseur>>() {
+            private List<USB>usbs;
+
+            @Override
+            public void onResponse(Call<List<SuperViseur>> call, Response<List<SuperViseur>> response) {
+
+                if(response.isSuccessful()){
+                    Log.i("OK", response.message());
+                    for(SuperViseur superViseur:response.body()){
+
+                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"---"+superViseur.getId().toString(),Toast.LENGTH_LONG).show();
+                        Long id=superViseur.getId();
+                        superViseur.setUsername("SUP"+id);
+                        superViseur.setPassword("1234");
+                        databaseManager.inserSuperViseur(superViseur);
+                    }
+
+                    progressDoalog.dismiss();
+                    SynAnimnateur();
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    Toast.makeText(getApplication(),R.string.ProblemServeur,Toast.LENGTH_LONG).show();
+                    progressDoalog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<SuperViseur>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),R.string.ProblemeConnexion,Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+
+    public void SynAnimnateur(){
+        this.progressDoalog.setMessage("Loding");
+        this.progressDoalog.show();
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<Animateur>> call =retrofitServices.getAnimateur();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Animateur>>() {
+            private List<Animateur>animateurs;
+
+            @Override
+            public void onResponse(Call<List<Animateur>> call, Response<List<Animateur>> response) {
+
+                if(response.isSuccessful()){
+                    Log.i("OK", response.message());
+                    for(Animateur animateur:response.body()){
+
+                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
+                        databaseManager.insertAnimateur(animateur);
+                    }
+
+                    progressDoalog.dismiss();
+                    SynRelais();
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    Toast.makeText(getApplication(),R.string.ProblemServeur,Toast.LENGTH_LONG).show();
+                    progressDoalog.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Animateur>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),R.string.ProblemeConnexion,Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+    public void SynRelais(){
+        this.progressDoalog.setMessage("Loding  ......");
+        this.progressDoalog.show();
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+
+        // 2.3 - Create the call on Github API
+        Call<List<Relais>> call =retrofitServices.getRelais();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Relais>>() {
+            private List<Relais>relais;
+
+            @Override
+            public void onResponse(Call<List<Relais>> call, Response<List<Relais>> response) {
+
+                if(response.isSuccessful()){
+
+                    Log.i("OK", response.message());
+                    for(Relais relais:response.body()){
+
+                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
+                        databaseManager.insertRealais(relais);
+                    }
+
+                    progressDoalog.dismiss();
+                    synMedicament();
+                }else{
+                    Log.i("REPONSE", response.errorBody().toString());
+                    Toast.makeText(getApplication(),R.string.ProblemServeur,Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Relais>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),R.string.ProblemeConnexion,Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+    private void synMedicament() {
+
+        this.progressDoalog.setMessage("Loding ");
+        progressDoalog.show();
+        // 2.2 - Get a Retrofit instance and the related endpoints
+        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
+        // 2.3 - Create the call on Github API
+        Call<List<Medicament>> call =retrofitServices.getMedicament();
+        // 2.4 - Start the call
+        ((Call) call).enqueue(new Callback<List<Medicament>>() {
+            private List<Medicament> medicaments;
+            @Override
+            public void onResponse(Call<List<Medicament>> call, Response<List<Medicament>> response) {
+
+                if(response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"Medicament",Toast.LENGTH_LONG).show();
+                    this.medicaments=response.body();
+                    if(medicaments.size()!=databaseManager.MedicamentsList().size())
+                        for(Medicament medicament:medicaments){
+                            databaseManager.insertMedicament(medicament);
+                        }
+                    progressDoalog.dismiss();
+                }else{
+                    Log.i("ERROR Commune", response.errorBody().toString());
+                    Toast.makeText(getApplication(),R.string.ProblemServeur,Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Medicament>> call, Throwable t) {
+                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
+                Toast.makeText(getApplication(),t.getCause().getMessage().toString()+"Probleme",Toast.LENGTH_LONG).show();
+                progressDoalog.dismiss();
+            }
+        });
+
+    }
+
+    /*
+   void AjouterCommune() {
 
         String[] commune1 = new String[]{"Koubeni", "Medboughou", "Hassi ahmed bechna"};
         Moughata moughata1 = databaseManager.Moughataname("Koubeni");
@@ -510,380 +906,13 @@ public class MainActivity extends AppCompatActivity implements UsersCalls.Callba
         databaseManager.insertRealais(relais);
         databaseManager.insersusb(usb);
 
-    }
+    } */
 
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void VerficationPermession() {
-        String[] permmesions = {
-                Manifest.permission.CAMERA
-        };
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
-
-            requestPermissions(permmesions, 100);
-
-
-        }
-
-        onRequestPermissionsResult(100, permmesions, new int[]{0, -1});
-
-
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 100) {
-            if (grantResults[0] == 100) {
-
-
-            } else {
-              //VerficationPermession();
-            }
-        }
-
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    protected void onDestroy() {
+        session.removeCode();
+        super.onDestroy();
     }
 
-
-    public void  Charge() {
-        this.AjouterMoughata();
-       // this.btncharge.setVisibility(View.GONE);
-    }
-
-
-
-void add(){
-        UserForm user2=new UserForm();
-         user2.setUsername("Test");
-	    user2.setPassword("1234");
-		user2.setNom("issa");
-		user2.setPrenom("Ba");
-		user2.setEmail("jjj@gmail.com");
-		user2.setTelephone("36998877");
-		user2.setPassword("1234");
-        Toast.makeText(this,"Message",Toast.LENGTH_SHORT);
-        UsersCalls.addUser(this,user2);
-
-}
-     @Override
-    protected void onRestart() {
-         super.onRestart();
-
-
-       //  this.finish();
-     }
-
-    public void SynCommunes(){
-        // 2.2 - Get a Retrofit instance and the related endpoints
-        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
-
-        // 2.3 - Create the call on Github API
-        Call<List<Commune>> call =retrofitServices.getCommunes();
-        // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<List<Commune>>() {
-            private List<Commune> communes;
-
-            @Override
-            public void onResponse(Call<List<Commune>> call, Response<List<Commune>> response) {
-
-                if(response.isSuccessful()){
-
-                    this.communes=response.body();
-                    Toast.makeText(getApplication(),"Commune"+this.communes.size(),Toast.LENGTH_SHORT);
-                    for(Commune commune:communes){
-                        databaseManager.insercommune(commune);
-                    }
-                    progressDoalog.dismiss();
-                    progressDoalog.setMessage("Loading Structures et Localites....");
-                    progressDoalog.show();
-                      SynStructure();
-
-                }else{
-                    Log.i("ERROR Commune", response.errorBody().toString());
-                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Commune>> call, Throwable t) {
-                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
-                Toast.makeText(getApplication(),t.getCause().getMessage().toString()+"Probleme",Toast.LENGTH_LONG).show();
-                progressDoalog.dismiss();
-            }
-        });
-
-    }
-
-
-
-    public void SynStructure(){
-        // 2.2 - Get a Retrofit instance and the related endpoints
-        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
-
-        // 2.3 - Create the call on Github API
-        Call<List<Structure>> call =retrofitServices.getStructures();
-        // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<List<Structure>>() {
-            private List<Structure> structures;
-
-            @Override
-            public void onResponse(Call<List<Structure>> call, Response<List<Structure>> response) {
-
-                if(response.isSuccessful()){
-                    Log.i("OK", response.message());
-                    //Toast.makeText(getApplication(),"Structur"+structures.size(),Toast.LENGTH_SHORT).show();
-                    this.structures=response.body();
-                    for(Structure structure:structures){
-                        databaseManager.inserstructure(structure);
-                    }
-                    SynLocalite();
-                }else{
-                    Log.i("REPONSE", response.errorBody().toString());
-                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Structure>> call, Throwable t) {
-                Log.e("ERROR ", t.getMessage().toString()+"Probleme");
-                Toast.makeText(getApplication(),"Probleme loding Stru",Toast.LENGTH_LONG).show();
-                progressDoalog.dismiss();
-            }
-        });
-
-    }
-
-
-    public void SynLocalite(){
-        // 2.2 - Get a Retrofit instance and the related endpoints
-        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
-
-        // 2.3 - Create the call on Github API
-        Call<List<Localite>> call =retrofitServices.getLocalites();
-        // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<List<Localite>>() {
-            private List<Localite>localites;
-
-            @Override
-            public void onResponse(Call<List<Localite>> call, Response<List<Localite>> response) {
-
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplication(),"OK",Toast.LENGTH_LONG).show();
-                    Log.i("OK", response.message());
-                    this.localites=response.body();
-                    for(Localite localite:localites){
-
-                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
-                        databaseManager.inserslocalite(localite);
-                    }
-
-                    progressDoalog.dismiss();
-                    SynUsb();
-                }else{
-                    Log.i("REPONSE", response.errorBody().toString());
-                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Localite>> call, Throwable t) {
-                Log.e("ERROR ", t.getCause().getMessage()+"Probleme Loca");
-                Toast.makeText(getApplication(),"Probleme Localite",Toast.LENGTH_LONG).show();
-                progressDoalog.dismiss();
-            }
-        });
-
-    }
-
-
-    public void SynUsb(){
-        this.progressDoalog.setMessage("Loding USB ......");
-        this.progressDoalog.show();
-        // 2.2 - Get a Retrofit instance and the related endpoints
-        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
-
-        // 2.3 - Create the call on Github API
-        Call<List<USB>> call =retrofitServices.getUSBs();
-        // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<List<USB>>() {
-            private List<USB>usbs;
-
-            @Override
-            public void onResponse(Call<List<USB>> call, Response<List<USB>> response) {
-
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplication(),"OK",Toast.LENGTH_LONG).show();
-                    Log.i("OK", response.message());
-                    this.usbs=response.body();
-                    for(USB usb:this.usbs){
-
-                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
-                        databaseManager.insersusb(usb);
-                    }
-
-                    progressDoalog.dismiss();
-                    SynSUP();
-                }else{
-                    Log.i("REPONSE", response.errorBody().toString());
-                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
-                    progressDoalog.dismiss();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<USB>> call, Throwable t) {
-                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
-                Toast.makeText(getApplication(),"Probleme USB",Toast.LENGTH_LONG).show();
-                progressDoalog.dismiss();
-            }
-        });
-
-    }
-
-    public void SynSUP(){
-        this.progressDoalog.setMessage("Loding SuP ......");
-        this.progressDoalog.show();
-        // 2.2 - Get a Retrofit instance and the related endpoints
-        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
-
-        // 2.3 - Create the call on Github API
-        Call<List<SuperViseur>> call =retrofitServices.getSuperViseur();
-        // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<List<SuperViseur>>() {
-            private List<USB>usbs;
-
-            @Override
-            public void onResponse(Call<List<SuperViseur>> call, Response<List<SuperViseur>> response) {
-
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplication(),"OK",Toast.LENGTH_LONG).show();
-                    Log.i("OK", response.message());
-                    for(SuperViseur superViseur:response.body()){
-
-                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
-                        databaseManager.inserSuperViseur(superViseur);
-                    }
-
-                    progressDoalog.dismiss();
-                    SynAnimnateur();
-                }else{
-                    Log.i("REPONSE", response.errorBody().toString());
-                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
-                    progressDoalog.dismiss();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<SuperViseur>> call, Throwable t) {
-                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
-                Toast.makeText(getApplication(),"Probleme SuperViseur",Toast.LENGTH_LONG).show();
-                progressDoalog.dismiss();
-            }
-        });
-
-    }
-
-
-    public void SynAnimnateur(){
-        this.progressDoalog.setMessage("Loding Animateur ......");
-        this.progressDoalog.show();
-        // 2.2 - Get a Retrofit instance and the related endpoints
-        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
-
-        // 2.3 - Create the call on Github API
-        Call<List<Animateur>> call =retrofitServices.getAnimateur();
-        // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<List<Animateur>>() {
-            private List<Animateur>animateurs;
-
-            @Override
-            public void onResponse(Call<List<Animateur>> call, Response<List<Animateur>> response) {
-
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplication(),"OK",Toast.LENGTH_LONG).show();
-                    Log.i("OK", response.message());
-                    for(Animateur animateur:response.body()){
-
-                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
-                        databaseManager.insertAnimateur(animateur);
-                    }
-
-                    progressDoalog.dismiss();
-                    SynRelais();
-                }else{
-                    Log.i("REPONSE", response.errorBody().toString());
-                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
-                    progressDoalog.dismiss();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Animateur>> call, Throwable t) {
-                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
-                Toast.makeText(getApplication(),"Probleme Animateur",Toast.LENGTH_LONG).show();
-                progressDoalog.dismiss();
-            }
-        });
-
-    }
-
-    public void SynRelais(){
-        this.progressDoalog.setMessage("Loding Relais ......");
-        this.progressDoalog.show();
-        // 2.2 - Get a Retrofit instance and the related endpoints
-        RetrofitServices retrofitServices = RetrofitServices.retrofit.create(RetrofitServices.class);
-
-        // 2.3 - Create the call on Github API
-        Call<List<Relais>> call =retrofitServices.getRelais();
-        // 2.4 - Start the call
-        ((Call) call).enqueue(new Callback<List<Relais>>() {
-            private List<Relais>relais;
-
-            @Override
-            public void onResponse(Call<List<Relais>> call, Response<List<Relais>> response) {
-
-                if(response.isSuccessful()){
-                    Toast.makeText(getApplication(),"OK",Toast.LENGTH_LONG).show();
-                    Log.i("OK", response.message());
-                    for(Relais relais:response.body()){
-
-                        //Toast.makeText(getApplication(),"------"+localite.getLocalitename(),Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(getApplication(),"------"+localite.getCommune().getCommunename(),Toast.LENGTH_SHORT).show();
-                        databaseManager.insertRealais(relais);
-                    }
-
-                    progressDoalog.dismiss();
-                }else{
-                    Log.i("REPONSE", response.errorBody().toString());
-                    Toast.makeText(getApplication(),"NonValue",Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Relais>> call, Throwable t) {
-                Log.e("ERROR ", t.getCause().getMessage().toString()+"Probleme");
-                Toast.makeText(getApplication(),"Probleme Relais",Toast.LENGTH_LONG).show();
-                progressDoalog.dismiss();
-            }
-        });
-
-    }
 
 }

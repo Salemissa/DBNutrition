@@ -14,9 +14,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:weightSum="4">
 
 
+            <TextView
+                android:id="@+id/mois"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Mois"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:textSize="15sp"
+                />
+            <TextView
+                android:id="@+id/annee"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Anne"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:textSize="15sp"
+                />
             <TextView
                 android:id="@+id/localite"
                 android:layout_width="0dp"
@@ -26,20 +48,14 @@
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="2">
-
-
-
-
-
+            android:weightSum="4">
             <TextView
                 android:id="@+id/nom"
                 android:layout_width="0dp"
@@ -49,28 +65,7 @@
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:textSize="20sp"
-                />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-
-            <TextView
-                android:id="@+id/sexe"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="Sexe"
-                android:textColor="#000"
-                android:textStyle="bold"
-                android:layout_margin="5dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 />
 
             <TextView
@@ -82,17 +77,8 @@
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-
             <TextView
                 android:id="@+id/PB"
                 android:layout_width="0dp"
@@ -102,12 +88,15 @@
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 />
+        </LinearLayout>
 
-
-
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4">
             <TextView
                 android:id="@+id/odeme"
                 android:layout_width="0dp"
@@ -117,53 +106,8 @@
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-            <TextView
-                android:id="@+id/accompagnat"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:hint="Nom de l'accompagnant"
-                android:textColor="#000"
-                android:textStyle="bold"
-                android:layout_margin="5dp"
-                android:textSize="20sp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-            <TextView
-                android:id="@+id/contact"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:hint="Contact"
-                android:textColor="#000"
-                android:textStyle="bold"
-                android:layout_margin="5dp"
-                android:textSize="20sp"
-            />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
             <TextView
                 android:id="@+id/PEC"
                 android:layout_width="0dp"
@@ -173,7 +117,7 @@
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 />
 
 
@@ -188,18 +132,8 @@
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 />
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
             <TextView
                 android:id="@+id/Ref"
                 android:layout_width="0dp"
@@ -209,19 +143,43 @@
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 />
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
             <TextView
-                android:id="@+id/MAS"
+                android:id="@+id/accompagnat"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:hint="Numero MAS"
+                android:hint="Nom de l'accompagnant"
                 android:textColor="#000"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 />
+            <TextView
+                android:id="@+id/contact"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Contact"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:textSize="15sp"
+                />
+
         </LinearLayout>
 
         <LinearLayout
@@ -239,7 +197,7 @@
                 android:gravity="center"
                 android:hint="Date :"
                 android:textColor="#000"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
 

@@ -1,8 +1,11 @@
 package com.example.myapp1.pcim;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -28,11 +31,14 @@ import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.SuviSousSurvillance;
+import com.example.myapp1.syn.Session;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.example.myapp1.R.string.MsgRed;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,7 +63,7 @@ public class Suvi_Sous_surveillance extends Fragment {
     Spinner spinnerstructer;
     Spinner spinnerage;
     String type = "passif";
-    EditText ssd, venant, ncg, ngf, read, Gueris, Desces, Abonde, NonRep, Ref, trans;
+    EditText ssd, venant, ncg, ngf, read, Gueris, Desces, Abonde, NonRep, Ref, trans,autre;
     SuviSousSurvillance suviSousSurvillance;
     String moi;
     String anne;
@@ -69,6 +75,7 @@ public class Suvi_Sous_surveillance extends Fragment {
 
     DatabaseManager databaseManager;
     private SimpleDateFormat sdf;
+    private Session session;
 
     public Suvi_Sous_surveillance() {
         // Required empty public constructor
@@ -132,8 +139,10 @@ public class Suvi_Sous_surveillance extends Fragment {
         this.NonRep = this.v.findViewById(R.id.Non_rep);
         this.Ref = this.v.findViewById(R.id.Ref_Creni);
         this.trans = this.v.findViewById(R.id.Trans_Crenas);
+        this.autre = this.v.findViewById(R.id.autre);
         this.Ajouter = this.v.findViewById(R.id.Ajouter);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        this.session = new Session(getContext());
         this.Ajouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -315,33 +324,80 @@ public class Suvi_Sous_surveillance extends Fragment {
     private void Ajouter() {
         if(VerficationChampe()){}
         else {
-            SuviSousSurvillance suviSousSurvillance = new SuviSousSurvillance();
-            suviSousSurvillance.setAnnee(anne);
-            suviSousSurvillance.setMois(moi);
-            suviSousSurvillance.setAge(age);
-            suviSousSurvillance.setStructure(structure);
-            suviSousSurvillance.setSsdebuit(Integer.parseInt(ssd.getText().toString()));
-            suviSousSurvillance.setVenant(Integer.parseInt(venant.getText().toString()));
-            suviSousSurvillance.setNCG(Integer.parseInt(ncg.getText().toString()));
-            suviSousSurvillance.setNGF(Integer.parseInt(ngf.getText().toString()));
-            suviSousSurvillance.setRea(Integer.parseInt(read.getText().toString()));
-            suviSousSurvillance.setGueris(Integer.parseInt(Gueris.getText().toString()));
-            suviSousSurvillance.setDeces(Integer.parseInt(Desces.getText().toString()));
-            suviSousSurvillance.setAbonde(Integer.parseInt(Abonde.getText().toString()));
-            suviSousSurvillance.setNonRep(Integer.parseInt(NonRep.getText().toString()));
-            suviSousSurvillance.setRefCRENI(Integer.parseInt(Ref.getText().toString()));
-            suviSousSurvillance.setTransCRENAS(Integer.parseInt(trans.getText().toString()));
-            suviSousSurvillance.setDate(sdf.format(new Date()));
-            suviSousSurvillance.setSyn(0);
-            try {
-                databaseManager.insersuviSousSurvillance(suviSousSurvillance);
-                Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity(), ListSuivisous.class);
-                startActivity(intent);
-            } catch (Exception e) {
-                Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+             //Verficatio si le Depistage deja Enrg
+            if (databaseManager.SSSEnrg(moi, anne,age, structure)!= null) {
+                Toast.makeText(getActivity(), MsgRed,Toast.LENGTH_LONG).show();
+            } else {
+                SuviSousSurvillance suviSousSurvillance = new SuviSousSurvillance();
+                suviSousSurvillance.setAnnee(anne);
+                suviSousSurvillance.setMois(moi);
+                suviSousSurvillance.setAge(age);
+                suviSousSurvillance.setStructure(structure);
+                suviSousSurvillance.setSsdebuit(Integer.parseInt(ssd.getText().toString()));
+                suviSousSurvillance.setVenant(Integer.parseInt(venant.getText().toString()));
+                suviSousSurvillance.setNCG(Integer.parseInt(ncg.getText().toString()));
+                suviSousSurvillance.setNGF(Integer.parseInt(ngf.getText().toString()));
+                suviSousSurvillance.setRea(Integer.parseInt(read.getText().toString()));
+                suviSousSurvillance.setGueris(Integer.parseInt(Gueris.getText().toString()));
+                suviSousSurvillance.setDeces(Integer.parseInt(Desces.getText().toString()));
+                suviSousSurvillance.setAbonde(Integer.parseInt(Abonde.getText().toString()));
+                suviSousSurvillance.setNonRep(Integer.parseInt(NonRep.getText().toString()));
+                suviSousSurvillance.setRefCRENI(Integer.parseInt(Ref.getText().toString()));
+                suviSousSurvillance.setTransCRENAS(Integer.parseInt(trans.getText().toString()));
+                suviSousSurvillance.setAutrecas(Integer.parseInt(autre.getText().toString()));
+                suviSousSurvillance.setDate(sdf.format(new Date()));
+                suviSousSurvillance.setCodeSup(session.getCodeSup());
+                suviSousSurvillance.setCodeTel(Build.SERIAL);
+                suviSousSurvillance.setSyn(0);
+                try {
+
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                    alertDialog.setTitle("Confirmation");
+                    alertDialog.setMessage("Voulez-vous ajouter  autre age?");
+                    // alertDialog.setIcon(R.drawable.delete);
+                    alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            onclearView();
+
+                        }
+                    });
+                    alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            databaseManager.insersuviSousSurvillance(suviSousSurvillance);
+                            Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getActivity(), ListSuivisous.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    alertDialog.show();
+
+
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         }
+    }
+
+    private void onclearView() {
+        ssd.getText().clear();
+        venant.getText().clear();
+        ncg.getText().clear();
+        ngf.getText().clear();
+        read.getText().clear();
+        Gueris.getText().clear();
+        Desces.getText().clear();
+        Abonde.getText().clear();
+        NonRep.getText().clear();
+        autre.getText().clear();
+        Ref.getText().clear();
+        trans.getText().clear();
+        spinnerage.setSelection(2);
     }
 
     boolean VerficationChampe() {
@@ -385,6 +441,10 @@ public class Suvi_Sous_surveillance extends Fragment {
         if (NonRep.getText().toString().isEmpty()) {
             error = true;
             NonRep.setError("invalid!");
+        }
+        if (autre.getText().toString().isEmpty()) {
+            error = true;
+            autre.setError("invalid!");
         }
         if (Ref.getText().toString().isEmpty()) {
             error = true;

@@ -79,4 +79,9 @@ public class Structure {
     public void setMedicamentIntrants(ForeignCollection<MedicamentIntrants> medicamentIntrants) {
         this.medicamentIntrants = medicamentIntrants;
     }
+
+    @Override
+    public String toString() {
+        return this.structurename;
+    }
 }

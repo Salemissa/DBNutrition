@@ -22,7 +22,7 @@ public class Localite {
         @DatabaseField
         private double lon;
 
-        @DatabaseField(foreign = true, foreignAutoRefresh = true)
+        @DatabaseField(foreign = true, foreignAutoRefresh = true,maxForeignAutoRefreshLevel = 4)
         @JsonProperty("commune")
         private Commune commune;
         @ForeignCollectionField(eager=false)
@@ -112,5 +112,10 @@ public class Localite {
 
     public void setLon(double lon) {
         this.lon = lon;
+    }
+
+    @Override
+    public String toString() {
+        return this.localitename;
     }
 }

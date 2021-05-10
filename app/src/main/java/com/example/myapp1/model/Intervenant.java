@@ -9,6 +9,8 @@ public abstract class  Intervenant {
   @DatabaseField(generatedId = true)
   private Long id;
   @DatabaseField
+  private Long idu;
+  @DatabaseField
   private  String nom;
   @DatabaseField
   private  String sexe;
@@ -16,7 +18,7 @@ public abstract class  Intervenant {
   private String cin;
   @DatabaseField
   @JsonProperty("tel")
-  private  String telephone;
+  private  String tel;
   @DatabaseField
   private  String statut;
   @DatabaseField
@@ -36,7 +38,13 @@ public abstract class  Intervenant {
     this.id = id;
   }
 
+  public Long getIdu() {
+    return idu;
+  }
 
+  public void setIdu(Long idu) {
+    this.idu = idu;
+  }
 
   public String getSexe() {
     return sexe;
@@ -62,14 +70,14 @@ public abstract class  Intervenant {
     this.cin = cin;
   }
 
-  public String getTelephone() {
-    return telephone;
+
+  public String getTel() {
+    return tel;
   }
 
-  public void setTelephone(String telephone) {
-    this.telephone = telephone;
+  public void setTel(String tel) {
+    this.tel = tel;
   }
-
 
   public String getStatut() {
     return statut;

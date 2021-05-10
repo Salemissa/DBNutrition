@@ -37,10 +37,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.j256.ormlite.android.apptools.OpenHelperManager.getHelper;
+
 
 public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "Sanitaire.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 1;
 
     public DatabaseManager(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -81,21 +83,16 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
-            TableUtils.dropTable(connectionSource, AppUser.class, true);
-            TableUtils.dropTable(connectionSource, AppRole.class, true);
-            TableUtils.dropTable(connectionSource, Moughata.class, true);
-            TableUtils.dropTable(connectionSource, Commune.class, true);
-            TableUtils.dropTable(connectionSource, Localite.class, true);
-            TableUtils.dropTable(connectionSource, Structure.class, true);
-            TableUtils.dropTable(connectionSource, DepistagePassif.class, true);
-            TableUtils.dropTable(connectionSource, SuperViseur.class, true);
-            TableUtils.dropTable(connectionSource, ApprocheCommunataire.class, true);
-            TableUtils.dropTable(connectionSource, Test.class, true);
-            TableUtils.dropTable(connectionSource, Medicament.class, true);
-            TableUtils.dropTable(connectionSource, Gaspa.class, true);
-            TableUtils.dropTable(connectionSource, Annee.class, true);
+            Log.i("old", ""+oldVersion);
+            Log.i("new",""+newVersion);
+           if(oldVersion<2) {
+               //Dao<Depistage, Long> dao = getDao(Depistage.class);
+               //dao.executeRaw("ALTER TABLE `Depistage` ADD COLUMN codeSup STRING;");
 
-            onCreate(database, connectionSource);
+               //dao.executeRaw ("ALTER TABLE` account` ADD COLUMN age INTEGER; ");
+           }
+
+            //onUpgrade(database, connectionSource, oldVersion + 1, newVersion);
             Log.i("DATABASE", "onUpgrade invoked");
         } catch (Exception exception) {
             Log.e("DATABASE", "Can't upgrade Database", exception);
@@ -274,13 +271,14 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
 
-    public Localite localitename(String localite) {
+    public List<Localite> localitename(String localite) {
         try {
             Dao<Localite, Integer> dao = getDao(Localite.class);
             List<Localite> localites = dao.queryForEq("localitename", localite);
             if (!localite.isEmpty()) {
-                return localites.get(0);
-            } else return null;
+                return localites;
+            }
+            else return null;
         } catch (Exception exception) {
             Log.e("DATABASE", "Can't insert  into Database", exception);
             return null;
@@ -313,14 +311,20 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
 
 
     public USB usbname(String usbname) {
+        USB usb=null;
         try {
             Dao<USB, Integer> dao = getDao(USB.class);
             List<USB> usbList = dao.queryForEq("usbname", usbname);
-            return usbList.get(0);
+            if(!usbList.isEmpty()){
+               usb= usbList.get(0);
+            }
+
         } catch (Exception exception) {
             Log.e("DATABASE", "Can't insert  into Database", exception);
             return null;
         }
+
+        return usb;
     }
 
 
@@ -490,9 +494,9 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
 
-    public Depistage depistageById(int id) {
+    public Depistage depistageById(Long id) {
         try {
-            Dao<Depistage, Integer> dao = getDao(Depistage.class);
+            Dao<Depistage, Long> dao = getDao(Depistage.class);
             Depistage depistage = dao.queryForId(id);
             return depistage;
         } catch (Exception exception) {
@@ -613,7 +617,7 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
 
     public List<PriseenCharge> ListPrisEnCharge() {
         try {
-            Dao<PriseenCharge, Integer> dao = getDao(PriseenCharge.class);
+            Dao<PriseenCharge, Long> dao = getDao(PriseenCharge.class);
             List<PriseenCharge> priseenCharges = dao.queryForAll();
             return priseenCharges;
         } catch (Exception exception) {
@@ -675,9 +679,9 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public ApprocheCommunataire ApprocheById(int id) {
+    public ApprocheCommunataire ApprocheById(Long id) {
         try {
-            Dao<ApprocheCommunataire, Integer> dao = getDao(ApprocheCommunataire.class);
+            Dao<ApprocheCommunataire, Long> dao = getDao(ApprocheCommunataire.class);
             ApprocheCommunataire approcheCommunataire = dao.queryForId(id);
             return approcheCommunataire;
         } catch (Exception exception) {
@@ -719,7 +723,7 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         List<Medicament> medicament = null;
         try {
             Dao<Medicament, Integer> dao = getDao(Medicament.class);
-            medicament = dao.queryForEq("name", name);
+            medicament = dao.queryForEq("nom", name);
 
             if (medicament.size() == 0) {
                 return null;
@@ -752,6 +756,21 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         try {
             Dao<MedicamentIntrants, Integer> dao = getDao(MedicamentIntrants.class);
             medicaments = dao.queryForAll();
+
+
+        } catch (Exception exception) {
+
+            Log.e("DATABASE", "Can't Probleme ", exception);
+
+        }
+        return medicaments;
+    }
+
+    public MedicamentIntrants MedicamentIntrantsById(Long id) {
+       MedicamentIntrants medicaments = null;
+        try {
+            Dao<MedicamentIntrants, Long> dao = getDao(MedicamentIntrants.class);
+            medicaments = dao.queryForId(id);
 
 
         } catch (Exception exception) {
@@ -813,6 +832,8 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
 
+
+
     public List<Relais> ListRelais() {
         List<Relais> relais = null;
         try {
@@ -841,6 +862,35 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
         }
     }
 
+
+    public void updateGaspa(Gaspa gaspa) {
+        try {
+            Dao<Gaspa, Integer> dao = getDao(Gaspa.class);
+            dao.createOrUpdate(gaspa);
+
+
+            Log.i("DATABASE", "insert invoked");
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert Medicament into Database", exception);
+        }
+    }
+
+
+    public Gaspa GaspaByid(Long id) {
+        Gaspa gaspa= null;
+        try {
+            Dao<Gaspa, Long> dao = getDao(Gaspa.class);
+
+            gaspa = dao.queryForId(id);
+
+            Log.i("DATABASE", "insert invoked");
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't insert Medicament into Database", exception);
+        }
+
+        return gaspa;
+    }
+
     public List<Gaspa> ListGaspa() {
         List<Gaspa> gaspaList = null;
         try {
@@ -857,6 +907,19 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     }
 
 
+    public void  Deletegaspa(Gaspa gaspa) {
+        try {
+            Dao<Gaspa, Integer> dao = getDao(Gaspa.class);
+
+           dao.delete(gaspa);
+
+            Log.i("DATABASE", "insert invoked");
+        } catch (Exception exception) {
+            Log.e("DATABASE", "Can't Delete Gaspa", exception);
+        }
+    }
+
+
     public void insertAnimateur(Animateur animateur) {
         try{
         Dao<Animateur, Integer> dao = getDao(Animateur.class);
@@ -868,5 +931,177 @@ public class DatabaseManager  extends OrmLiteSqliteOpenHelper {
     } catch (Exception exception) {
         Log.e("DATABASE", "Can't insert Medicament into Database", exception);
     }
+    }
+
+    public void updatedemedicamentIntrants(MedicamentIntrants medicamentIntrants) {
+        try {
+            Dao<MedicamentIntrants, Integer> dao = getDao(MedicamentIntrants.class);
+            dao.createOrUpdate(medicamentIntrants);
+    } catch (Exception exception) {
+        Log.e("DATABASE", "Can't insert Medicament into Database", exception);
+    }
+    }
+
+
+
+    public Depistage DepistagePassifEnrg (String mois, String annee,String type,String age,Long structure) {  //Verfication si le depistage deja enrg...
+        Depistage depistage = null;
+        try {
+            Dao<Depistage, Integer> dao = getDao(Depistage.class);//
+            Dao<Structure, Long> dao2 = getDao(Structure.class);
+            QueryBuilder<Depistage, Integer> qb = dao.queryBuilder();
+            QueryBuilder<Structure, Long> qs = dao2.queryBuilder();
+            qb.where().eq("mois", mois).and().eq("annee", annee).and().eq("type",type).and().eq("age",age);
+            qs.where().idEq(structure);
+            qb.join(qs);
+            List<Depistage> res = qb.query();
+            if (res.isEmpty()) {
+                depistage = null;
+            } else {
+                depistage = res.get(0);
+            }
+
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            depistage = null;
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+
+        }
+        return depistage;
+    }
+
+
+    public Depistage ActiviteEnrg (String mois, String annee,String type,String age,Localite localite) {  //Verfication si le depistage deja enrg...
+        Depistage depistage = null;
+        try {
+            Dao<Depistage, Integer> dao = getDao(Depistage.class);
+            Dao<Localite, Long> dao2 = getDao(Localite.class);
+            QueryBuilder<Depistage, Integer> qb = dao.queryBuilder();
+            QueryBuilder<Localite, Long> ql = dao2.queryBuilder();
+            qb.where().eq("mois", mois).and().eq("annee", annee).and().eq("type",type).and().eq("age",age);
+            ql.where().idEq(localite.getId());
+            qb.join(ql);
+            List<Depistage> res = qb.query();
+            if (res.isEmpty()) {
+                depistage = null;
+            } else {
+                depistage = res.get(0);
+            }
+
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            depistage = null;
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+
+        }
+        return depistage;
+    }
+
+
+    public SuviSousSurvillance SSSEnrg (String mois, String annee,String age,Structure structure) {  //Verfication si le depistage deja enrg...
+       SuviSousSurvillance suviSousSurvillance = null;
+        try {
+            Dao<SuviSousSurvillance, Integer> dao = getDao(SuviSousSurvillance.class);
+            Dao<Structure, Long> dao2 = getDao(Structure.class);
+            QueryBuilder<SuviSousSurvillance, Integer> qb = dao.queryBuilder();
+            QueryBuilder<Structure, Long> qs = dao2.queryBuilder();
+            qb.where().eq("mois", mois).and().eq("annee", annee).and().eq("age",age);
+            qs.where().idEq(structure.getId());
+            qb.join(qs);
+            List<SuviSousSurvillance> res = qb.query();
+            if (res.isEmpty()) {
+                suviSousSurvillance = null;
+            } else {
+                suviSousSurvillance = res.get(0);
+            }
+
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            suviSousSurvillance = null;
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+
+        }
+        return suviSousSurvillance;
+    }
+
+
+    public ApprocheCommunataire ApcEnrg (String mois, String annee,USB usb) {  //Verfication si le depistage deja enrg...
+       ApprocheCommunataire approcheCommunataire = null;
+        try {
+            Dao<ApprocheCommunataire, Integer> dao = getDao(ApprocheCommunataire.class);
+            Dao<USB, Long> dao2 = getDao(USB.class);
+            QueryBuilder<ApprocheCommunataire, Integer> qb = dao.queryBuilder();
+            QueryBuilder<USB, Long> qbusb = dao2.queryBuilder();
+            qb.where().eq("mois", mois).and().eq("annee", annee);
+            qbusb.where().idEq(usb.getId());
+            qb.join(qbusb);
+            List<ApprocheCommunataire> res = qb.query();
+            if (res.isEmpty()) {
+                approcheCommunataire = null;
+            } else {
+                approcheCommunataire = res.get(0);
+            }
+
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            approcheCommunataire = null;
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+
+        }
+        return approcheCommunataire;
+    }
+
+
+    public MedicamentIntrants MedicamentEnrg (String mois, String annee,Medicament medicament,Structure structure) {  //Verfication si le depistage deja enrg...
+        MedicamentIntrants medicamentIntrants = null;
+        try {
+            Dao<MedicamentIntrants, Integer> dao = getDao(MedicamentIntrants.class);
+            Dao<Structure, Long> dao2 = getDao(Structure.class);
+            Dao<Medicament, Long> dao3 = getDao(Medicament.class);
+            QueryBuilder<MedicamentIntrants, Integer> qb = dao.queryBuilder();
+            QueryBuilder<Structure, Long> qs = dao2.queryBuilder();
+            QueryBuilder<Medicament, Long> qm = dao3.queryBuilder();
+            qb.where().eq("mois", mois).and().eq("annee", annee);
+            qs.where().idEq(structure.getId());
+            qb.join(qs);
+            qm.where().idEq(medicament.getId());
+            qb.join(qm);
+            List<MedicamentIntrants> res = qb.query();
+            if (res.isEmpty()) {
+                medicamentIntrants = null;
+            } else {
+                medicamentIntrants= res.get(0);
+            }
+
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            medicamentIntrants= null;
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+
+        }
+        return medicamentIntrants;
+    }
+
+
+    public Gaspa GaspaEnrg (String mois, String annee,Relais relais) {  //Verfication si le depistage deja enrg...
+        Gaspa gaspa= null;
+        try {
+            Dao<Gaspa, Integer> dao = getDao(Gaspa.class);
+            QueryBuilder<Gaspa, Integer> qb = dao.queryBuilder();
+            qb.where().eq("mois", mois).and().eq("annee", annee).and().eq("idrelais",relais);
+            List<Gaspa> res = qb.query();
+            if (res.isEmpty()) {
+                gaspa= null;
+            } else {
+                gaspa= res.get(0);
+            }
+
+            Log.i("DATABASE", "insertUser invoked");
+        } catch (Exception exception) {
+            gaspa= null;
+            Log.e("DATABASE", "Can't insert user into Database", exception);
+
+        }
+        return gaspa;
     }
 }

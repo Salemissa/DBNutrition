@@ -1,8 +1,10 @@
 package com.example.myapp1.pcim;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -30,12 +32,14 @@ import android.widget.Toast;
 import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.DataManager.Donnes;
 import com.example.myapp1.DepistagePassifList;
+import com.example.myapp1.ListPrisenCharge;
 import com.example.myapp1.R;
 import com.example.myapp1.model.Commune;
 import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.Moughata;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.model.Test;
+import com.example.myapp1.syn.Session;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -46,6 +50,7 @@ import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 import static android.widget.Toast.makeText;
+import static com.example.myapp1.R.string.MsgRed;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,8 +70,8 @@ public class Donnee_DP extends Fragment {
     Spinner spinnercommune;
     Spinner spinnerstructer;
     Spinner spinnerage;
-    String type = "passif";
-    private EditText rougeF, jauneF, vertF, odemeF, rougeG, jauneG, vertG, odemeG, zscore, zscore2;
+    String type = "DepistagePassif";
+    private EditText rougeF, jauneF, vertF, odemeF, rougeG, jauneG, vertG, odemeG, zscore, zscore2,zscoreG, zscore2G,pbmasF,pbmamF,pbmasG,pbmamG;
     String moi;
     String anne;
     String age;
@@ -87,6 +92,7 @@ public class Donnee_DP extends Fragment {
     private ListView list;
     private Button Modfier;
     private int id;
+    private Session session;
 
 
     public Donnee_DP() {
@@ -160,8 +166,15 @@ public class Donnee_DP extends Fragment {
         this.odemeG = (EditText) this.v.findViewById(R.id.odemeG);
         this.zscore = (EditText) this.v.findViewById(R.id.zscore);
         this.zscore2 = (EditText) this.v.findViewById(R.id.zscore2);
+        this.zscoreG = (EditText) this.v.findViewById(R.id.zscoreG);
+        this.zscore2G = (EditText) this.v.findViewById(R.id.zscore2G);
+        this.pbmamF = (EditText) this.v.findViewById(R.id.pbmamF);
+        this.pbmamG = (EditText) this.v.findViewById(R.id.pbmamG);
+        this.pbmasF = (EditText) this.v.findViewById(R.id.pbmasF);
+        this.pbmasG = (EditText) this.v.findViewById(R.id.pbmasG);
         this.Ajouter = (Button) this.v.findViewById(R.id.Ajouter);
         this.sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        this.session = new Session(getContext());
         // this.Modfier =(Button) this.v.findViewById(R.id.Modfier);
         // this.Modfier.setVisibility(View.GONE);
 
@@ -476,44 +489,76 @@ public class Donnee_DP extends Fragment {
 
     private void AjouterDepistage() {
 
-       boolean ver= VerficationChampe();
-       if (ver){}
-       else {
-           Depistage depistage = new Depistage();
-           depistage.setAnnee(anne);
-           depistage.setMois(moi);
-           depistage.setAge(age);
-           depistage.setStructure(structure);
-           depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
-           depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
-           depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
-           depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
-           depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
-           depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
-           depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
-           depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
-           depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
-           depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
-            depistage.setSyn(0);
-           depistage.setDate(this.sdf.format(new Date()));
-           depistage.setRapport(this.Rapport);
-           String user ="2345";
-           String uniqueID ="Rapport"+depistage.getStructure().getId()+"";
-           //Toast.makeText(this.getActivity(),uniqueID,Toast.LENGTH_LONG).show();
-            depistage.setType("DepistagePassif");
+        boolean ver = VerficationChampe(); //Verfication Les Champs
+        if (ver) {
+        } else {
+            Depistage depi = databaseManager.DepistagePassifEnrg(moi, anne, type,age,structure.getId()); //Verficatio si le Depistage deja Enrg
+            if (depi != null) {
+                Toast.makeText(getActivity(), MsgRed,Toast.LENGTH_LONG).show();
+            } else {
+                Depistage depistage = new Depistage();
+                depistage.setAnnee(anne);
+                depistage.setMois(moi);
+                depistage.setAge(age);
+                depistage.setStructure(structure);
+                depistage.setJauneF(Integer.parseInt(jauneF.getText().toString()));
+                depistage.setRougeF(Integer.parseInt(rougeF.getText().toString()));
+                depistage.setVertF(Integer.parseInt(vertF.getText().toString()));
+                depistage.setOdemeF(Integer.parseInt(odemeF.getText().toString()));
+                depistage.setJauneG(Integer.parseInt(jauneG.getText().toString()));
+                depistage.setRougeG(Integer.parseInt(rougeG.getText().toString()));
+                depistage.setVertG(Integer.parseInt(vertG.getText().toString()));
+                depistage.setOdemeG(Integer.parseInt(odemeG.getText().toString()));
+                depistage.setZscore2(Integer.parseInt(zscore2.getText().toString()));
+                depistage.setZscore(Integer.parseInt(zscore.getText().toString()));
+                depistage.setZscore2G(Integer.parseInt(zscore2G.getText().toString()));
+                depistage.setZscoreG(Integer.parseInt(zscoreG.getText().toString()));
+                depistage.setPbmamF(Integer.parseInt(pbmamF.getText().toString()));
+                depistage.setPbmamG(Integer.parseInt(pbmamG.getText().toString()));
+                depistage.setPbmasF(Integer.parseInt(pbmasF.getText().toString()));
+                depistage.setPbmasG(Integer.parseInt(pbmasG.getText().toString()));
+                depistage.setSyn(0);
+                depistage.setDate(this.sdf.format(new Date()));
+                depistage.setRapport(this.Rapport);
+                depistage.setCodeSup(session.getCodeSup());
+                depistage.setCodeTel(Build.SERIAL);
+                depistage.setType("DepistagePassif");
 
-           try {
-               databaseManager.inserDepistage(depistage);
+                try {
+                    databaseManager.inserDepistage(depistage);
 
-               Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
-               Intent intent = new Intent(getActivity(), DepistagePassifList.class);
+                    Toast.makeText(getActivity(), R.string.ajout, Toast.LENGTH_LONG).show();
 
-               startActivity(intent);
-               this.onDestroyView();
-           } catch (Exception e) {
-               Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-           }
-       }
+
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                    alertDialog.setTitle("Confirmation");
+                    alertDialog.setMessage("Voulez-vous ajouter  autre age?");
+                    // alertDialog.setIcon(R.drawable.delete);
+                    alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            onclearView();
+
+                        }
+                    });
+                    alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            Intent intent = new Intent(getActivity(), DepistagePassifList.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    alertDialog.show();
+
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
 
@@ -532,12 +577,22 @@ public class Donnee_DP extends Fragment {
 
         if (rougeG.getText().toString().isEmpty()) {
             error = true;
+            rougeG.setBackgroundColor(Color.WHITE);
             rougeG.setError("invalid!");
+        }
+        else{
+            rougeG.setBackgroundColor(Color.RED);
         }
         if (rougeF.getText().toString().isEmpty()) {
             error = true;
+            rougeF.setBackgroundColor(Color.WHITE);
             rougeF.setError("invalid!");
+
         }
+        else{
+            rougeF.setBackgroundColor(Color.RED);
+        }
+
         if (vertG.getText().toString().isEmpty()) {
             error = true;
             vertG.setError("invalid!");
@@ -564,6 +619,44 @@ public class Donnee_DP extends Fragment {
             error = true;
             zscore2.setError("invalid!");
         }
+
+        if (zscoreG.getText().toString().isEmpty()) {
+            error = true;
+            zscoreG.setError("invalid!");
+        }
+        if (zscore2G.getText().toString().isEmpty()) {
+            error = true;
+            zscore2G.setError("invalid!");
+        }
+
+        if (pbmasG.getText().toString().isEmpty()) {
+            error = true;
+            pbmasG.setBackgroundColor(Color.WHITE);
+            pbmasG.setError("invalid!");
+        }
+        else{
+            pbmasG.setBackgroundColor(Color.RED);
+        }
+        if (pbmasF.getText().toString().isEmpty()) {
+            error = true;
+            pbmasF.setBackgroundColor(Color.WHITE);
+            pbmasF.setError("invalid!");
+        }
+        else{
+            pbmasF.setBackgroundColor(Color.RED);
+        }
+        if (pbmamF.getText().toString().isEmpty()) {
+            error = true;
+            pbmamF.setError("invalid!");
+
+        }
+
+        if (pbmamG.getText().toString().isEmpty()) {
+            error = true;
+            pbmamG.setError("invalid!");
+
+        }
+
 
         if (age.isEmpty()) {
             error = true;
@@ -615,21 +708,31 @@ public class Donnee_DP extends Fragment {
     }
     @Override
     public void onDestroy() {
-      jauneF.setText("");
-       rougeF.setText("");
-        vertF.setText("");
-        odemeF.setText("");
-        jauneG.setText("");
-       rougeG.setText("");
-       vertG.setText("");
-       odemeG.setText("");
-       zscore2.setText("");
-       zscore.setText("");
+
        super.onDestroy();
     }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+
+    public void onclearView() {
+        jauneF.getText().clear();
+        rougeF.getText().clear();
+        vertF.getText().clear();
+        odemeF.getText().clear();
+        jauneG.getText().clear();
+        rougeG.getText().clear();
+        vertG.getText().clear();
+        odemeG.getText().clear();
+        zscore2.getText().clear();
+        zscore.getText().clear();
+        zscore2G.getText().clear();
+        zscoreG.getText().clear();
+        pbmamG.getText().clear();
+        pbmamF.getText().clear();
+        pbmasF.getText().clear();
+        pbmasG.getText().clear();
+        this.Rapport=null;
+        rapport.setImageBitmap(null);
+        rapport.setVisibility(View.INVISIBLE);
+        spinnerage.setSelection(2);
 
     }
 

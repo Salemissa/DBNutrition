@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto">
-   
+    <item
+        android:id="@+id/Syn"
+        android:checkableBehavior="single"
+        android:title="Syn"
+        android:icon="@drawable/sync"
+        app:showAsAction="always">
+        <menu>
+            <item
+                app:showAsAction="collapseActionView"
+                android:id="@+id/SynList"
+                android:title="Récupérer les données"
+                android:icon="@drawable/sync"></item>
+
+        </menu>
+    </item>
+
 </menu>

@@ -106,7 +106,7 @@ public class ListSuivisous extends AppCompatActivity {
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(ListSuivisous.this);
                 alertDialog.setTitle("Confirm ");
-                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                alertDialog.setMessage(getString(R.string.MsgSyn));
                 // alertDialog.setIcon(R.drawable.delete);
                 alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
                     @Override
@@ -137,7 +137,7 @@ public class ListSuivisous extends AppCompatActivity {
         //Toast.makeText(this,"medicament non trouve ",Toast.LENGTH_LONG).show();
 
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("info");
+         alertDialog.setTitle(getString(R.string.info));
         alertDialog.setMessage("List est indispansable");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
             @Override
@@ -214,7 +214,7 @@ public class ListSuivisous extends AppCompatActivity {
         List<SuviSousSurvillance> Listsyn=new ArrayList<SuviSousSurvillance>();
 
         for(SuviSousSurvillance sousSurvillance:databaseManager.ListSuviSousSurvillance()){
-            if(sousSurvillance.getSyn()==0){
+            if(sousSurvillance.getSyn()!=1){
                 Listsyn.add(sousSurvillance);
             }
         }
@@ -223,7 +223,6 @@ public class ListSuivisous extends AppCompatActivity {
             SuviSousSurvillance suviSousSurvillanceSyn=new SuviSousSurvillance();
             for(SuviSousSurvillance suviSousSurvillance:Listsyn) {
                 suviSousSurvillanceSyn =suviSousSurvillance;
-                suviSousSurvillanceSyn.setId(0L);
                 Structure structure = new Structure();
                 structure.setId(suviSousSurvillance.getStructure().getId());
                 structure.setStructurename(suviSousSurvillance.getStructure().getStructurename());
@@ -246,8 +245,8 @@ public class ListSuivisous extends AppCompatActivity {
         }
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
-            alertDialog.setMessage("Rien a synchroniser maintenant");
+            alertDialog.setTitle("infornation");
+            alertDialog.setMessage(getString(R.string.Riensyn));
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -367,9 +366,9 @@ public class ListSuivisous extends AppCompatActivity {
         this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirmation ");
-        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
+        alertDialog.setMessage(R.string.ConfirSupp);
         // alertDialog.setIcon(R.drawable.delete);
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -379,7 +378,7 @@ public class ListSuivisous extends AppCompatActivity {
 
             }
         });
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -420,25 +419,26 @@ public class ListSuivisous extends AppCompatActivity {
                     progressDoalog.dismiss();
                     AlertDialog alertDialog = new AlertDialog.Builder(ListSuivisous.this).create();
                     alertDialog.setTitle("info");
-                    alertDialog.setMessage("Les données ont été synchronisées");
+                    alertDialog.setMessage("Synchronisé avec succés");
+                    Toast.makeText(getApplication(), R.string.messageSyn, LENGTH_LONG).show();
 
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            for (SuviSousSurvillance sousSurvillance : suviSousSurvillances) {
-                                if (sousSurvillance.getSyn() == 0 || sousSurvillance.getSyn() == 2) {
-                                    sousSurvillance.setSyn(1);
-                                    databaseManager.updatesuviSousSurvillance(sousSurvillance);
-                                }
-                            }
+                    for (SuviSousSurvillance sousSurvillance : response.body()) {
+                        if(sousSurvillance.getSyn()==0){
+                            databaseManager.updatesuviSousSurvillance(sousSurvillance);
+                        }
+                    }
+
+                    for (SuviSousSurvillance sousSurvillance: databaseManager.ListSuviSousSurvillance()) {
+                        if(sousSurvillance.getSyn()==0 || sousSurvillance.getSyn()==2){
+                            sousSurvillance.setSyn(1);
+                            databaseManager.updatesuviSousSurvillance(sousSurvillance);
+                        }
+                    }
                             suviSousSurvillances=databaseManager.ListSuviSousSurvillance();
                             arrayList = databaseManager.ListSuviSousSurvillance();
                             adapter.notifyDataSetChanged();
 
-                        }
-                    });
 
-                    //alertDialog.show();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
 
@@ -450,6 +450,7 @@ public class ListSuivisous extends AppCompatActivity {
                     //progressDoalog.dismiss();
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplication(), R.string.ProblemServeur, LENGTH_LONG).show();
                 }
 
             }
@@ -459,6 +460,7 @@ public class ListSuivisous extends AppCompatActivity {
                  Log.e("ERROR ", t.getMessage().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplication(), R.string.ProblemeConnexion, LENGTH_LONG).show();
                // progressDoalog.dismiss();
             }
         });

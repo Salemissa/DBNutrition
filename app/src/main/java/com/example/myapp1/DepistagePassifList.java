@@ -37,6 +37,7 @@ import com.example.myapp1.DataManager.DatabaseManager;
 import com.example.myapp1.model.Depistage;
 import com.example.myapp1.model.DepistagePassif;
 import com.example.myapp1.model.Localite;
+import com.example.myapp1.model.MedicamentIntrants;
 import com.example.myapp1.model.PriseenCharge;
 import com.example.myapp1.model.Structure;
 import com.example.myapp1.pcim.Donnee_DP;
@@ -112,7 +113,7 @@ public class DepistagePassifList extends AppCompatActivity {
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(DepistagePassifList.this);
                 alertDialog.setTitle("Confirmation ");
-                alertDialog.setMessage("Etes-Vous sûr  de Synchronicés ");
+                alertDialog.setMessage(getString(R.string.MsgSyn));
                 // alertDialog.setIcon(R.drawable.delete);
                 alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
                     @Override
@@ -139,9 +140,8 @@ public class DepistagePassifList extends AppCompatActivity {
 
         if (depistagePassif ==null){
             //Toast.makeText(this,"medicament non trouve ",Toast.LENGTH_LONG).show();
-
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
+            alertDialog.setTitle(getString(R.string.info));
             alertDialog.setMessage("List est indispansable");
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -164,7 +164,7 @@ public class DepistagePassifList extends AppCompatActivity {
             else {
 
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("info");
+                alertDialog.setTitle("information");
                 alertDialog.setMessage("Cliquez sur ");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -187,7 +187,7 @@ public class DepistagePassifList extends AppCompatActivity {
 
                     //Intent intent = new Intent(DepistagePassifList.this, Donnee_DP.class);
 
-                    intent.putExtra("id",clickedItem.getId().intValue());
+                    intent.putExtra("id",clickedItem.getId().longValue());
                     startActivity(intent);
                     //Toast.makeText(DepistagePassifList.this,""+clickedItem.getId(), LENGTH_LONG).show();
                     //startActivityForResult(intent,"");
@@ -222,13 +222,14 @@ public class DepistagePassifList extends AppCompatActivity {
 
         ListView list = (ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
 
     }
     void synDepistage(){
         List<Depistage> ListSyn=new ArrayList<Depistage>();
         for(Depistage depistage:databaseManager.DepistageByType(type)) {
-            if(depistage.getSyn()==0){
+            if(depistage.getSyn()!=1){
             ListSyn.add(depistage);
             }
         }
@@ -238,12 +239,11 @@ public class DepistagePassifList extends AppCompatActivity {
             Depistage depi=new Depistage();
             for(Depistage depistage:ListSyn) {
                 depi = depistage;
-                depi.setId(0L);
                 Structure structure = new Structure();
                 structure.setId(depi.getStructure().getId());
                 structure.setStructurename(depi.getStructure().getStructurename());
                 String rapport="";
-                depi.setStructurerapport("");
+                depi.setStructurerapport(null);
                 if(depistage.getRapport() !=null) {
                     rapport = Base64.encodeToString(depistage.getRapport(), Base64.DEFAULT);
 
@@ -278,8 +278,8 @@ public class DepistagePassifList extends AppCompatActivity {
         }
         else{
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("info");
-            alertDialog.setMessage("Rien a synchroniser maintenant");
+            alertDialog.setTitle("information");
+            alertDialog.setMessage(getString(R.string.Riensyn));
 
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -309,30 +309,32 @@ public class DepistagePassifList extends AppCompatActivity {
             public void onResponse(Call<List<Depistage>> call, Response<List<Depistage>> response) {
                 if (response.isSuccessful()) {
                     progressDoalog.dismiss();
-                    AlertDialog alertDialog = new AlertDialog.Builder(DepistagePassifList.this).create();
-                    alertDialog.setTitle("info");
-                    alertDialog.setMessage("Synchronisé avec succés");
+
                     Toast.makeText(getApplication(), R.string.messageSyn, LENGTH_LONG).show();
 
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            for (Depistage depistage : syn) {
-                                if (depistage.getSyn() == 0 ||  depistage.getSyn() == 2) {
-                                    depistage.setSyn(1);
-                                    databaseManager.updatedepistage(depistage);
-                                }
-                            }
+                    for (Depistage depistage : response.body()) {
+                        if(depistage.getSyn()==0){
+                            Depistage depistage1=databaseManager.depistageById(depistage.getId());
+                            depistage1.setIdu(depistage.getIdu());
+                            databaseManager.updatedepistage(depistage1);
+                        }
+                    }
+
+                    for (Depistage depistage : databaseManager.DepistageByType(type)) {
+                        if(depistage.getSyn()==0 || depistage.getSyn()==2){
+                            depistage.setSyn(1);
+                            databaseManager.updatedepistage(depistage);
+                        }
+                    }
                             depistagePassif= databaseManager.DepistageByType(type);
                             arrayList=depistagePassif;
                             adapter.notifyDataSetChanged();
 
-                        }
-                    });
 
-                    // alertDialog.show();
+
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
+
 
 
                 }else{
@@ -342,6 +344,7 @@ public class DepistagePassifList extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
                     progressBar.setVisibility(View.GONE);
                     progressDoalog.dismiss();
+                    Toast.makeText(getApplication(), R.string.ProblemServeur, LENGTH_LONG).show();
                 }
 
             }
@@ -351,6 +354,7 @@ public class DepistagePassifList extends AppCompatActivity {
                 Log.e("ERROR ", t.getCause().toString()+"Probleme");
                 progressBar.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplication(), R.string.ProblemeConnexion, LENGTH_LONG).show();
 
             }
         });
@@ -362,9 +366,9 @@ public class DepistagePassifList extends AppCompatActivity {
          this.supp = false;
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Confirmation ");
-        alertDialog.setMessage("Etes-Vous sûr  de vouloir  supprimer ?");
+        alertDialog.setMessage(R.string.ConfirSupp);
         // alertDialog.setIcon(R.drawable.delete);
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -374,7 +378,7 @@ public class DepistagePassifList extends AppCompatActivity {
 
             }
         });
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("NON", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -461,6 +465,11 @@ public class DepistagePassifList extends AppCompatActivity {
                     Rapport.setImageBitmap(bitmap);
                 }
             }
+            else{
+
+                    Rapport.setImageBitmap(null);
+
+            }
             mois.setText("Mois  : "+depistagePassifs.get(position).getMois());
             annee.setText("Anneé : "+depistagePassifs.get(position).getAnnee());
             TextView date= (TextView)layoutItem.findViewById(R.id.date);
@@ -470,12 +479,12 @@ public class DepistagePassifList extends AppCompatActivity {
                 structure.setText("Structure : ");
             }
             age.setText("Age : "+depistagePassifs.get(position).getAge());
-            Rouge.setText("MAS : "+depistagePassifs.get(position).getRougeF());
-            Jaune.setText("MAM : "+depistagePassifs.get(position).getJauneF());
-            Vert.setText("SAINT : "+depistagePassifs.get(position).getVertF());
-            Odeme.setText("Odeme : "+depistagePassifs.get(position).getOdemeF());
-            Z_score1.setText("Z score 1 : "+depistagePassifs.get(position).getZscore());
-           Z_score2.setText("Z score 2 : "+depistagePassifs.get(position).getZscore2());
+            Rouge.setText("MAS : "+depistagePassifs.get(position).getRougeF()+depistagePassifs.get(position).getRougeG());
+            Jaune.setText("MAM : "+depistagePassifs.get(position).getJauneF()+depistagePassifs.get(position).getJauneG());
+            Vert.setText("PB : "+depistagePassifs.get(position).getVertF()+depistagePassifs.get(position).getVertG());
+            Odeme.setText("Odeme : "+depistagePassifs.get(position).getOdemeF()+depistagePassifs.get(position).getOdemeG());
+            Z_score1.setText("Zs MAS : "+depistagePassifs.get(position).getZscore()+depistagePassifs.get(position).getZscoreG());
+            Z_score2.setText("Zs MAM : "+depistagePassifs.get(position).getZscore2()+depistagePassifs.get(position).getZscore2G());
 
             date.setText("Date : "+""+depistagePassifs.get(position).getDate());
 

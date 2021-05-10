@@ -34,7 +34,7 @@
             android:layout_height="53dp"
             android:layout_marginLeft="14dp"
             android:gravity="center"
-            android:text="List GASPA"
+            android:text="Suivi des GASPA"
             android:textSize="25sp" />
         <LinearLayout
             android:layout_width="match_parent"

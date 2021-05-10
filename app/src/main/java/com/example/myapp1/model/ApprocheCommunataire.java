@@ -13,6 +13,8 @@ public class ApprocheCommunataire {
     @DatabaseField(generatedId = true)
     private Long id;
     @DatabaseField
+    private Long idu;
+    @DatabaseField
     private  String mois;
     @DatabaseField
     private String annee;
@@ -42,7 +44,6 @@ public class ApprocheCommunataire {
     private  int ncg;
     @DatabaseField
     private  int testpalu;
-
     @DatabaseField
     private int paluconfirme;
     @DatabaseField
@@ -51,12 +52,45 @@ public class ApprocheCommunataire {
     private int diarrhee;
     @DatabaseField
     private  int vaccin;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @DatabaseField
+    private  int ncgG;
+    @DatabaseField
+    private  int testpaluG;
+    @DatabaseField
+    private int paluconfirmeG;
+    @DatabaseField
+    private  int trG;
+    @DatabaseField
+    private int diarrheeG;
+    @DatabaseField
+    private  int vaccinG;
+
+    @DatabaseField
+    private  int fa;
+
+
+    @DatabaseField
+    private  int bprougeG;
+    @DatabaseField
+    private  int bpJauneG;
+    @DatabaseField
+    private  int bpvert;
+    @DatabaseField
+    private  int bpvertG;
+
+
+    @DatabaseField(foreign = true, foreignAutoRefresh = true,maxForeignAutoRefreshLevel = 4)
     private USB usb;
     @DatabaseField
     int syn;
     @DatabaseField
     private String rapportusb;
+
+    @DatabaseField
+    private String codeSup;
+
+    @DatabaseField
+    private String codeTel;
     public ApprocheCommunataire(){};
     public Long getId() {
         return id;
@@ -116,6 +150,14 @@ public class ApprocheCommunataire {
 
     public int getMenages() {
         return menages;
+    }
+
+    public Long getIdu() {
+        return idu;
+    }
+
+    public void setIdu(Long idu) {
+        this.idu = idu;
     }
 
     public void setMenages(int menages) {
@@ -194,6 +236,7 @@ public class ApprocheCommunataire {
         this.vaccin = vaccin;
     }
 
+
     public USB getUsb() {
         return usb;
     }
@@ -218,12 +261,68 @@ public class ApprocheCommunataire {
         this.ncg = ncg;
     }
 
+    public int getNcgG() {
+        return ncgG;
+    }
+
+    public void setNcgG(int ncgG) {
+        this.ncgG = ncgG;
+    }
+
+    public int getTestpaluG() {
+        return testpaluG;
+    }
+
+    public void setTestpaluG(int testpaluG) {
+        this.testpaluG = testpaluG;
+    }
+
+    public int getPaluconfirmeG() {
+        return paluconfirmeG;
+    }
+
+    public void setPaluconfirmeG(int paluconfirmeG) {
+        this.paluconfirmeG = paluconfirmeG;
+    }
+
+    public int getTrG() {
+        return trG;
+    }
+
+    public void setTrG(int trG) {
+        this.trG = trG;
+    }
+
+    public int getDiarrheeG() {
+        return diarrheeG;
+    }
+
+    public void setDiarrheeG(int diarrheeG) {
+        this.diarrheeG = diarrheeG;
+    }
+
+    public int getVaccinG() {
+        return vaccinG;
+    }
+
+    public void setVaccinG(int vaccinG) {
+        this.vaccinG = vaccinG;
+    }
+
+    public int getFa() {
+        return fa;
+    }
+
+    public void setFa(int fa) {
+        this.fa = fa;
+    }
+
     public void setSyn(int syn) {
         this.syn = syn;
     }
 
     public void setDateCreation(String dateCreation) {
-        dateCreation = dateCreation;
+        this.dateCreation = dateCreation;
     }
 
     public String getRapportusb() {
@@ -232,5 +331,53 @@ public class ApprocheCommunataire {
 
     public void setRapportusb(String rapportusb) {
         this.rapportusb = rapportusb;
+    }
+
+    public String getCodeSup() {
+        return codeSup;
+    }
+
+    public void setCodeSup(String codeSup) {
+        this.codeSup = codeSup;
+    }
+
+    public String getCodeTel() {
+        return codeTel;
+    }
+
+    public void setCodeTel(String codeTel) {
+        this.codeTel = codeTel;
+    }
+
+    public int getBprougeG() {
+        return bprougeG;
+    }
+
+    public void setBprougeG(int bprougeG) {
+        this.bprougeG = bprougeG;
+    }
+
+    public int getBpJauneG() {
+        return bpJauneG;
+    }
+
+    public void setBpJauneG(int bpJauneG) {
+        this.bpJauneG = bpJauneG;
+    }
+
+    public int getBpvert() {
+        return bpvert;
+    }
+
+    public void setBpvert(int bpvert) {
+        this.bpvert = bpvert;
+    }
+
+    public int getBpvertG() {
+        return bpvertG;
+    }
+
+    public void setBpvertG(int bpvertG) {
+        this.bpvertG = bpvertG;
     }
 }

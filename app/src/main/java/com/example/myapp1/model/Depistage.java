@@ -47,7 +47,21 @@ public class Depistage {
     @DatabaseField
     private  int zscore2;
     @DatabaseField
+    private  int zscoreG;
+    @DatabaseField
+    private  int zscore2G;
+    @DatabaseField
+    private  int pbmamG;
+    @DatabaseField
+    private  int pbmasG;
+    @DatabaseField
+    private  int pbmamF;
+    @DatabaseField
+    private  int pbmasF;
+    @DatabaseField
     private String type;
+    @DatabaseField
+    private Long idu;
 
     @DatabaseField
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
@@ -56,8 +70,12 @@ public class Depistage {
     private int syn;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Structure structure;
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true,maxForeignAutoRefreshLevel = 5)
     private Localite localite;
+    @DatabaseField
+    private String codeSup;
+    @DatabaseField
+    private String codeTel;
     public Depistage() {};
     public Long getId() {
         return id;
@@ -135,6 +153,14 @@ public class Depistage {
         return vertF;
     }
 
+    public Long getIdu() {
+        return idu;
+    }
+
+    public void setIdu(Long idu) {
+        this.idu = idu;
+    }
+
     public void setVertF(int vertF) {
         this.vertF = vertF;
     }
@@ -177,6 +203,56 @@ public class Depistage {
 
     public void setZscore2(int zscore2) {
         this.zscore2 = zscore2;
+    }
+
+    public int getZscoreG() {
+        return zscoreG;
+    }
+
+    public void setZscoreG(int zscoreG) {
+        this.zscoreG = zscoreG;
+    }
+
+    public int getZscore2G() {
+        return zscore2G;
+    }
+
+    public void setZscore2G(int zscore2G) {
+        this.zscore2G = zscore2G;
+    }
+
+
+    public int getPbmamG() {
+        return pbmamG;
+    }
+
+    public void setPbmamG(int pbmamG) {
+        this.pbmamG = pbmamG;
+    }
+
+    public int getPbmasG() {
+        return pbmasG;
+    }
+
+    public void setPbmasG(int pbmasG) {
+        this.pbmasG = pbmasG;
+    }
+
+    public int getPbmamF() {
+        return pbmamF;
+    }
+
+
+    public void setPbmamF(int pbmamF) {
+        this.pbmamF = pbmamF;
+    }
+
+    public int getPbmasF() {
+        return pbmasF;
+    }
+
+    public void setPbmasF(int pbmasF) {
+        this.pbmasF = pbmasF;
     }
 
     public String getType() {
@@ -227,7 +303,21 @@ public class Depistage {
         this.structurerapport = structurerapport;
     }
 
+    public String getCodeSup() {
+        return codeSup;
+    }
 
+    public void setCodeSup(String codeSup) {
+        this.codeSup = codeSup;
+    }
+
+    public String getCodeTel() {
+        return codeTel;
+    }
+
+    public void setCodeTel(String codeTel) {
+        this.codeTel = codeTel;
+    }
 
     public void setSyn(int syn) {
         this.syn = syn;
